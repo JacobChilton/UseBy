@@ -1,0 +1,14 @@
+{
+    "name": "database",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm run stop && docker-compose up -d",
+        "stop": "docker-compose down",
+        "reset": "docker-compose down -v"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": ""
+}
