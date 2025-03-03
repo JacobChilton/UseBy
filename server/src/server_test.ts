@@ -1,4 +1,6 @@
 import express, { json } from "express";
+import { User } from "./types/database";
+import { db_user_insert } from "./database/interface_users";
 
 const server = express();
 
@@ -26,6 +28,16 @@ server.post("/users/:id", (req, res) =>
 server.get("/auth/login", (req, res) =>
 {
     res.json({ "token": "kejfhglsdkfjvhsldkfjghnveriuvtylas" });
+})
+
+server.post("/users", (req, res) =>
+{
+    const user: Omit<User, "_id"> =
+    {
+        email: req.body.email,
+        password: req.body.password,
+    }
+    db_user_insert(user);
 })
 
 server.listen(3076, () =>
