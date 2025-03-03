@@ -1,22 +1,22 @@
 import { ObjectId } from "mongodb";
-import type { User } from "../types/database";
+import type { User, UserID } from "../types/database";
 import { db_con } from "./connection"
 import { DB_COLLECTION_USERS } from "./info";
 
 // For now this just directly returns the promise, in the future
 // it may check for different errors, such as dupe email (most likely will be the cause of errors)
-export const db_user_insert = async (p_user: Omit<User, "id">) =>
+export const db_user_insert = async (p_user: Omit<User, "_id">) =>
 {
     return db_con.collection(DB_COLLECTION_USERS).insertOne(p_user);
 }
 
 // Gets user from db using id
-export const db_user_get_by_id = async (p_id: string): Promise<User | undefined> =>
+export const db_user_get_by_id = async (p_id: UserID): Promise<User | undefined> =>
 {
     try
     {
         // Fetch
-        const raw = await db_con.collection(DB_COLLECTION_USERS).findOne({ _id: new ObjectId(p_id) });
+        const raw = await db_con.collection(DB_COLLECTION_USERS).findOne({ _id: p_id });
 
         // No use found
         if (!raw) return undefined;
@@ -26,7 +26,7 @@ export const db_user_get_by_id = async (p_id: string): Promise<User | undefined>
 
         const user: User =
         {
-            id: raw._id.toHexString(),
+            _id: raw._id,
             email: raw.email,
             password: raw.password
         };
@@ -41,7 +41,7 @@ export const db_user_get_by_id = async (p_id: string): Promise<User | undefined>
 }
 
 // Gets user from db using id
-export const db_user_get_by_email = async (p_email: string): Promise<User | undefined> =>
+export const db_user_get_by_email = async (p_email: UserID): Promise<User | undefined> =>
 {
     try
     {
@@ -56,7 +56,7 @@ export const db_user_get_by_email = async (p_email: string): Promise<User | unde
 
         const user: User =
         {
-            id: raw._id.toHexString(),
+            _id: raw._id,
             email: raw.email,
             password: raw.password
         };
@@ -69,6 +69,3 @@ export const db_user_get_by_email = async (p_email: string): Promise<User | unde
         throw new Error("Failed to retrieve user");
     }
 }
-
-db_user_get_by_id("67c6251e8501696ea98ae677").then(console.log)
-db_user_get_by_email("bingus").then(console.log)
