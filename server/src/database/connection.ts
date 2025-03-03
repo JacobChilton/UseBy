@@ -7,9 +7,11 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
+const host = process.env.DB_HOST;
+const port = process.env.DB_PORT;
 
 // Replace the uri string with your connection string.
-const uri = `mongodb://${username}:${password}@localhost:27017`;
+const uri = `mongodb://${username}:${password}@${host}:${port}`;
 const client = new MongoClient(uri);
 
 

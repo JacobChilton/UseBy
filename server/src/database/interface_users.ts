@@ -1,4 +1,4 @@
-import { ObjectId, WithId } from "mongodb";
+import { ObjectId } from "mongodb";
 import type { User } from "../types/database";
 import { db_con } from "./connection"
 import { DB_COLLECTION_USERS } from "./info";
