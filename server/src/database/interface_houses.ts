@@ -5,11 +5,11 @@ import { DB_COLLECTION_HOUSES, DB_COLLECTION_USERS, DB_NAME } from "./info";
 import { db_user_get_by_id } from "./interface_users";
 
 // For now this just directly returns the promise
-export const db_house_insert = async (p_house: Omit<House, "_id">) =>
+export const db_house_insert = async (p_house: Omit<House, "_id">): Promise<HouseID> =>
 {
     try
     {
-        return await db_con.collection(DB_COLLECTION_HOUSES).insertOne(p_house);
+        return (await db_con.collection(DB_COLLECTION_HOUSES).insertOne(p_house)).insertedId;
     }
     catch (e)
     {

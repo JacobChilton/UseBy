@@ -5,11 +5,11 @@ import { DB_COLLECTION_USERS } from "./info";
 
 // For now this just directly returns the promise, in the future
 // it may check for different errors, such as dupe email (most likely will be the cause of errors)
-export const db_user_insert = async (p_user: Omit<User, "_id">) =>
+export const db_user_insert = async (p_user: Omit<User, "_id">): Promise<UserID> =>
 {
     try
     {
-        return await db_con.collection(DB_COLLECTION_USERS).insertOne(p_user);
+        return (await db_con.collection(DB_COLLECTION_USERS).insertOne(p_user)).insertedId;
     }
     catch (e)
     {
@@ -62,6 +62,7 @@ export const db_user_get_by_email = async (p_email: UserID): Promise<User | unde
         // This should never happen (so long as we keep the code safe), but to be safe
         if (!raw.email || !raw.password) throw new Error("User has an invalid record");
 
+        // Construct the object
         const user: User =
         {
             _id: raw._id,
