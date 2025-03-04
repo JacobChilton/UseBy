@@ -32,7 +32,7 @@ export const login_token_create = (p_user: UserID, p_expire_in_days: number): Pr
             // Return the signed token
             else resolve(signed);
         });
-    })
+    });
 }
 
 // Returns the user id stated by a token, if the token is invalid it throws an error
@@ -59,3 +59,4 @@ export const login_token_validate = (p_token: string): Promise<UserID | undefine
         });
     })
 }
+
