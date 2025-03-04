@@ -36,11 +36,6 @@ server.get("/users/:id", (req, res) =>
         })
 })
 
-server.get("/auth/login", (req, res) =>
-{
-    res.json({ "token": "kejfhglsdkfjvhsldkfjghnveriuvtylas" });
-})
-
 server.post("/users", (req, res) =>
 {
     const user: Omit<User, "_id"> =
