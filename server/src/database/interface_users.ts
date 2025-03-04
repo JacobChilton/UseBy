@@ -2,14 +2,15 @@ import { ObjectId } from "mongodb";
 import type { User, UserID } from "../types/database";
 import { db_con } from "./connection"
 import { DB_COLLECTION_USERS } from "./info";
+import { tg_is_user } from "../types/database_typeguards";
 
 // For now this just directly returns the promise, in the future
 // it may check for different errors, such as dupe email (most likely will be the cause of errors)
-export const db_user_insert = async (p_user: Omit<User, "_id">) =>
+export const db_user_insert = async (p_user: Omit<User, "_id">): Promise<UserID> =>
 {
     try
     {
-        return await db_con.collection(DB_COLLECTION_USERS).insertOne(p_user);
+        return (await db_con.collection(DB_COLLECTION_USERS).insertOne(p_user)).insertedId;
     }
     catch (e)
     {
@@ -30,16 +31,9 @@ export const db_user_get_by_id = async (p_id: UserID): Promise<User | undefined>
         if (!raw) return undefined;
 
         // This should never happen (so long as we keep the code safe), but to be safe
-        if (!raw.email || !raw.password) throw new Error("User has an invalid record");
+        if (!tg_is_user(raw)) throw new Error("User has an invalid record");
 
-        const user: User =
-        {
-            _id: raw._id,
-            email: raw.email,
-            password: raw.password
-        };
-
-        return user;
+        return raw;
     }
     catch (e)
     {
@@ -60,16 +54,9 @@ export const db_user_get_by_email = async (p_email: UserID): Promise<User | unde
         if (!raw) return undefined;
 
         // This should never happen (so long as we keep the code safe), but to be safe
-        if (!raw.email || !raw.password) throw new Error("User has an invalid record");
+        if (!tg_is_user(raw)) throw new Error("User has an invalid record");
 
-        const user: User =
-        {
-            _id: raw._id,
-            email: raw.email,
-            password: raw.password
-        };
-
-        return user;
+        return raw;
     }
     catch (e)
     {

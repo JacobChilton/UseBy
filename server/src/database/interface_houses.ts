@@ -3,13 +3,14 @@ import type { House, HouseID, User, UserID } from "../types/database";
 import { db_con } from "./connection"
 import { DB_COLLECTION_HOUSES, DB_COLLECTION_USERS, DB_NAME } from "./info";
 import { db_user_get_by_id } from "./interface_users";
+import { tg_is_user } from "../types/database_typeguards";
 
 // For now this just directly returns the promise
-export const db_house_insert = async (p_house: Omit<House, "_id">) =>
+export const db_house_insert = async (p_house: Omit<House, "_id">): Promise<HouseID> =>
 {
     try
     {
-        return await db_con.collection(DB_COLLECTION_HOUSES).insertOne(p_house);
+        return (await db_con.collection(DB_COLLECTION_HOUSES).insertOne(p_house)).insertedId;
     }
     catch (e)
     {
@@ -36,7 +37,10 @@ export const db_house_get_members = async (p_id: HouseID): Promise<Array<User>> 
         // Get all user objects from the array of their ids
         const users = await db_con.collection(DB_COLLECTION_USERS).find({ _id: { $in: raw_user_ids } }).toArray();
 
-        return users as Array<User>;
+        // Check each user is valid
+        if (!users.every(tg_is_user)) throw new Error("Invalid user retrieved");
+
+        return users;
     }
     catch (e)
     {
