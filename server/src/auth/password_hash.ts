@@ -16,7 +16,7 @@ export const password_hash = (p_password: string, p_salt?: string) =>
         salt = crypto.randomBytes(16).toString("hex"); // Generate salt
     }
 
-    return new Promise((resolve, reject) =>
+    return new Promise<string>((resolve, reject) =>
     {
         crypto.scrypt(p_password, salt, 32, (err, derivedKey) => // Hashes password and adds salt
         {
