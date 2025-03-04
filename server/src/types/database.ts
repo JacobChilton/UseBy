@@ -16,6 +16,7 @@ export interface Product
     _id: ProductID,
     upc: string,
     owner_id: UserID,
+    house_id: HouseID,
     name: string,
     use_by: Date,
     quantity: number
