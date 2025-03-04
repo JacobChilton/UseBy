@@ -37,7 +37,15 @@ server.post("/users", (req, res) =>
         email: req.body.email,
         password: req.body.password,
     }
-    db_user_insert(user);
+    db_user_insert(user)
+    .then(() =>
+    {
+        res.status(201).json({ message: "success" })
+    })
+    .catch(() =>
+    {
+        res.status(500).json({ message: "failed to create user" });
+    })
 })
 
 server.listen(3076, () =>
