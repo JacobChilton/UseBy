@@ -14,7 +14,3 @@ export const password_hash = (p_password:string) => {
             });
     });
 }
-
-console.log(password_hash("password"));
-
-password_hash("password").then(console.log);
