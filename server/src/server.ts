@@ -9,14 +9,9 @@ server.use(json());
 
 server.post("/auth/login", (req, res) =>
 {
-    if (req.body.email === "bingus" && req.body.password === "password")
-    {
-        res.status(200).json({ "token": "kejfhglsdkfjvhsldkfjghnveriuvtylas" });
-    }
-    else return
-    {
-        res.status(401).json({ "message": "credentials invalid" })
-    }
+    const email = req.body.email;
+    const password = req.body.password;
+    
 })
 
 server.get("/users/:id", (req, res) =>
