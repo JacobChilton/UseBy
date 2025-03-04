@@ -7,7 +7,15 @@ import { DB_COLLECTION_USERS } from "./info";
 // it may check for different errors, such as dupe email (most likely will be the cause of errors)
 export const db_user_insert = async (p_user: Omit<User, "_id">) =>
 {
-    return db_con.collection(DB_COLLECTION_USERS).insertOne(p_user);
+    try
+    {
+        return await db_con.collection(DB_COLLECTION_USERS).insertOne(p_user);
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to create user");
+    }
 }
 
 // Gets user from db using id
@@ -18,7 +26,7 @@ export const db_user_get_by_id = async (p_id: UserID): Promise<User | undefined>
         // Fetch
         const raw = await db_con.collection(DB_COLLECTION_USERS).findOne({ _id: p_id });
 
-        // No use found
+        // No user found
         if (!raw) return undefined;
 
         // This should never happen (so long as we keep the code safe), but to be safe
