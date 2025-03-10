@@ -4,6 +4,13 @@ export type UserID = ObjectId;
 export type HouseID = ObjectId;
 export type ProductID = ObjectId;
 
+export enum Availability
+{
+    UP_FOR_GRABS,
+    PRIVATE,
+    COMMUNAL
+}
+
 export interface User
 {
     _id: UserID,
@@ -14,12 +21,14 @@ export interface User
 export interface Product
 {
     _id: ProductID,
-    upc: string,
+    upc?: string,
     owner_id: UserID,
     house_id: HouseID,
     name: string,
     use_by: Date,
-    quantity: number
+    quantity: number,
+    availability: Availability,
+    frozen: boolean
 }
 
 export interface House
