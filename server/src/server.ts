@@ -1,11 +1,13 @@
 import express, { json, response } from "express";
 import { User } from "./types/database";
-import { db_user_get_by_id, db_user_insert } from "./database/interface_users";
+import { db_user_get_by_email, db_user_get_by_id, db_user_insert } from "./database/interface_users";
 import { ObjectId } from "mongodb";
 import { password_hash } from "./auth/password_hash";
 import { std_response } from "./util/standard_response";
-import { HttpStatusCode } from "axios";
 import { HTTP } from "./util/http";
+import { verify } from "crypto";
+import { password_verify } from "./auth/password_verify";
+import { login_token_create } from "./auth/jwt";
 
 const server = express();
 
@@ -16,6 +18,37 @@ server.post("/auth/login", (req, res) =>
     const email = req.body.email;
     const password = req.body.password;
 
+    if (!email || !password) {
+
+        std_response(res, HTTP.FORBIDDEN, { message: "password email mismatch" });
+        return;
+    }
+
+    db_user_get_by_email(email)
+
+        .then(async (user) =>
+        {
+            if (!user) {
+
+                std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
+            }
+            else {
+
+                if (await password_verify(password, user.password)) {
+                    
+                    const token = await login_token_create(user._id, 7);
+                    std_response(res, HTTP.OK, {message: token});
+                }
+                else {
+
+                    std_response(res, HTTP.FORBIDDEN, { message: "password email mismatch" });
+                }
+            }
+        })
+        .catch(() =>
+        {
+            std_response(res, HTTP.NOT_FOUND, { message: "failed to retrieve user" });
+        })
 })
 
 server.get("/users/:id", (req, res) =>
@@ -23,9 +56,14 @@ server.get("/users/:id", (req, res) =>
     db_user_get_by_id(new ObjectId(req.params.id))
         .then((user) =>
         {
-            if (user) std_response(res, HTTP.OK, { id: user._id, email: user.email });
+            if (user) {
 
-            std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
+                std_response(res, HTTP.OK, { id: user._id, email: user.email });
+            }
+            else {
+
+                std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
+            }
         })
         .catch(() =>
         {
