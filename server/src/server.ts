@@ -14,37 +14,25 @@ const server = express();
 
 server.use(json());
 
-server.post("/auth/login", (req, res) =>
+server.post("/auth/login", EP.param("email").param("password").build((req, res, params) =>
 {
-    const email = req.body.email;
-    const password = req.body.password;
 
-    if (!email || !password)
-    {
-
-        std_response(res, HTTP.FORBIDDEN, { message: "password email mismatch" });
-        return;
-    }
-
-    db_user_get_by_email(email)
+    db_user_get_by_email(req.body.password)
 
         .then(async (user) =>
         {
-            if (!user)
-            {
+            if (!user) {
+
                 std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
             }
-            else
-            {
+            else {
 
-                if (await password_verify(password, user.password))
-                {
-
+                if (await password_verify(req.body.password, user.password)) {
+                    
                     const token = await login_token_create(user._id, 7);
-                    std_response(res, HTTP.OK, { message: token });
+                    std_response(res, HTTP.OK, {message: token});
                 }
-                else
-                {
+                else {
 
                     std_response(res, HTTP.FORBIDDEN, { message: "password email mismatch" });
                 }
@@ -54,20 +42,18 @@ server.post("/auth/login", (req, res) =>
         {
             std_response(res, HTTP.NOT_FOUND, { message: "failed to retrieve user" });
         })
-})
+}))
 
 server.get("/users/:id", (req, res) =>
 {
     db_user_get_by_id(new ObjectId(req.params.id))
         .then((user) =>
         {
-            if (user)
-            {
+            if (user) {
 
                 std_response(res, HTTP.OK, { id: user._id, email: user.email });
             }
-            else
-            {
+            else {
 
                 std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
             }
@@ -78,8 +64,14 @@ server.get("/users/:id", (req, res) =>
         })
 })
 
-server.post("/users", EP.param("email").param("password").build(async (req, res) =>
+server.post("/users", async (req, res) =>
 {
+    if (!req.body.email || !req.body.password) {
+
+        std_response(res, HTTP.BAD_REQUEST, { message: "password or email missing" });
+        return;
+    }
+
     try 
     {
         // Hash the password for storage
@@ -103,7 +95,7 @@ server.post("/users", EP.param("email").param("password").build(async (req, res)
         // TODO make http code reflect the error sent
         std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: e })
     }
-}))
+})
 
 
 server.listen(3076, () =>
