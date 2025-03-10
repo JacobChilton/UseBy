@@ -12,7 +12,7 @@ class EPHandlerBuilder
         return this;
     }
 
-    build = (handler: (req: Request, res: Response, params: Map<string, any>) => {}) =>
+    build = (handler: (req: Request, res: Response, params: Map<string, any>) => void) =>
     {
         return (req: Request, res: Response) =>
         {

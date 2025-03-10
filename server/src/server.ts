@@ -78,17 +78,17 @@ server.get("/users/:id", (req, res) =>
         })
 })
 
-server.post("/users", EP.param("email").param("password").build(async (req, res, params) =>
+server.post("/users", EP.param("email").param("password").build(async (req, res) =>
 {
     try 
     {
         // Hash the password for storage
-        const hash = await password_hash(params.get("password"));
+        const hash = await password_hash(req.body.password);
 
         // Construct the new user, we do not know ID yet so it is ommited
         const user: Omit<User, "_id"> =
         {
-            email: params.get("email"),
+            email: req.body.email,
             password: hash
         };
 
