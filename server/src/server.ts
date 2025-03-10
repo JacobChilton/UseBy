@@ -8,6 +8,7 @@ import { HTTP } from "./util/http";
 import { verify } from "crypto";
 import { password_verify } from "./auth/password_verify";
 import { login_token_create } from "./auth/jwt";
+import { EP } from "./util/endpoints";
 
 const server = express();
 
@@ -18,7 +19,8 @@ server.post("/auth/login", (req, res) =>
     const email = req.body.email;
     const password = req.body.password;
 
-    if (!email || !password) {
+    if (!email || !password)
+    {
 
         std_response(res, HTTP.FORBIDDEN, { message: "password email mismatch" });
         return;
@@ -28,18 +30,21 @@ server.post("/auth/login", (req, res) =>
 
         .then(async (user) =>
         {
-            if (!user) {
-
+            if (!user)
+            {
                 std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
             }
-            else {
+            else
+            {
 
-                if (await password_verify(password, user.password)) {
-                    
+                if (await password_verify(password, user.password))
+                {
+
                     const token = await login_token_create(user._id, 7);
-                    std_response(res, HTTP.OK, {message: token});
+                    std_response(res, HTTP.OK, { message: token });
                 }
-                else {
+                else
+                {
 
                     std_response(res, HTTP.FORBIDDEN, { message: "password email mismatch" });
                 }
@@ -56,11 +61,13 @@ server.get("/users/:id", (req, res) =>
     db_user_get_by_id(new ObjectId(req.params.id))
         .then((user) =>
         {
-            if (user) {
+            if (user)
+            {
 
                 std_response(res, HTTP.OK, { id: user._id, email: user.email });
             }
-            else {
+            else
+            {
 
                 std_response(res, HTTP.NOT_FOUND, { message: "user does not exist" });
             }
@@ -71,7 +78,7 @@ server.get("/users/:id", (req, res) =>
         })
 })
 
-server.post("/users", async (req, res) =>
+server.post("/users", EP.param("email").param("password").build(async (req, res) =>
 {
     try 
     {
@@ -96,7 +103,7 @@ server.post("/users", async (req, res) =>
         // TODO make http code reflect the error sent
         std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: e })
     }
-})
+}))
 
 
 server.listen(3076, () =>
