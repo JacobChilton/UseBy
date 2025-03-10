@@ -12,15 +12,24 @@ class EPHandlerBuilder
         return this;
     }
 
-    build = (handler: (req: Request, res: Response) => {}) =>
+    build = (handler: (req: Request, res: Response, params: Map<string, any>) => {}) =>
     {
         return (req: Request, res: Response) =>
         {
+            const params: Map<string, any> = new Map();
+
             const missing_params = Array.from(this.params).reduce<Array<string>>((prev, current) =>
             {
-                if (!Object.keys(req.body).includes(current)) return [...prev, current]
-                else return prev;
-            }, [])
+                if (!Object.keys(req.body).includes(current))
+                {
+                    return [...prev, current]
+                }
+                else 
+                {
+                    params.set(current, req.body[current])
+                    return prev;
+                }
+            }, []);
 
             if (missing_params.length !== 0)
             {
@@ -28,7 +37,7 @@ class EPHandlerBuilder
                 return;
             }
 
-            handler(req, res);
+            handler(req, res, params);
         }
     }
 }

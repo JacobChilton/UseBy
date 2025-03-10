@@ -78,23 +78,17 @@ server.get("/users/:id", (req, res) =>
         })
 })
 
-server.post("/users", EP.param("email").param("password").build(async (req, res) =>
+server.post("/users", EP.param("email").param("password").build(async (req, res, params) =>
 {
-    if (!req.body.email || !req.body.password) {
-
-        std_response(res, HTTP.BAD_REQUEST, { message: "password or email missing" });
-        return;
-    }
-
     try 
     {
         // Hash the password for storage
-        const hash = await password_hash(req.body.password);
+        const hash = await password_hash(params.get("password"));
 
         // Construct the new user, we do not know ID yet so it is ommited
         const user: Omit<User, "_id"> =
         {
-            email: req.body.email,
+            email: params.get("email"),
             password: hash
         };
 
