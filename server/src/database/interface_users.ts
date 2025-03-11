@@ -43,7 +43,7 @@ export const db_user_get_by_id = async (p_id: UserID): Promise<User | undefined>
 }
 
 // Gets user from db using id
-export const db_user_get_by_email = async (p_email: UserID): Promise<User | undefined> =>
+export const db_user_get_by_email = async (p_email: string): Promise<User | undefined> =>
 {
     try
     {
