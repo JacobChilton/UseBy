@@ -64,11 +64,12 @@ server.get("/users/:id", (req, res) =>
         })
 })
 
-server.post("/users", async (req, res) =>
+server.post("/users", EP.param("email").param("password").build( async (req, res) =>
 {
-    if (!req.body.email || !req.body.password) {
 
-        std_response(res, HTTP.BAD_REQUEST, { message: "password or email missing" });
+    if (await db_user_get_by_email(req.body.email)) {
+
+        std_response(res, HTTP.CONFLICT, { message: "email already exists"});
         return;
     }
 
@@ -92,10 +93,10 @@ server.post("/users", async (req, res) =>
     }
     catch (e)
     {
-        // TODO make http code reflect the error sent
-        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: e })
+        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { message: "error creating account"});
+        console.error(e);
     }
-})
+}))
 
 
 server.listen(3076, () =>
