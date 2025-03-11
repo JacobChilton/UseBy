@@ -10,9 +10,14 @@ import { password_verify } from "./auth/password_verify";
 import { login_token_create } from "./auth/jwt";
 import { exists } from "./util/bingus";
 import { auth } from "./auth/endpoints";
+<<<<<<< Updated upstream
 import { ep_login_post, ep_users_post } from "./endpoints/auth";
 import { ep_users_get } from "./endpoints/users";
 import { ep_houses_post } from "./endpoints/houses";
+=======
+import { ep_login_post } from "./endpoints/auth";
+import { ep_users_get, ep_users_post } from "./endpoints/users";
+>>>>>>> Stashed changes
 
 const server = express();
 
@@ -36,10 +41,13 @@ server.get("/users/:id", ep_users_get)
 // Create new user
 server.post("/users", ep_users_post)
 
+<<<<<<< Updated upstream
 // Create new house
 server.post("/houses", ep_houses_post)
+=======
+>>>>>>> Stashed changes
 
 server.listen(3076, () =>
 {
-    console.log("HELLO")
+    console.log("Server running: http://localhost:3076")
 })
