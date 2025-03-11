@@ -14,7 +14,6 @@ const protocol = process.env.DB_PROTOCOL;
 // Replace the uri string with your connection string.
 const uri = `${protocol}://${username}:${password}@${host}${port ? ":" + port : ""}`;
 
-console.log(uri)
 const client = new MongoClient(uri);
 
 
