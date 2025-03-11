@@ -19,6 +19,25 @@ export const db_house_insert = async (p_house: Omit<House, "_id">): Promise<Hous
     }
 }
 
+export const db_house_get_by_id = async (p_id: HouseID): Promise<House | undefined> =>
+{
+    try
+    {
+        // Fetch
+        const raw = await db_con.collection(DB_COLLECTION_HOUSES).findOne({ _id: p_id });
+
+        // No product found
+        if (!tg_is_house(raw)) return undefined;
+
+        return raw;
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to retrieve house");
+    }
+}
+
 // Gets all members of a house excluding the owner
 // Will error if the house does not exist
 export const db_house_get_members = async (p_id: HouseID): Promise<Array<User>> =>

@@ -11,7 +11,7 @@ import { tg_is_availability } from "../types/database_typeguards";
 import { db_house_get_by_id } from "../database/interface_houses";
 import { ObjectId } from "mongodb";
 
-export const ep_users_post = auth(async (req: Request, res: Response, user: User) =>
+export const ep_products_post = auth(async (req: Request, res: Response, user: User) =>
 {
     // Ensure that required body params exist
     if (!exists(req.body, "upc", "name", "use_by", "quantity", "availability", "frozen"))
