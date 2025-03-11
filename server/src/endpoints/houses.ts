@@ -6,7 +6,7 @@ import { HTTP } from "../util/http";
 import { password_hash } from "../auth/password_hash";
 import { House, User } from "../types/database";
 import { auth } from "../auth/endpoints";
-import { db_house_insert } from "../database/interface_houses";
+import { db_house_get_by_name_and_owner_id, db_house_insert } from "../database/interface_houses";
 
 // Creates a new house belonging to logged in user
 export const ep_houses_post = auth( async(req: Request, res: Response, user: User) =>
@@ -16,6 +16,12 @@ export const ep_houses_post = auth( async(req: Request, res: Response, user: Use
         std_response(res, HTTP.BAD_REQUEST, { message: "missing params" });
         return;
     }
+
+    if (await db_house_get_by_name_and_owner_id(req.body.name, user._id))
+        {
+            std_response(res, HTTP.CONFLICT, { message: "house already exists" });
+            return;
+        }
 
     try {
 
@@ -36,44 +42,6 @@ export const ep_houses_post = auth( async(req: Request, res: Response, user: Use
     catch (e) {
 
         std_response(res, HTTP.INTERNAL_SERVER_ERROR, { message: "error creating house" });
-        console.error(e);
-    }
-
-
-
-    
-    
-    
-    // need to make one of this to check if house name already exists for that user
-    /*
-    if (await db_user_get_by_email(req.body.email))
-    {
-        std_response(res, HTTP.CONFLICT, { message: "email already exists" });
-        return;
-    }
-        */
-
-    try 
-    {
-        // Hash the password for storage
-        const hash = await password_hash(req.body.password);
-
-        // Construct the new user, we do not know ID yet so it is ommited
-        const user: Omit<User, "_id"> =
-        {
-            email: req.body.email,
-            password: hash
-        };
-
-        // Insert the user into the database
-        const id = await db_user_insert(user);
-
-        // Send user the new id
-        std_response(res, HTTP.CREATED, { user_id: id.toHexString() });
-    }
-    catch (e)
-    {
-        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { message: "error creating account" });
         console.error(e);
     }
 })

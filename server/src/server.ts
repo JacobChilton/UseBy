@@ -12,6 +12,7 @@ import { exists } from "./util/bingus";
 import { auth } from "./auth/endpoints";
 import { ep_login_post, ep_users_post } from "./endpoints/auth";
 import { ep_users_get } from "./endpoints/users";
+import { ep_houses_post } from "./endpoints/houses";
 
 const server = express();
 
@@ -35,7 +36,8 @@ server.get("/users/:id", ep_users_get)
 // Create new user
 server.post("/users", ep_users_post)
 
-
+// Create new house
+server.post("/houses", ep_houses_post)
 
 server.listen(3076, () =>
 {

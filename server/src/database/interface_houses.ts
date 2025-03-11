@@ -3,7 +3,7 @@ import type { House, HouseID, User, UserID } from "../types/database";
 import { db_con } from "./connection"
 import { DB_COLLECTION_HOUSES, DB_COLLECTION_USERS, DB_NAME } from "./info";
 import { db_user_get_by_id } from "./interface_users";
-import { tg_is_user } from "../types/database_typeguards";
+import { tg_is_house, tg_is_user } from "../types/database_typeguards";
 
 // For now this just directly returns the promise
 export const db_house_insert = async (p_house: Omit<House, "_id">): Promise<HouseID> =>
@@ -90,5 +90,25 @@ export const db_house_delete = async (p_id: HouseID) =>
     {
         console.error(e);
         throw new Error("Failed to delete house");
+    }
+}
+
+// Gets house from db using house name and owner id
+export const db_house_get_by_name_and_owner_id = async (p_name: string, p_owner_id: UserID): Promise<House | undefined> =>
+{
+    try
+    {
+        // Fetch
+        const raw = await db_con.collection(DB_COLLECTION_HOUSES).findOne({ name: p_name, owner_id: p_owner_id });
+
+        // No house found
+        if (!tg_is_house(raw)) return undefined;
+
+        return raw;
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to retrieve house");
     }
 }
