@@ -30,7 +30,27 @@ export const db_product_get_by_id = async (p_id: ProductID): Promise<Product | u
         // No product found
         if (!tg_is_product(raw)) return undefined;
 
-        return raw as Product;
+        return raw;
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to retrieve product");
+    }
+}
+
+// Gets product by name, for a specific user
+export const db_product_get_by_name = async (p_user: UserID, p_name: string): Promise<Product | undefined> =>
+{
+    try
+    {
+        // Fetch
+        const raw = await db_con.collection(DB_COLLECTION_PRODUCTS).findOne({ owner_id: p_user, name: p_name });
+
+        // No product found
+        if (!tg_is_product(raw)) return undefined;
+
+        return raw;
     }
     catch (e)
     {
