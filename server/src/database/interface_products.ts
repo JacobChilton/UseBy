@@ -40,7 +40,7 @@ export const db_product_get_by_id = async (p_id: ProductID): Promise<Product | u
 }
 
 // Gets product by name, for a specific user
-export const db_product_get_by_name = async (p_user: UserID, p_name: string): Promise<Product | undefined> =>
+export const db_product_get_by_name_and_owner = async (p_user: UserID, p_name: string): Promise<Product | undefined> =>
 {
     try
     {

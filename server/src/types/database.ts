@@ -6,9 +6,9 @@ export type ProductID = ObjectId;
 
 export enum Availability
 {
-    UP_FOR_GRABS,
-    PRIVATE,
-    COMMUNAL
+    UP_FOR_GRABS = "UP_FOR_GRABS",
+    PRIVATE = "PRIVATE",
+    COMMUNAL = "COMMUNAL"
 }
 
 export interface User
