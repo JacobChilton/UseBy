@@ -36,7 +36,7 @@ export const login_token_create = (p_user: UserID, p_expire_in_days: number): Pr
 }
 
 // Returns the user id stated by a token, if the token is invalid it throws an error
-export const login_token_validate = (p_token: string): Promise<UserID | undefined> =>
+export const login_token_validate = (p_token: string): Promise<UserID> =>
 {
     // Ensures the correct issuer is stated
     const options: jwt.VerifyOptions =
