@@ -2,7 +2,8 @@ import { Request, Response } from "express"
 import { std_response } from "./standard_response"
 import { HTTP } from "./http"
 
-class EPHandlerBuilder
+// NEEDS REDOING FOR AUTH
+class EPAuthHandlerBuilder
 {
     params: Set<string> = new Set()
 
@@ -42,4 +43,4 @@ class EPHandlerBuilder
     }
 }
 
-export const EP = new EPHandlerBuilder
+export const EP = new EPAuthHandlerBuilder
