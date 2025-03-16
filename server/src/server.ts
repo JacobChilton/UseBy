@@ -1,8 +1,8 @@
 import express, { json } from "express";
 import { ep_login_post } from "./endpoints/auth";
 import { ep_users_get, ep_users_post } from "./endpoints/users";
-import { ep_houses_post } from "./endpoints/houses";
-import { ep_products_post } from "./endpoints/products";
+import { ep_house_delete, ep_house_get_for_user, ep_house_member_add, ep_house_member_remove, ep_house_patch, ep_houses_post } from "./endpoints/houses";
+import { ep_products_get, ep_products_post } from "./endpoints/products";
 
 const server = express();
 
@@ -32,13 +32,19 @@ server.post("/users", ep_users_post)
 
 // Create new house
 server.post("/houses", ep_houses_post)
+server.get("/houses", ep_house_get_for_user)
+server.delete("/houses/:house_id", ep_house_delete)
+server.patch("/houses/:house_id", ep_house_patch)
+server.post("/houses/:house_id/members", ep_house_member_add)
+server.delete("/houses/:house_id/members/:user_id", ep_house_member_remove)
 
 //////////////
 // PRODUCTS //
 //////////////
 
 // Create new product in house
-server.post("/houses/:product_id/products", ep_products_post)
+server.post("/houses/:house_id/products", ep_products_post)
+server.get("/houses/:house_id/products", ep_products_get)
 
 // Launch server
 server.listen(3076, () =>

@@ -5,7 +5,7 @@ import { HTTP } from "../util/http";
 import { db_user_get_by_email, db_user_insert } from "../database/interface_users";
 import { password_hash } from "../auth/password_hash";
 import { Product, User } from "../types/database";
-import { db_product_get_by_name_and_owner, db_product_insert } from "../database/interface_products";
+import { db_product_get_by_house, db_product_get_by_name_and_owner, db_product_insert } from "../database/interface_products";
 import { auth } from "../auth/endpoints";
 import { tg_is_availability } from "../types/database_typeguards";
 import { db_house_get_by_id } from "../database/interface_houses";
@@ -30,7 +30,7 @@ export const ep_products_post = auth(async (req: Request, res: Response, user: U
     try
     {
         // Ensure that the house_id is valid
-        if (!exists(req.params, "house_id") || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
+        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
         {
             std_response(res, HTTP.NOT_FOUND, { error: "house not found" });
             return;
@@ -72,4 +72,27 @@ export const ep_products_post = auth(async (req: Request, res: Response, user: U
             console.error(e)
             std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: "failed to create product" })
         })
+})
+
+export const ep_products_get = auth(async (req: Request, res: Response, user: User) =>
+{
+    try
+    {
+        // Ensure that the house_id is valid
+        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
+        {
+            std_response(res, HTTP.NOT_FOUND, { error: "house not found" });
+            return;
+        }
+
+        const products = await db_product_get_by_house(new ObjectId(req.params.house_id))
+
+        // Send, may want to set which values to send to be secure
+        std_response(res, HTTP.OK, products)
+    }
+    catch (e)
+    {
+        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: "failed to get products" })
+        return
+    }
 })

@@ -58,3 +58,37 @@ export const db_product_get_by_name_and_owner = async (p_user: UserID, p_name: s
         throw new Error("Failed to retrieve product");
     }
 }
+
+export const db_product_delete_by_house_id = async (p_house: UserID): Promise<void> =>
+{
+    try
+    {
+        // Delete
+        await db_con.collection(DB_COLLECTION_PRODUCTS).deleteMany({ house_id: p_house });
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to delete products");
+    }
+}
+
+// Gets products belonging to a specific house
+export const db_product_get_by_house = async (p_house: HouseID): Promise<Array<Product>> =>
+{
+    try
+    {
+        // Fetch
+        const raw = await db_con.collection(DB_COLLECTION_PRODUCTS).find({ house_id: p_house }).toArray();
+
+        // No product found
+        if (!raw.every(tg_is_product)) return [];
+
+        return raw;
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to retrieve products");
+    }
+}
