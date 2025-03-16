@@ -73,6 +73,20 @@ export const db_product_delete_by_house_id = async (p_house: UserID): Promise<vo
     }
 }
 
+export const db_product_delete_by_product_id = async (p_id: ProductID): Promise<void> =>
+{
+    try {
+
+        // Delete
+        await db_con.collection(DB_COLLECTION_PRODUCTS).deleteOne({ _id: p_id});
+    }
+    catch (e) {
+
+        console.error(e);
+        throw new Error("Failed to delete product");
+    }
+}
+
 // Gets products belonging to a specific house
 export const db_product_get_by_house = async (p_house: HouseID): Promise<Array<Product>> =>
 {
