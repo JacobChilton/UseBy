@@ -10,24 +10,27 @@ export default function TabLayout()
         <APIProvider>
             <Tabs
                 screenOptions={{
+                    headerShown: false,
                     tabBarActiveTintColor: 'black',
                 }}>
                 <Tabs.Screen
                     name="index"
                     options={{
-                        title: 'Tab One',
+                        title: 'Home',
                         tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-                        headerRight: () => (
-                            <Link href="/modal" asChild>
-                                <HeaderButton />
-                            </Link>
-                        ),
                     }}
                 />
                 <Tabs.Screen
-                    name="two"
+          name="myfood" 
+          options={{
+            title: 'My Food',
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          }}
+        />
+                <Tabs.Screen
+                    name="profile"
                     options={{
-                        title: 'Tab Two',
+                        title: 'Profile',
                         tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
                     }}
                 />

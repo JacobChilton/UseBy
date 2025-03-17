@@ -1,18 +1,18 @@
 import { Stack } from 'expo-router';
-import { StyleSheet, View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
 import { ScreenContent } from '~/components/ScreenContent';
 import APIProvider, { useAPI } from '../components/APIProvider';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
-export default function Home()
+
+export default function Profile()
 {
 
 
     return (
             <View>
-                <Text>
-                    Yes nav
-                </Text>
+            <Text>
+                profile page
+            </Text>
             </View>
     )
 }
