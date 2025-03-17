@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  useby:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: useby-server
+    expose:
+      - '3076'
+    ports:
+      - '3076:3076'
