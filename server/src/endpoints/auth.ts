@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { std_response } from "../util/standard_response";
 import { db_user_get_by_email, db_user_insert } from "../database/interface_users";
-import { exists } from "../util/bingus";
+import { exists } from "../util/requests";
 import { HTTP } from "../util/http";
 import { password_verify } from "../auth/password_verify";
 import { login_token_create } from "../auth/jwt";

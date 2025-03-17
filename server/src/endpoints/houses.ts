@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { auth } from "../auth/endpoints";
-import { db_house_delete, db_house_get_by_id, db_house_get_by_name_and_owner_id, db_house_get_user_houses, db_house_insert, db_house_member_add, db_house_member_remove, db_house_name_update } from "../database/interface_houses";
+import { db_house_delete, db_house_get_by_id, db_house_get_by_name_and_owner_id, db_house_get_user_houses, db_house_insert, db_house_member_add, db_house_member_remove, db_house_name_patch } from "../database/interface_houses";
 import { House, User } from "../types/database";
-import { exists } from "../util/bingus";
+import { exists } from "../util/requests";
 import { HTTP } from "../util/http";
 import { std_response } from "../util/standard_response";
 import { db_user_get_by_id } from "../database/interface_users";
@@ -187,7 +187,7 @@ export const ep_house_patch = auth(async (req: Request, res: Response, user: Use
 
     try
     {
-        await db_house_name_update(new ObjectId(req.params.house_id), req.body.name, user._id);
+        await db_house_name_patch(new ObjectId(req.params.house_id), req.body.name, user._id);
         std_response(res, HTTP.OK, { message: "success" });
     }
     catch (e: any)

@@ -19,7 +19,7 @@ export const db_product_insert = async (p_house: Omit<Product, "_id">): Promise<
     }
 }
 
-// Gets user from db using id
+// Gets product from db using id
 export const db_product_get_by_id = async (p_id: ProductID): Promise<Product | undefined> =>
 {
     try
@@ -34,6 +34,19 @@ export const db_product_get_by_id = async (p_id: ProductID): Promise<Product | u
     }
     catch (e)
     {
+        console.error(e);
+        throw new Error("Failed to retrieve product");
+    }
+}
+
+export const db_product_patch = async (p_id: ProductID, p_product_updates: Partial<Omit<Product, "_id">>): Promise<void> =>
+{
+    try {
+
+        await db_con.collection(DB_COLLECTION_PRODUCTS).updateOne({ _id: p_id}, {$set: p_product_updates});
+    }
+    catch (e) {
+
         console.error(e);
         throw new Error("Failed to retrieve product");
     }

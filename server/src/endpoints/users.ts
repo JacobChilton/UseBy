@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { exists } from "../util/bingus";
+import { exists } from "../util/requests";
 import { std_response } from "../util/standard_response";
 import { HTTP } from "../util/http";
 import { ObjectId } from "mongodb";

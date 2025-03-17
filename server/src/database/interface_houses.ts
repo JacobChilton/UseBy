@@ -193,7 +193,7 @@ export const db_house_member_remove = async (p_house: HouseID, p_user: UserID) =
 }
 
 // Will check if the name already exists
-export const db_house_name_update = async (p_house: HouseID, p_name: string, p_user: UserID) =>
+export const db_house_name_patch = async (p_house: HouseID, p_name: string, p_user: UserID) =>
 {
     try
     {
