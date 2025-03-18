@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
 import { ScreenContent } from '~/components/ScreenContent';
 import APIProvider, { useAPI } from '../components/APIProvider';
 import { useEffect, useState } from 'react';
-import Login from '../login';
 
 export default function Profile()
 {
@@ -14,8 +13,6 @@ export default function Profile()
             <Text>
                 profile page
             </Text>
-
-            <Login />
         </View>
     )
 }
