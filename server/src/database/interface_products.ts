@@ -41,11 +41,14 @@ export const db_product_get_by_id = async (p_id: ProductID): Promise<Product | u
 
 export const db_product_patch = async (p_id: ProductID, p_product_updates: Partial<Omit<Product, "_id">>): Promise<void> =>
 {
-    try {
+    const product = { ...p_product_updates, _id: p_id };
+    try
+    {
 
-        await db_con.collection(DB_COLLECTION_PRODUCTS).updateOne({ _id: p_id}, {$set: p_product_updates});
+        await db_con.collection(DB_COLLECTION_PRODUCTS).updateOne({ _id: p_id }, { $set: product });
     }
-    catch (e) {
+    catch (e)
+    {
 
         console.error(e);
         throw new Error("Failed to retrieve product");
@@ -88,12 +91,14 @@ export const db_product_delete_by_house_id = async (p_house: UserID): Promise<vo
 
 export const db_product_delete_by_product_id = async (p_id: ProductID): Promise<void> =>
 {
-    try {
+    try
+    {
 
         // Delete
-        await db_con.collection(DB_COLLECTION_PRODUCTS).deleteOne({ _id: p_id});
+        await db_con.collection(DB_COLLECTION_PRODUCTS).deleteOne({ _id: p_id });
     }
-    catch (e) {
+    catch (e)
+    {
 
         console.error(e);
         throw new Error("Failed to delete product");
@@ -109,7 +114,7 @@ export const db_product_get_by_house = async (p_house: HouseID): Promise<Array<P
         const raw = await db_con.collection(DB_COLLECTION_PRODUCTS).find({ house_id: p_house }).toArray();
 
         // No product found
-        if (!raw.every(tg_is_product)) return [];
+        if (!raw.every(tg_is_product)) throw new Error("Invalid product encountered");
 
         return raw;
     }

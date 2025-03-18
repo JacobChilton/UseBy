@@ -3,17 +3,20 @@ import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
 import { ScreenContent } from '~/components/ScreenContent';
 import APIProvider, { useAPI } from '../components/APIProvider';
 import { useEffect, useState } from 'react';
+import Login from '../login';
 
 export default function Profile()
 {
 
 
     return (
-            <View>
+        <View>
             <Text>
                 profile page
             </Text>
-            </View>
+
+            <Login />
+        </View>
     )
 }
 

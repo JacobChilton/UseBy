@@ -1,62 +1,42 @@
-import { View, TextInput, Button, StyleSheet, Alert, Text, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Stack } from 'expo-router';
-import { ScreenContent } from '~/components/ScreenContent';
-import APIProvider, { useAPI } from './components/APIProvider';
+import { TextInput, Button, Text } from 'react-native';
+import { useAPI } from './components/APIProvider';
 import { useEffect, useState } from 'react';
-import { APIError } from './components/APIError';
+import { APIError } from './lib/api/APIError';
 
-export default function Login() {
-
+const Login = () =>
+{
     const [name, set_name] = useState("");
-    const { logged_in, login } = useAPI();
     const [email, set_email] = useState("");
     const [password, set_password] = useState("");
     const [error, set_error] = useState("");
 
-    useEffect(() =>
-    {
+    // Get logged_in and login from the context
+    const { logged_in, login } = useAPI();
 
-    }, [logged_in]);
-
+    // This would go in root layout, if the user is logged in, it should just continue as normal
+    // If not logged in, it should route them to the login page
     if (logged_in) return (
-        <>
-            <Stack.Screen options={{ title: 'Tab One' }} />
-            <View style={styles.container}>
-                <ScreenContent path="app/(tabs)/index.tsx" title="Tab One" />
-                <Text>YOU ARE LOGGED IN</Text>
-            </View>
-        </>
+        <Text>YOU ARE LOGGED IN</Text>
     );
 
-  return (
-    <>
-    <Stack.Screen options={{ title: 'Tab One' }} />
-    <View style={styles.container}>
-        <ScreenContent path="app/(tabs)/index.tsx" title="Tab One" />
-        <Text>{error}</Text>
-        <TextInput onChangeText={set_email} placeholder='email' />
-        <TextInput onChangeText={set_password} placeholder='password' />
-        <Button onPress={() => 
-        {
-            login(email, password)
-                .then(() =>
-                {
-                    // Done (should cause reload)
-                })
-                .catch((e: APIError) =>
-                {
-                    set_error(e.message)
-                })
-        }} title='Login' />
-    </View>
-</>
-)
-}
+    // Basic login form, calling login(user,pass) sends a request to the server.
+    // If login is sucessful, the context will have a state change, causing all children to reload
+    // If it is not, e.message is the error message (something like invalid creds or failed to login)
+    return (
+        <>
+            <Text>{error}</Text>
 
-const styles = StyleSheet.create({
-container: {
-flex: 1,
-padding: 24,
-},
-});
+            {/* Input form */}
+            <TextInput onChangeText={set_email} placeholder='email' />
+            <TextInput onChangeText={set_password} placeholder='password' />
+            <Button onPress={() => 
+            {
+                login(email, password)
+                    .catch((e: APIError) =>
+                    {
+                        set_error(e.message)
+                    })
+            }} title='Login' />
+        </>
+    )
+}

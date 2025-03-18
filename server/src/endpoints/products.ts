@@ -99,13 +99,16 @@ export const ep_products_get = auth(async (req: Request, res: Response, user: Us
 
 export const ep_products_delete = auth(async (req: Request, res: Response, user: User) =>
 {
-    try {
+    try
+    {
         // Ensure that the product_id is valid
-        if (!ObjectId.isValid(req.params.product_id) || !await db_product_get_by_id(new ObjectId(req.params.product_id))) {
+        if (!ObjectId.isValid(req.params.product_id) || !await db_product_get_by_id(new ObjectId(req.params.product_id)))
+        {
             std_response(res, HTTP.NOT_FOUND, { error: "product not found" });
             return;
         }
-        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id))) {
+        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
+        {
 
             std_response(res, HTTP.NOT_FOUND, { error: "house not found" });
             return;
@@ -113,19 +116,22 @@ export const ep_products_delete = auth(async (req: Request, res: Response, user:
 
         await db_product_delete_by_product_id(new ObjectId(req.params.product_id));
 
-        std_response(res, HTTP.OK, {message: "success"});
+        std_response(res, HTTP.OK, { message: "success" });
     }
-    catch (e) {
-        std_response(res, HTTP.INTERNAL_SERVER_ERROR, {error: "failed to delete product"});
+    catch (e)
+    {
+        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: "failed to delete product" });
         return;
     }
 })
 
 export const ep_products_patch = auth(async (req: Request, res: Response, user: User) =>
 {
-    try {
+    try
+    {
 
-        if (!ObjectId.isValid(req.params.product_id) || !await db_product_get_by_id(new ObjectId(req.params.product_id))) {
+        if (!ObjectId.isValid(req.params.product_id) || !await db_product_get_by_id(new ObjectId(req.params.product_id)))
+        {
             std_response(res, HTTP.NOT_FOUND, { error: "product not found" });
             return;
         }
@@ -134,16 +140,17 @@ export const ep_products_patch = auth(async (req: Request, res: Response, user: 
 
         if (exists(req.body, "upc") && req.body.upc?.length <= 64) product.upc = req.body.upc;
         if (exists(req.body, "name") && req.body.name?.length <= 64) product.name = req.body.name;
-        if (exists(req.body, "use_by") && req.body.use_by?.length <= 32) product.use_by = req.body.use_by;
+        if (exists(req.body, "use_by") && req.body.use_by?.length <= 32) product.use_by = new Date(req.body.use_by);
         if (exists(req.body, "frozen")) product.frozen = !!req.body.frozen;
         if (!isNaN(req.body.quantity)) product.quantity = req.body.quantity;
         if (tg_is_availability(req.body.availability)) product.availability = req.body.availability;
 
         await db_product_patch(new ObjectId(req.params.product_id), product);
-        std_response(res, HTTP.OK, {message: "success"});
+        std_response(res, HTTP.OK, { message: "success" });
     }
-    catch (e) {
-        std_response(res, HTTP.INTERNAL_SERVER_ERROR, {error: "failed to update product"});
+    catch (e)
+    {
+        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: "failed to update product" });
         return;
     }
 })
