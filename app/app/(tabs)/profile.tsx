@@ -9,11 +9,11 @@ export default function Profile()
 
 
     return (
-            <View>
+        <View>
             <Text>
                 profile page
             </Text>
-            </View>
+        </View>
     )
 }
 
