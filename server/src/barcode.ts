@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import path from "path";
+import { std_response } from "./util/standard_response";
 dotenv.config({ path: path.join(__dirname, "../.env") });
 
 const client = new OpenAI({
@@ -61,5 +62,3 @@ export const barcode = async (p_barcode: string): Promise<{ name?: string; image
         throw error;
     }
 };
-
-barcode("5010003065604").then(console.log);
