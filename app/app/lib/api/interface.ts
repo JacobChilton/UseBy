@@ -73,7 +73,7 @@ export const user_get = async (p_token: string, p_id: UserID): Promise<Omit<User
         else
         {
             console.error(e);
-            throw new APIError("Failed to create house")
+            throw new APIError("Failed to get user")
         }
     }
 }
@@ -278,7 +278,7 @@ export const house_product_delete = async (p_token: string, p_house: HouseID, p_
         else
         {
             console.error(e);
-            throw new APIError("Failed to delete product from house")
+            throw new APIError("Failed to delete product")
         }
     }
 }
@@ -298,7 +298,30 @@ export const house_product_update = async (p_token: string, p_house: HouseID, p_
         else
         {
             console.error(e);
-            throw new APIError("Failed to delete product from house")
+            throw new APIError("Failed to update product")
+        }
+    }
+}
+
+// Update a product in house
+export const barcode_fetch = async (p_token: string, p_barcode: string): Promise<{ name: string, image: string } | undefined> =>
+{
+    try
+    {
+        const { ok, json } = await call_auth(p_token, "/barcode?barcode=" + p_barcode, "GET");
+
+        if (!ok) throw new APIError(json.message || json.error || "Unknown error");
+        if (!json.name || !json.image) throw new APIError("No data found");
+
+        else return json as { name: string, image: string };
+    }
+    catch (e)
+    {
+        if (e instanceof APIError) throw e;
+        else
+        {
+            console.error(e);
+            throw new APIError("Failed to fetch barcode data")
         }
     }
 }
