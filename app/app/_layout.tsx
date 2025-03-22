@@ -2,6 +2,9 @@ import '../global.css';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import APIProvider, { useAPI } from './components/APIProvider'; // Adjust path as necessary
+import * as React from 'react';
+
+
 
 function RootLayoutNav() {
   const router = useRouter();
@@ -22,6 +25,7 @@ function RootLayoutNav() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="signup" options={{ headerShown: false }} />
     </Stack>
   );
 }
