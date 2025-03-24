@@ -30,23 +30,29 @@ export default function MyFood() {
       <View className="flex-1 p-10 pt-28">
         <Text>myFood</Text>
 
-        {/* Display added items */}
         <View className="mt-4">
-          {items.map((item, index) => (
-            <TouchableOpacity 
-              key={index}
-              style={{
-                backgroundColor: '#f0f0f0',
-                padding: 10,
-                marginVertical: 5,
-                borderRadius: 5,
-              }}
-              onPress={() => console.log(`Touched ${item}`)} 
-            >
-              <Text>{item}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+  {items.map((item, index) => (
+    <TouchableOpacity 
+      key={index}
+      style={{
+        backgroundColor: '#6F4AAA',
+        padding: 10,
+        marginVertical: 5,
+        borderRadius: 20,
+      }}
+      onPress={() => console.log(`Touched ${item}`)}
+    >
+      <Text 
+        style={{ 
+          color: 'white',
+          paddingLeft: 5 
+        }}
+      >
+        {item}
+      </Text>
+    </TouchableOpacity>
+  ))}
+</View>
 
         <Portal>
           <Modal
