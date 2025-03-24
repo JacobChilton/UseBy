@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
-import { debounce } from "ts-debounce";
 
 export default function MyFood() {
   const customTheme = {
