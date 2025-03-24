@@ -24,7 +24,7 @@ const call_auth = async (p_token: string, p_path: string, p_method: "DELETE" | "
     const response = await fetch(API_URL_BASE + p_path,
         {
             method: p_method,
-            body: JSON.stringify(p_body || {}),
+            body: p_body ? JSON.stringify(p_body) : undefined,
             headers: {
                 "Content-Type": "application/json",
                 "authorization": "Bearer " + p_token
@@ -37,14 +37,14 @@ const call_auth = async (p_token: string, p_path: string, p_method: "DELETE" | "
 }
 
 // Create a new user
-export const user_create = async (p_email: string, p_password: string): Promise<UserID> =>
+export const user_create = async (p_email: string, p_password: string, p_name: string): Promise<UserID> =>
 {
     try
     {
-        const { json } = await call("/users", "POST", { email: p_email, password: p_password });
+        const { json } = await call("/users", "POST", { email: p_email, password: p_password, name: p_name });
 
         if (json.user_id) return json.user_id as UserID;
-        else throw new APIError(json.message || json.error || "Unknown error")
+        else throw new APIError(json.message || json.error || "Unknown error");
     }
     catch (e)
     {
@@ -52,7 +52,7 @@ export const user_create = async (p_email: string, p_password: string): Promise<
         else
         {
             console.error(e);
-            throw new APIError("Failed to create user")
+            throw new APIError("Failed to create user");
         }
     }
 }
@@ -78,6 +78,27 @@ export const user_get = async (p_token: string, p_id: UserID): Promise<Omit<User
     }
 }
 
+// Returns the user
+export const profile_get = async (p_token: string): Promise<Omit<User, "password">> =>
+{
+    try
+    {
+        console.log({ p_token })
+        const { json, ok } = await call_auth(p_token, "/profile", "GET");
+
+        if (ok) return json as Omit<User, "password">;
+        else throw new APIError(json.message || json.error || "Unknown error")
+    }
+    catch (e)
+    {
+        if (e instanceof APIError) throw e;
+        else
+        {
+            console.error(e);
+            throw new APIError("Failed to get user profile")
+        }
+    }
+}
 
 export const login = async (p_email: string, p_password: string): Promise<string> =>
 {

@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { APIError } from '../lib/api/APIError';
-import { barcode_fetch, house_create, house_delete, house_get_all, house_member_add, house_member_remove, house_product_add, house_product_delete, house_product_get_all, house_product_update, house_update_name, login, user_create, user_get } from '../lib/api/interface';
+import { barcode_fetch, house_create, house_delete, house_get_all, house_member_add, house_member_remove, house_product_add, house_product_delete, house_product_get_all, house_product_update, house_update_name, login, profile_get, user_create, user_get } from '../lib/api/interface';
 import { House, HouseID, Product, ProductID, User, UserID } from '../lib/api/APITypes';
 
 // temp
@@ -10,9 +10,11 @@ interface APIProviderInterface
 {
     logged_in: boolean,
     // Create a new user
-    user_create: (p_email: string, p_password: string) => Promise<UserID>;
+    user_create: (p_email: string, p_password: string, p_name: string) => Promise<UserID>;
     // Returns the user
     user_get: (p_id: UserID) => Promise<Omit<User, "password" | "email">>;
+    // Returns logged in user profile
+    profile_get: () => Promise<Omit<User, | "password">>;
     // Logs in a user and returns a token
     login: (p_email: string, p_password: string) => Promise<void>;
     // Logs out the current user
@@ -72,8 +74,9 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) =>
             set_token(response);
         }, []),
         logout: useCallback(() => set_token(""), []),
-        user_create: useCallback((p_email: string, p_password: string) => user_create(p_email, p_password), []),
+        user_create: useCallback((p_email: string, p_password: string, p_name: string) => user_create(p_email, p_password, p_name), []),
         user_get: useCallback((p_id: UserID) => user_get(token, p_id), [token]),
+        profile_get: useCallback(() => profile_get(token), [token]),
         house_create: useCallback((p_name: string) => house_create(token, p_name), [token]),
         house_get_all: useCallback(() => house_get_all(token), [token]),
         house_delete: useCallback((p_house: HouseID) => house_delete(token, p_house), [token]),

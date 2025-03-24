@@ -27,7 +27,7 @@ const Signup: React.FC = () =>
     {
         try
         {
-            await user_create(email, password);
+            await user_create(email, password, name);
             await login(email, password);
         }
         catch (e)
