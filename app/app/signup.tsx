@@ -49,7 +49,6 @@ const Signup: React.FC = () =>
     return (
         <PaperProvider theme={customTheme}>
             <View className="flex-1 justify-center items-around p-8">
-                <Text>{error}</Text>
 
                 <Text
                     variant="displayLarge"
@@ -82,6 +81,8 @@ const Signup: React.FC = () =>
                     mode="outlined"
                     style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
                 />
+                <Text>
+                {error}</Text>
                 <Button
                     icon="arrow-right"
                     mode="contained"
