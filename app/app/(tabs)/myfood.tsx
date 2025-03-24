@@ -2,6 +2,8 @@ import { Stack } from 'expo-router';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
+import { useAPI } from '../components/APIProvider';
+import { debounce } from "ts-debounce";
 
 export default function MyFood() {
   const customTheme = {
@@ -15,7 +17,10 @@ export default function MyFood() {
 
   const [addItemModalVisible, setAddItemModalVisible] = useState(false);
   const [itemName, setItemName] = useState('');
+  const [barcode, setBarcode] = useState("");
   const [items, setItems] = useState([]);
+
+  const api = useAPI();
 
   const handleAddItem = () => {
     if (itemName.trim()) { 
@@ -24,6 +29,25 @@ export default function MyFood() {
       setAddItemModalVisible(false);
     }
   };
+
+
+    //5060088700815
+
+
+    function barcodeLookup() {
+
+      console.log(barcode);
+
+      (api.barcode_fetch(barcode)).then((productData) => {
+  
+      if (productData) {
+  
+        setItemName(productData.name);
+      }
+      });
+    }
+
+
 
   return (
     <PaperProvider theme={customTheme}>
@@ -65,6 +89,22 @@ export default function MyFood() {
               borderRadius: 8,
             }}
           >
+            <Text style={{ fontSize: 18, marginBottom: 20 }}>Barcode</Text>
+            <TextInput
+              placeholder='Enter barcode number'
+              mode="outlined"
+              style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+              value={barcode}
+              onChangeText={setBarcode} // Update itemName state as user types
+            />
+            <Button 
+                mode="contained"
+                onPress={barcodeLookup} // Call handler to add item
+                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+              >
+                Lookup Item
+              </Button>
+
             <Text style={{ fontSize: 18, marginBottom: 20 }}>Product Name</Text>
             <TextInput
               placeholder='Enter item name'
