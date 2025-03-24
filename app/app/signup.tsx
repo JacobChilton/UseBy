@@ -22,6 +22,20 @@ const Signup: React.FC = () =>
     // Get logged_in and login from the context
     const { logged_in, user_create, login } = useAPI();
 
+    const try_signup = async () =>
+    {
+        try
+        {
+            await user_create(email, password);
+            await login(email, password);
+        }
+        catch (e)
+        {
+            if (e instanceof APIError) set_error(e.message);
+            else console.error(e);
+        }
+    }
+
     // This would go in root layout, if the user is logged in, it should just continue as normal
     // If not logged in, it should route them to the login page
     if (logged_in) return (
@@ -77,19 +91,7 @@ const Signup: React.FC = () =>
                         alignSelf: 'flex-end',
                         marginTop: 20,
                     }}
-                    onPress={() => 
-                    {
-                        user_create(email, password)
-                            .then(() =>
-                            {
-                                login(email, password)
-                                    .catch((e) => set_error(e.message))
-                            })
-                            .catch((e: APIError) =>
-                            {
-                                set_error(e.message)
-                            })
-                    }} > Sign Up </Button>
+                    onPress={try_signup}> Sign Up </Button>
 
             </View>
         </PaperProvider>
