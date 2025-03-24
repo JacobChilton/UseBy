@@ -27,6 +27,7 @@ function RootLayoutNav()
 
     if (logged_in) return (
         <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
     )
 
