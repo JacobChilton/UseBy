@@ -5,51 +5,54 @@ import { ep_house_delete, ep_house_get_for_user, ep_house_member_add, ep_house_m
 import { ep_products_delete, ep_products_get, ep_products_patch, ep_products_post } from "./endpoints/products";
 import { ep_barcode } from "./endpoints/barcode";
 import cors from "cors"
+import { ep_profile_get } from "./endpoints/profile";
 
 const server = express();
 
 // Parse the body of contenttype application/json
 server.use(json());
-server.use(cors())
+server.use(cors());
 
 
 //////////
 // AUTH //
 //////////
 
-server.post("/auth/login", ep_login_post)
+server.post("/auth/login", ep_login_post);
 
 ///////////
 // USERS //
 ///////////
 
 // Get user
-server.get("/users/:id", ep_users_get)
+server.get("/users/:id", ep_users_get);
 
 // Create new user
-server.post("/users", ep_users_post)
+server.post("/users", ep_users_post);
+
+server.get("/profile", ep_profile_get)
 
 ////////////
 // HOUSES //
 ////////////
 
 // Create new house
-server.post("/houses", ep_houses_post)
-server.get("/houses", ep_house_get_for_user)
-server.delete("/houses/:house_id", ep_house_delete)
-server.patch("/houses/:house_id", ep_house_patch)
-server.post("/houses/:house_id/members", ep_house_member_add)
-server.delete("/houses/:house_id/members/:user_id", ep_house_member_remove)
+server.post("/houses", ep_houses_post);
+server.get("/houses", ep_house_get_for_user);
+server.delete("/houses/:house_id", ep_house_delete);
+server.patch("/houses/:house_id", ep_house_patch);
+server.post("/houses/:house_id/members", ep_house_member_add);
+server.delete("/houses/:house_id/members/:user_id", ep_house_member_remove);
 
 //////////////
 // PRODUCTS //
 //////////////
 
 // Create new product in house
-server.post("/houses/:house_id/products", ep_products_post)
-server.get("/houses/:house_id/products", ep_products_get)
-server.delete("/houses/:house_id/products/:product_id", ep_products_delete)
-server.patch("/houses/:house_id/products/:product_id", ep_products_patch)
+server.post("/houses/:house_id/products", ep_products_post);
+server.get("/houses/:house_id/products", ep_products_get);
+server.delete("/houses/:house_id/products/:product_id", ep_products_delete);
+server.patch("/houses/:house_id/products/:product_id", ep_products_patch);
 
 //////////////
 // BARCODE //

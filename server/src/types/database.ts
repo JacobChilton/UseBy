@@ -15,7 +15,8 @@ export interface User
 {
     _id: UserID,
     email: string,
-    password: string
+    password: string,
+    name: string
 }
 
 export interface Product

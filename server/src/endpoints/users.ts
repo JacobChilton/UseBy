@@ -21,7 +21,7 @@ export const ep_users_get = (req: Request, res: Response) =>
             if (user)
             {
 
-                std_response(res, HTTP.OK, { id: user._id, email: user.email });
+                std_response(res, HTTP.OK, { id: user._id, name: user.name });
             }
             else
             {
@@ -38,7 +38,7 @@ export const ep_users_get = (req: Request, res: Response) =>
 export const ep_users_post = async (req: Request, res: Response) =>
 {
     // Ensure that required params exist
-    if (!exists(req.body, "password", "email"))
+    if (!exists(req.body, "password", "email", "name"))
     {
         std_response(res, HTTP.BAD_REQUEST, { message: "missing params" });
         return;
@@ -60,7 +60,8 @@ export const ep_users_post = async (req: Request, res: Response) =>
         const user: Omit<User, "_id"> =
         {
             email: req.body.email,
-            password: hash
+            password: hash,
+            name: req.body.name
         };
 
         // Insert the user into the database

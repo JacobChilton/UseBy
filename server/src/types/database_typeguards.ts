@@ -11,7 +11,8 @@ export const tg_is_user = (p_obj: any): p_obj is User =>
     return p_obj &&
         p_obj._id instanceof ObjectId &&
         typeof p_obj.email === "string" &&
-        typeof p_obj.password === "string";
+        typeof p_obj.password === "string" &&
+        typeof p_obj.name === "string";
 }
 
 export const tg_is_product = (p_obj: any): p_obj is Product =>
