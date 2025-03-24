@@ -3,6 +3,7 @@ import { useAPI } from './components/APIProvider';
 import { useEffect, useState } from 'react';
 import { APIError } from './lib/api/APIError';
 import { TextInput, Button, DefaultTheme, PaperProvider, Text } from 'react-native-paper';
+import { Link } from 'expo-router';
 
 const customTheme = {
     ...DefaultTheme,
@@ -48,7 +49,6 @@ const Signup: React.FC = () =>
     return (
         <PaperProvider theme={customTheme}>
             <View className="flex-1 justify-center items-around p-8">
-                <Text>{error}</Text>
 
                 <Text
                     variant="displayLarge"
@@ -81,6 +81,8 @@ const Signup: React.FC = () =>
                     mode="outlined"
                     style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
                 />
+                <Text>
+                {error}</Text>
                 <Button
                     icon="arrow-right"
                     mode="contained"
@@ -92,6 +94,23 @@ const Signup: React.FC = () =>
                         marginTop: 20,
                     }}
                     onPress={try_signup}> Sign Up </Button>
+
+                    <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'flex-end' }}>
+                        <Text style={{ fontSize: 16 }}>
+                            Already have an account?{" "}
+                        </Text>
+                        <Link href="/login" asChild>
+                            <Text
+                            style={{
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                color: DefaultTheme.colors.primary, 
+                            }}
+                            >
+                            Log In
+                            </Text>
+                        </Link>
+                    </View>
 
             </View>
         </PaperProvider>
