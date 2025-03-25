@@ -33,7 +33,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-vision-camera": "^4.6.4",
     "react-native-web": "~0.19.10",
-    "vision-camera-code-scanner": "^0.2.0"
+    "vision-camera-code-scanner": "^0.2.0",
+    "expo-camera": "~16.0.18"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

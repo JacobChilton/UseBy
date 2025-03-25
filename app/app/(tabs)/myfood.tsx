@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
+import Camera from '~/components/Camera';
 
 export default function MyFood() {
   const customTheme = {
@@ -96,6 +97,7 @@ export default function MyFood() {
               value={barcode}
               onChangeText={setBarcode} // Update itemName state as user types
             />
+            <Camera />
             <Button 
                 mode="contained"
                 onPress={barcodeLookup} // Call handler to add item
@@ -151,6 +153,7 @@ export default function MyFood() {
             Add Item
           </Button>
         </View>
+
       </View>
     </PaperProvider>
   );
