@@ -50,6 +50,7 @@ const Login: React.FC = () =>
                 <TextInput
                     onChangeText={set_password}
                     placeholder='Enter your password'
+                    secureTextEntry={true}
                     left={<TextInput.Icon icon="lock" />}
                     mode="outlined"
                     style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
