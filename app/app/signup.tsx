@@ -18,6 +18,7 @@ const Signup: React.FC = () =>
     const [name, set_name] = useState("");
     const [email, set_email] = useState("");
     const [password, set_password] = useState("");
+    const [password_check, set_password_check] = useState("");
     const [error, set_error] = useState("");
 
     // Get logged_in and login from the context
@@ -26,7 +27,12 @@ const Signup: React.FC = () =>
     const try_signup = async () =>
     {
         try
-        {
+        {  
+            if (password != password_check) {
+
+                throw set_error("Passwords do not match");
+            }
+
             await user_create(email, password, name);
             await login(email, password);
         }
@@ -62,14 +68,14 @@ const Signup: React.FC = () =>
                 {/* Input form */}
                 <TextInput
                     onChangeText={set_name}
-                    placeholder='Enter your name'
+                    placeholder='Enter your username'
                     left={<TextInput.Icon icon="user" />}
                     mode="outlined"
                     style={{ backgroundColor: 'transparent', width: '100%' }}
                 />
                 <TextInput
                     onChangeText={set_email}
-                    placeholder='Enter your Email'
+                    placeholder='Enter your email'
                     left={<TextInput.Icon icon="email" />}
                     mode="outlined"
                     style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
@@ -77,6 +83,13 @@ const Signup: React.FC = () =>
                 <TextInput
                     onChangeText={set_password}
                     placeholder='Enter your password'
+                    left={<TextInput.Icon icon="lock" />}
+                    mode="outlined"
+                    style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
+                />
+                <TextInput
+                    onChangeText={set_password_check}
+                    placeholder='Re-enter your password'
                     left={<TextInput.Icon icon="lock" />}
                     mode="outlined"
                     style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
