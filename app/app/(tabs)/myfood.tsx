@@ -3,7 +3,8 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
-import Camera from '~/components/Camera';
+import BarcodeScanner from '~/components/BarcodeScanner';
+
 
 export default function MyFood() {
   const customTheme = {
@@ -105,7 +106,7 @@ export default function MyFood() {
             />
 
             <div className={cameraActive ? "" : "hidden"}>
-              <Camera/>
+              <BarcodeScanner />
             </div>
             
 
