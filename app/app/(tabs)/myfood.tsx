@@ -19,6 +19,7 @@ export default function MyFood() {
   const [itemName, setItemName] = useState('');
   const [barcode, setBarcode] = useState("");
   const [items, setItems] = useState([]);
+  const [cameraActive, setCameraActive] = useState(false);
 
   const api = useAPI();
 
@@ -45,6 +46,11 @@ export default function MyFood() {
         setItemName(productData.name);
       }
       });
+    }
+
+    function scanBarcode() {
+
+      setCameraActive(!cameraActive);
     }
 
 
@@ -97,14 +103,33 @@ export default function MyFood() {
               value={barcode}
               onChangeText={setBarcode} // Update itemName state as user types
             />
-            <Camera />
-            <Button 
+
+            <div className={cameraActive ? "" : "hidden"}>
+              <Camera/>
+            </div>
+            
+
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 20,
+            }}>
+              <Button 
                 mode="contained"
                 onPress={barcodeLookup} // Call handler to add item
                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
               >
                 Lookup Item
               </Button>
+
+              <Button 
+                mode="contained"
+                onPress={scanBarcode} // Call handler to add item
+                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+              >
+                Scan Barcode
+              </Button>
+            </View>
 
             <Text style={{ fontSize: 18, marginBottom: 20 }}>Product Name</Text>
             <TextInput
