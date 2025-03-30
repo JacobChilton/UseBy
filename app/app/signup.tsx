@@ -27,8 +27,9 @@ const Signup: React.FC = () =>
     const try_signup = async () =>
     {
         try
-        {  
-            if (password != password_check) {
+        {
+            if (password != password_check)
+            {
 
                 throw set_error("Passwords do not match");
             }
@@ -97,7 +98,7 @@ const Signup: React.FC = () =>
                     style={{ backgroundColor: 'transparent', width: '100%', marginTop: 20 }}
                 />
                 <Text>
-                {error}</Text>
+                    {error}</Text>
                 <Button
                     icon="arrow-right"
                     mode="contained"
@@ -110,22 +111,22 @@ const Signup: React.FC = () =>
                     }}
                     onPress={try_signup}> Sign Up </Button>
 
-                    <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'flex-end' }}>
-                        <Text style={{ fontSize: 16 }}>
-                            Already have an account?{" "}
-                        </Text>
-                        <Link href="/login" asChild>
-                            <Text
+                <View style={{ flexDirection: 'row', marginTop: 20, alignSelf: 'flex-end' }}>
+                    <Text style={{ fontSize: 16 }}>
+                        Already have an account?{" "}
+                    </Text>
+                    <Link href="/login" asChild>
+                        <Text
                             style={{
                                 fontSize: 16,
                                 fontWeight: 'bold',
-                                color: DefaultTheme.colors.primary, 
+                                color: DefaultTheme.colors.primary,
                             }}
-                            >
+                        >
                             Log In
-                            </Text>
-                        </Link>
-                    </View>
+                        </Text>
+                    </Link>
+                </View>
 
             </View>
         </PaperProvider>

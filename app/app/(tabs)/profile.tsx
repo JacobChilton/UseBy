@@ -4,6 +4,7 @@ import APIProvider, { useAPI } from '../components/APIProvider';
 import { Button, IconButton, Avatar, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import { User } from '../lib/api/APITypes';
+import { Image } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
 
 
 const customTheme = {
@@ -21,13 +22,28 @@ export default function Profile()
     const [supportModalVisible, setSupportModalVisible] = useState(false);
 
     const [user, set_user] = useState<Omit<User, "password">>();
+    const [img, set_img] = useState("");
 
     const api = useAPI();
 
     useEffect(() =>
     {
-        api.profile_get().then(set_user)
-            .catch(console.log);
+        api.profile_get().then((u) =>
+        {
+            console.log(u)
+            set_user(u);
+            if (u.picture)
+            {
+                api.picture_get(u.picture)
+                    .then((i) =>
+                    {
+                        console.log(i)
+                        if (i) set_img(i)
+                    })
+                    .catch(console.error)
+            }
+        }).catch(console.error);
+
     }, [])
 
     if (!user) return <Text>Loading</Text>;
@@ -73,7 +89,12 @@ export default function Profile()
                     </Modal>
                 </Portal>
 
-                <Avatar.Icon size={120} icon="account" />
+                {
+                    img ? <Avatar.Image size={120} source={{ uri: img }} />
+                        :
+                        <Avatar.Icon size={120} icon="account" />
+                }
+
 
                 <View className="h-12 w-80 flex-row items-center mt-16 border-2 border-gray-400 rounded-3xl">
                     <IconButton

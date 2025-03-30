@@ -324,7 +324,7 @@ export const house_product_update = async (p_token: string, p_house: HouseID, p_
     }
 }
 
-// Update a product in house
+// Get info from barcode
 export const barcode_fetch = async (p_token: string, p_barcode: string): Promise<{ name: string, image: string } | undefined> =>
 {
     try
@@ -335,6 +335,28 @@ export const barcode_fetch = async (p_token: string, p_barcode: string): Promise
         if (!json.name || !json.image) throw new APIError("No data found");
 
         else return json as { name: string, image: string };
+    }
+    catch (e)
+    {
+        if (e instanceof APIError) throw e;
+        else
+        {
+            console.error(e);
+            throw new APIError("Failed to fetch barcode data")
+        }
+    }
+}
+
+// Get b64 img from id
+export const picture_get = async (p_id: string): Promise<string | undefined> =>
+{
+    try
+    {
+        const res = await fetch(API_URL_BASE + "/images/" + p_id, { method: "GET" });
+
+        if (!res.ok) throw new APIError("Unknown error");
+
+        else return res.text();
     }
     catch (e)
     {

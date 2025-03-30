@@ -9,11 +9,11 @@ export default function Home()
 
 
     return (
-            <View>
-                <Text>
-                    Yes nav
-                </Text>
-            </View>
+        <View>
+            <Text>
+                Yes nav
+            </Text>
+        </View>
     )
 }
 

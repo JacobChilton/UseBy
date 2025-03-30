@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { APIError } from '../lib/api/APIError';
-import { barcode_fetch, house_create, house_delete, house_get_all, house_member_add, house_member_remove, house_product_add, house_product_delete, house_product_get_all, house_product_update, house_update_name, login, profile_get, user_create, user_get } from '../lib/api/interface';
+import { barcode_fetch, house_create, house_delete, house_get_all, house_member_add, house_member_remove, house_product_add, house_product_delete, house_product_get_all, house_product_update, house_update_name, login, picture_get, profile_get, user_create, user_get } from '../lib/api/interface';
 import { House, HouseID, Product, ProductID, User, UserID } from '../lib/api/APITypes';
 
 // temp
@@ -41,6 +41,8 @@ interface APIProviderInterface
     house_product_update: (p_house: HouseID, p_product: ProductID, p_updates: Partial<Omit<Product, "_id" | "owner_id" | "house_id">>) => Promise<void>;
     // Get name and image from barcode
     barcode_fetch: (p_barcode: string) => Promise<{ name: string, image: string } | undefined>
+    // Get image by id
+    picture_get: (p_id: string) => Promise<string | undefined>;
 }
 
 const context = createContext<APIProviderInterface | null>(null)
@@ -88,6 +90,7 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) =>
         house_product_delete: useCallback((p_house: HouseID, p_product: ProductID) => house_product_delete(token, p_house, p_product), [token]),
         house_product_update: useCallback((p_house: HouseID, p_product: ProductID, p_updates: Partial<Omit<Product, "_id" | "owner_id" | "house_id">>) => house_product_update(token, p_house, p_product, p_updates), [token]),
         barcode_fetch: useCallback((p_barcode: string) => barcode_fetch(token, p_barcode), [token]),
+        picture_get: useCallback((p_id: string) => picture_get(p_id), []),
     }
 
     return (

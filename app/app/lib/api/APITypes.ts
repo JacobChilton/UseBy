@@ -1,6 +1,7 @@
 export type UserID = string;
 export type HouseID = string;
 export type ProductID = string;
+export type PictureID = string;
 
 export enum Availability
 {
@@ -14,7 +15,8 @@ export interface User
     _id: UserID,
     email: string,
     password: string,
-    name: string
+    name: string,
+    picture?: PictureID
 }
 
 export interface Product
