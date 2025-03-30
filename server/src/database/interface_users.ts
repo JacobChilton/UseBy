@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
-import type { User, UserID } from "../types/database";
+import type { PictureID, User, UserID } from "../types/database";
 import { db_con } from "./connection"
-import { DB_COLLECTION_USERS } from "./info";
+import { DB_COLLECTION_PICTURES, DB_COLLECTION_USERS } from "./info";
 import { tg_is_user } from "../types/database_typeguards";
 
 // For now this just directly returns the promise, in the future
@@ -64,3 +64,29 @@ export const db_user_get_by_email = async (p_email: string): Promise<User | unde
         throw new Error("Failed to retrieve user");
     }
 }
+
+// Sets user img id, deletes old one if it exists
+export const db_user_patch_picture = async (p_user: User, p_picture: PictureID): Promise<void> =>
+{
+    try
+    {
+        // Delete old if it exists
+        if (p_user.picture)
+        {
+            await db_con.collection(DB_COLLECTION_PICTURES).deleteOne({ _id: p_user.picture });
+        }
+
+        const update =
+        {
+            $set: { picture: p_picture }
+        }
+
+        await db_con.collection(DB_COLLECTION_USERS).updateOne({ _id: p_user._id }, update);
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("Failed to update user picture");
+    }
+}
+

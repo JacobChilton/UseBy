@@ -3,6 +3,7 @@ import type { ObjectId } from "mongodb";
 export type UserID = ObjectId;
 export type HouseID = ObjectId;
 export type ProductID = ObjectId;
+export type PictureID = ObjectId;
 
 export enum Availability
 {
@@ -16,7 +17,8 @@ export interface User
     _id: UserID,
     email: string,
     password: string,
-    name: string
+    name: string,
+    picture?: PictureID
 }
 
 export interface Product
@@ -38,4 +40,10 @@ export interface House
     name: string
     owner_id: UserID,
     members: Array<UserID>
+}
+
+export interface Picture
+{
+    _id: PictureID,
+    b64: string
 }

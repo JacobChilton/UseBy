@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Availability, House, Product, User } from "./database";
+import { Availability, House, Picture, Product, User } from "./database";
 
 // These will be quite explicit, as i do not trust
 // mongo
@@ -40,4 +40,11 @@ export const tg_is_house = (p_obj: any): p_obj is House =>
 export const tg_is_availability = (p_obj: any): p_obj is Availability =>
 {
     return Object.keys(Availability).includes(p_obj)
+}
+
+export const tg_is_picture = (p_obj: any): p_obj is Picture =>
+{
+    return p_obj &&
+        p_obj._id instanceof ObjectId &&
+        typeof p_obj.b64 === "string"
 }
