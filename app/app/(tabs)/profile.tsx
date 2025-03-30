@@ -129,6 +129,7 @@ export default function Profile()
                         mode="contained"
                         className="h-12 w-80 flex-row items-center rounded-3xl justify-center"
                         labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
+                        onPress={() => api.logout()}
                     >
                         LOGOUT
                     </Button>
