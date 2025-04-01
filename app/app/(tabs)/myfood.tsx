@@ -26,6 +26,7 @@ export default function MyFood()
     const [useByDate, setUseByDate] = useState("");
     const [quantity, setQuantity] = useState("1");
     const [availability, setAvailability] = useState(Availability.PRIVATE);
+    const [freeze, setFreeze] = useState(false);
     const [cameraActive, setCameraActive] = useState(false);
 
     const api = useAPI();
@@ -216,7 +217,6 @@ export default function MyFood()
                             </View>
 
                             <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability: {availability}</Text>
-                            
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
@@ -253,6 +253,24 @@ export default function MyFood()
                                 </Button>
                             </View>
 
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Frozen: {freeze.toString()}</Text>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 20
+                            }}>
+
+                                <Button
+                                    mode="contained"
+                                    onPress={() => {
+                                        setFreeze(!freeze);
+                                    }} // Call handler to set frozen status
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    Freeze
+                                </Button>
+                            </View>
+
                             <View style={{
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
@@ -265,8 +283,6 @@ export default function MyFood()
                                 >
                                     List Item
                                 </Button>
-
-                                
                             </View>
 
                         </ScrollView>
