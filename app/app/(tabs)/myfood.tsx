@@ -212,14 +212,8 @@ export default function MyFood()
                             </Button>
                         </View>
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability</Text>
-                        <TextInput
-                            placeholder='Enter availability'
-                            mode="outlined"
-                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={availability}
-                            onChangeText={setAvailability} // Update availability
-                        />
+                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability: {availability}</Text>
+                        
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
@@ -228,7 +222,7 @@ export default function MyFood()
                             <Button
                                 mode="contained"
                                 onPress={() => {
-                                    setAvailability("Private");
+                                    setAvailability(Availability.PRIVATE);
                                 }} // Call handler to set availability to private
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                             >
@@ -238,7 +232,7 @@ export default function MyFood()
                             <Button
                                 mode="contained"
                                 onPress={() => {
-                                    setAvailability("Communal");
+                                    setAvailability(Availability.COMMUNAL);
                                 }} // Call handler to set availability to communal
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                             >
@@ -248,7 +242,7 @@ export default function MyFood()
                             <Button
                                 mode="contained"
                                 onPress={() => {
-                                    setAvailability("Up For Grabs");
+                                    setAvailability(Availability.UP_FOR_GRABS);
                                 }} // Call handler to set availability to up for grabs
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                             >
