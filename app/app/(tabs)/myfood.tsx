@@ -5,6 +5,7 @@ import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Tex
 import { useAPI } from '../components/APIProvider';
 import BarcodeScanner from '~/components/BarcodeScanner';
 import ItemList from '~/components/ItemList';
+import { Availability, Product } from '../lib/api/APITypes';
 
 
 export default function MyFood()
@@ -23,6 +24,8 @@ export default function MyFood()
     const [barcode, setBarcode] = useState("");
     const [items, setItems] = useState<Array<string>>([]);
     const [useByDate, setUseByDate] = useState("");
+    const [quantity, setQuantity] = useState("1");
+    const [availability, setAvailability] = useState("");
     const [cameraActive, setCameraActive] = useState(false);
 
     const api = useAPI();
@@ -31,6 +34,19 @@ export default function MyFood()
     {
         if (itemName.trim())
         {
+            const product:Omit<Product, "_id" | "owner_id" | "house_id"> = {
+                name: "product test",
+                upc: "01787481",
+                use_by: new Date(2025, 4, 7),
+                quantity: 1,
+                availability: Availability.UP_FOR_GRABS,
+                frozen: false
+            }
+            
+
+            api.house_product_add("67ebf33bc50778b4c4b6c531", product);
+
+
             setItems([...items, itemName]);
             setItemName('');
             setAddItemModalVisible(false);
@@ -53,6 +69,20 @@ export default function MyFood()
     function scanBarcode()
     {
         setCameraActive(!cameraActive);
+    }
+
+    function incrementQuantity() {
+
+        setQuantity(String(Number(quantity) + 1));
+    }
+
+    function decrementQuantity() {
+
+        if (Number(quantity) === 1) {
+            return;
+        }
+
+        setQuantity(String(Number(quantity) - 1));
     }
 
     return (
@@ -80,8 +110,6 @@ export default function MyFood()
                             justifyContent: 'space-between',
                             marginBottom: 20
                         }}>
-                            
-
                             <Text style={{ fontSize: 36}}>Add Item</Text>
                             <Button
                                     mode="contained"
@@ -94,7 +122,6 @@ export default function MyFood()
                                 >
                                     Close
                             </Button>
-
                         </View>
 
 
@@ -152,6 +179,82 @@ export default function MyFood()
                             value={useByDate}
                             onChangeText={setUseByDate} // Update use by date
                         />
+
+                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
+                        <TextInput
+                            placeholder='1'
+                            defaultValue='1'
+                            mode="outlined"
+                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                            value={quantity}
+                            onChangeText={setQuantity} // Update quantity
+                        />
+
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: 20
+                        }}>
+                            <Button
+                                mode="contained"
+                                onPress={decrementQuantity} // Call handler to scan barcode
+                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                            >
+                                -
+                            </Button>
+
+                            <Button
+                                mode="contained"
+                                onPress={incrementQuantity} // Call handler to look up barcode
+                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                            >
+                                +
+                            </Button>
+                        </View>
+
+                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability</Text>
+                        <TextInput
+                            placeholder='Enter availability'
+                            mode="outlined"
+                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                            value={availability}
+                            onChangeText={setAvailability} // Update availability
+                        />
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: 20
+                        }}>
+                            <Button
+                                mode="contained"
+                                onPress={() => {
+                                    setAvailability("Private");
+                                }} // Call handler to set availability to private
+                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                            >
+                                Private
+                            </Button>
+
+                            <Button
+                                mode="contained"
+                                onPress={() => {
+                                    setAvailability("Communal");
+                                }} // Call handler to set availability to communal
+                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                            >
+                                Communal
+                            </Button>
+
+                            <Button
+                                mode="contained"
+                                onPress={() => {
+                                    setAvailability("Up For Grabs");
+                                }} // Call handler to set availability to up for grabs
+                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                            >
+                                Up For Grabs
+                            </Button>
+                        </View>
 
                         <View style={{
                             flexDirection: 'row',
