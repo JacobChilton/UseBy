@@ -21,6 +21,7 @@ export default function MyFood()
     const [itemName, setItemName] = useState('');
     const [barcode, setBarcode] = useState("");
     const [items, setItems] = useState<Array<string>>([]);
+    const [useByDate, setUseByDate] = useState("");
     const [cameraActive, setCameraActive] = useState(false);
 
     const api = useAPI();
@@ -120,7 +121,7 @@ export default function MyFood()
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            marginTop: 20,
+                            marginBottom: 20
                         }}>
                             <Button
                                 mode="contained"
@@ -146,6 +147,15 @@ export default function MyFood()
                             style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
                             value={itemName}
                             onChangeText={setItemName} // Update itemName state as user types
+                        />
+
+                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
+                        <TextInput
+                            placeholder='Enter use by date dd/mm/yyyy'
+                            mode="outlined"
+                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                            value={useByDate}
+                            onChangeText={setUseByDate} // Update itemName state as user types
                         />
 
                         <View style={{
