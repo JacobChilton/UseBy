@@ -1,33 +1,53 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 
-export default function ItemList(props: any) {
+import { Product } from '~/app/lib/api/APITypes';
 
+interface Props {
+
+    products: Array<Product>
+}
+const ItemList:React.FC<Props> = ({products}) => {
 
 
     return (
-        <View className="mt-4">
-            {props.items.map((item, index) => (
-                <TouchableOpacity
-                    key={index}
-                    style={{
-                        backgroundColor: '#6F4AAA',
-                        padding: 10,
-                        marginVertical: 5,
-                        borderRadius: 20,
-                    }}
-                    onPress={() => console.log(`Touched ${item}`)}
-                >
-                    <Text
+        <View className="mt-4"
+            style={{ maxHeight: '90%'}}>
+
+            <ScrollView
+                style={{ maxHeight: '100%' }}
+                contentContainerStyle={{ paddingBottom: 20 }}
+            >
+
+                {products.map((item, index) => (
+                    <TouchableOpacity
+                        key={index}
                         style={{
-                            color: 'white',
-                            paddingLeft: 5
+                            backgroundColor: '#6F4AAA',
+                            padding: 10,
+                            marginVertical: 5,
+                            borderRadius: 20,
+                            maxHeight: '80%'
                         }}
+                        onPress={() => console.log(`Touched ${item}`)}
                     >
-                        {item}
-                    </Text>
-                </TouchableOpacity>
-            ))}
+
+                        
+
+                        <Text
+                            style={{
+                                color: 'white',
+                                paddingLeft: 5
+                            }}
+                        >
+                            {item.name}
+
+                        </Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
         </View>
   );
 }
+
+export default ItemList;

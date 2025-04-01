@@ -22,7 +22,7 @@ export default function MyFood()
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState('');
     const [barcode, setBarcode] = useState("");
-    const [items, setItems] = useState<Array<string>>([]);
+    const [items, setItems] = useState<Array<Product>>([]);
     const [useByDate, setUseByDate] = useState("");
     const [quantity, setQuantity] = useState("1");
     const [availability, setAvailability] = useState(Availability.PRIVATE);
@@ -31,15 +31,17 @@ export default function MyFood()
 
     const api = useAPI();
 
+    const refreshProductList = () => {
+
+        api.house_product_get_all("67ebf33bc50778b4c4b6c531").then(setItems)
+        .catch(console.error);
+    }
+
     useEffect(() => {
 
-        setTimeout(() => {
-            const test = api.house_product_get_all("67ebf33bc50778b4c4b6c531")
-            console.log(test);
-        }, 5000)
+        refreshProductList();
 
         
-
     }, [])
 
     const handleAddItem = () =>
@@ -55,12 +57,8 @@ export default function MyFood()
                 frozen: freeze
             }
             
+            api.house_product_add("67ebf33bc50778b4c4b6c531", product).then(refreshProductList);
 
-            api.house_product_add("67ebf33bc50778b4c4b6c531", product);
-
-
-            setItems([...items, itemName]);
-            setItemName('');
             setAddItemModalVisible(false);
 
             setItemName('');
@@ -113,7 +111,7 @@ export default function MyFood()
 
                 
 
-                <ItemList items={items}/>
+                <ItemList products={items}/>
 
                 <Portal>
                     <Modal
