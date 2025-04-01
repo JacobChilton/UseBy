@@ -36,21 +36,14 @@ export default function MyFood()
         }
     };
 
-
-    //5060088700815
-
-
+    // Looks up the barcode and sets the product name to the generated name
     function barcodeLookup()
     {
-
-        console.log(barcode);
-
+        setItemName("Loading...");
         (api.barcode_fetch(barcode)).then((productData) =>
         {
-
             if (productData)
             {
-
                 setItemName(productData.name);
             }
         });
@@ -58,11 +51,8 @@ export default function MyFood()
 
     function scanBarcode()
     {
-
         setCameraActive(!cameraActive);
     }
-
-
 
     return (
         <PaperProvider theme={customTheme}>
@@ -104,19 +94,43 @@ export default function MyFood()
                             borderRadius: 8,
                         }}
                     >
+                      <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: 20
+                        }}>
+                            
+
+                            <Text style={{ fontSize: 36}}>Add Item</Text>
+                            <Button
+                                    mode="contained"
+                                    onPress={() =>
+                                    {
+                                        setItemName(''); // Clear input on cancel
+                                        setAddItemModalVisible(false);
+                                    }}
+                                    style={{ }}
+                                >
+                                    Close
+                            </Button>
+
+                        </View>
+
+
+                        
+
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Barcode</Text>
                         <TextInput
                             placeholder='Enter barcode number'
                             mode="outlined"
                             style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
                             value={barcode}
-                            onChangeText={setBarcode} // Update itemName state as user types
+                            onChangeText={setBarcode} // Update barcode state as user types
                         />
 
                         <div className={cameraActive ? "" : "hidden"}>
                             <BarcodeScanner />
                         </div>
-
 
                         <View style={{
                             flexDirection: 'row',
@@ -125,7 +139,7 @@ export default function MyFood()
                         }}>
                             <Button
                                 mode="contained"
-                                onPress={barcodeLookup} // Call handler to add item
+                                onPress={barcodeLookup} // Call handler to look up barcode
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                             >
                                 Lookup Item
@@ -133,7 +147,7 @@ export default function MyFood()
 
                             <Button
                                 mode="contained"
-                                onPress={scanBarcode} // Call handler to add item
+                                onPress={scanBarcode} // Call handler to scan barcode
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                             >
                                 Scan Barcode
@@ -155,7 +169,7 @@ export default function MyFood()
                             mode="outlined"
                             style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
                             value={useByDate}
-                            onChangeText={setUseByDate} // Update itemName state as user types
+                            onChangeText={setUseByDate} // Update use by date
                         />
 
                         <View style={{
@@ -171,17 +185,7 @@ export default function MyFood()
                                 List Item
                             </Button>
 
-                            <Button
-                                mode="contained"
-                                onPress={() =>
-                                {
-                                    setItemName(''); // Clear input on cancel
-                                    setAddItemModalVisible(false);
-                                }}
-                                style={{ flex: 1 }}
-                            >
-                                Close
-                            </Button>
+                            
                         </View>
                     </Modal>
                 </Portal>
