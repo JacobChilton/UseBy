@@ -11,6 +11,12 @@ import { db_user_get_by_id } from "../database/interface_users";
 // Creates a new house belonging to logged in user
 export const ep_houses_post = auth(async (req: Request, res: Response, user: User) =>
 {
+    if (!exists(req.body, "name"))
+    {
+        std_response(res, HTTP.BAD_REQUEST, { error: "missing params" });
+        return;
+    }
+
     try
     {
         if (await db_house_get_by_name_and_owner_id(req.body.name, user._id))
@@ -18,7 +24,6 @@ export const ep_houses_post = auth(async (req: Request, res: Response, user: Use
             std_response(res, HTTP.CONFLICT, { error: "house already exists" });
             return;
         }
-
 
         // Construct the new house, we do not know ID yet so it is ommited
         const house: Omit<House, "_id"> =
