@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
@@ -25,7 +25,7 @@ export default function MyFood()
     const [items, setItems] = useState<Array<string>>([]);
     const [useByDate, setUseByDate] = useState("");
     const [quantity, setQuantity] = useState("1");
-    const [availability, setAvailability] = useState("");
+    const [availability, setAvailability] = useState(Availability.PRIVATE);
     const [cameraActive, setCameraActive] = useState(false);
 
     const api = useAPI();
@@ -103,6 +103,7 @@ export default function MyFood()
                             padding: 20,
                             margin: 20,
                             borderRadius: 8,
+                            maxHeight: '80%'
                         }}
                     >
                       <View style={{
@@ -124,147 +125,151 @@ export default function MyFood()
                             </Button>
                         </View>
 
+                        <ScrollView
+                            style={{ maxHeight: '90%' }}
+                            contentContainerStyle={{ paddingBottom: 20 }}
+                        >
 
-                        
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Barcode</Text>
+                            <TextInput
+                                placeholder='Enter barcode number'
+                                mode="outlined"
+                                style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                                value={barcode}
+                                onChangeText={setBarcode} // Update barcode state as user types
+                            />
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Barcode</Text>
-                        <TextInput
-                            placeholder='Enter barcode number'
-                            mode="outlined"
-                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={barcode}
-                            onChangeText={setBarcode} // Update barcode state as user types
-                        />
+                            <div className={cameraActive ? "" : "hidden"}>
+                                <BarcodeScanner />
+                            </div>
 
-                        <div className={cameraActive ? "" : "hidden"}>
-                            <BarcodeScanner />
-                        </div>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 20
+                            }}>
+                                <Button
+                                    mode="contained"
+                                    onPress={barcodeLookup} // Call handler to look up barcode
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    Lookup Item
+                                </Button>
 
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 20
-                        }}>
-                            <Button
-                                mode="contained"
-                                onPress={barcodeLookup} // Call handler to look up barcode
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Lookup Item
-                            </Button>
+                                <Button
+                                    mode="contained"
+                                    onPress={scanBarcode} // Call handler to scan barcode
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    Scan Barcode
+                                </Button>
+                            </View>
 
-                            <Button
-                                mode="contained"
-                                onPress={scanBarcode} // Call handler to scan barcode
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Scan Barcode
-                            </Button>
-                        </View>
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Product Name</Text>
+                            <TextInput
+                                placeholder='Enter item name'
+                                mode="outlined"
+                                style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                                value={itemName}
+                                onChangeText={setItemName} // Update itemName state as user types
+                            />
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Product Name</Text>
-                        <TextInput
-                            placeholder='Enter item name'
-                            mode="outlined"
-                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={itemName}
-                            onChangeText={setItemName} // Update itemName state as user types
-                        />
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
+                            <TextInput
+                                placeholder='Enter use by date dd/mm/yyyy'
+                                mode="outlined"
+                                style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                                value={useByDate}
+                                onChangeText={setUseByDate} // Update use by date
+                            />
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
-                        <TextInput
-                            placeholder='Enter use by date dd/mm/yyyy'
-                            mode="outlined"
-                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={useByDate}
-                            onChangeText={setUseByDate} // Update use by date
-                        />
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
+                            <TextInput
+                                placeholder='1'
+                                defaultValue='1'
+                                mode="outlined"
+                                style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
+                                value={quantity}
+                                onChangeText={setQuantity} // Update quantity
+                            />
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
-                        <TextInput
-                            placeholder='1'
-                            defaultValue='1'
-                            mode="outlined"
-                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={quantity}
-                            onChangeText={setQuantity} // Update quantity
-                        />
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 20
+                            }}>
+                                <Button
+                                    mode="contained"
+                                    onPress={decrementQuantity} // Call handler to scan barcode
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    -
+                                </Button>
 
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 20
-                        }}>
-                            <Button
-                                mode="contained"
-                                onPress={decrementQuantity} // Call handler to scan barcode
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                -
-                            </Button>
+                                <Button
+                                    mode="contained"
+                                    onPress={incrementQuantity} // Call handler to look up barcode
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    +
+                                </Button>
+                            </View>
 
-                            <Button
-                                mode="contained"
-                                onPress={incrementQuantity} // Call handler to look up barcode
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                +
-                            </Button>
-                        </View>
-
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability: {availability}</Text>
-                        
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 20
-                        }}>
-                            <Button
-                                mode="contained"
-                                onPress={() => {
-                                    setAvailability(Availability.PRIVATE);
-                                }} // Call handler to set availability to private
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Private
-                            </Button>
-
-                            <Button
-                                mode="contained"
-                                onPress={() => {
-                                    setAvailability(Availability.COMMUNAL);
-                                }} // Call handler to set availability to communal
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Communal
-                            </Button>
-
-                            <Button
-                                mode="contained"
-                                onPress={() => {
-                                    setAvailability(Availability.UP_FOR_GRABS);
-                                }} // Call handler to set availability to up for grabs
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Up For Grabs
-                            </Button>
-                        </View>
-
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: 20,
-                        }}>
-                            <Button
-                                mode="contained"
-                                onPress={handleAddItem} // Call handler to add item
-                                style={{ flex: 1, marginRight: 10 }}
-                            >
-                                List Item
-                            </Button>
-
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability: {availability}</Text>
                             
-                        </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 20
+                            }}>
+                                <Button
+                                    mode="contained"
+                                    onPress={() => {
+                                        setAvailability(Availability.PRIVATE);
+                                    }} // Call handler to set availability to private
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    Private
+                                </Button>
+
+                                <Button
+                                    mode="contained"
+                                    onPress={() => {
+                                        setAvailability(Availability.COMMUNAL);
+                                    }} // Call handler to set availability to communal
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    Communal
+                                </Button>
+
+                                <Button
+                                    mode="contained"
+                                    onPress={() => {
+                                        setAvailability(Availability.UP_FOR_GRABS);
+                                    }} // Call handler to set availability to up for grabs
+                                    style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                                >
+                                    Up For Grabs
+                                </Button>
+                            </View>
+
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: 20,
+                            }}>
+                                <Button
+                                    mode="contained"
+                                    onPress={handleAddItem} // Call handler to add item
+                                    style={{ flex: 1, marginRight: 10 }}
+                                >
+                                    List Item
+                                </Button>
+
+                                
+                            </View>
+
+                        </ScrollView>
                     </Modal>
                 </Portal>
 
