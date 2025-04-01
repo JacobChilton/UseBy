@@ -36,12 +36,12 @@ export default function MyFood()
         if (itemName.trim())
         {
             const product:Omit<Product, "_id" | "owner_id" | "house_id"> = {
-                name: "product test",
-                upc: "01787481",
-                use_by: new Date(2025, 4, 7),
-                quantity: 1,
-                availability: Availability.UP_FOR_GRABS,
-                frozen: false
+                name: itemName,
+                upc: barcode,
+                use_by: new Date(2025, 4, 7), // still hardcoded
+                quantity: +quantity,
+                availability: availability,
+                frozen: freeze
             }
             
 
@@ -51,6 +51,15 @@ export default function MyFood()
             setItems([...items, itemName]);
             setItemName('');
             setAddItemModalVisible(false);
+
+            setItemName('');
+            setBarcode("");
+            setItems([]);
+            setUseByDate("");
+            setQuantity("1");
+            setAvailability(Availability.PRIVATE);
+            setFreeze(false);
+            setCameraActive(false);
         }
     };
 
@@ -62,7 +71,7 @@ export default function MyFood()
         {
             if (productData)
             {
-                setItemName(productData.name);
+                setItemName(productData.name.substring(1, productData.name.length - 1));
             }
         });
     }
@@ -131,7 +140,7 @@ export default function MyFood()
                             contentContainerStyle={{ paddingBottom: 20 }}
                         >
 
-                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Barcode</Text>
+                            <Text style={{ fontSize: 18, marginBottom: 20 }}>Barcode (optional)</Text>
                             <TextInput
                                 placeholder='Enter barcode number'
                                 mode="outlined"
@@ -187,7 +196,6 @@ export default function MyFood()
                             <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
                             <TextInput
                                 placeholder='1'
-                                defaultValue='1'
                                 mode="outlined"
                                 style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
                                 value={quantity}
@@ -281,7 +289,7 @@ export default function MyFood()
                                     onPress={handleAddItem} // Call handler to add item
                                     style={{ flex: 1, marginRight: 10 }}
                                 >
-                                    List Item
+                                    Add Item
                                 </Button>
                             </View>
 
