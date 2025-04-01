@@ -32,7 +32,7 @@ export const tg_is_house = (p_obj: any): p_obj is House =>
     return p_obj &&
         p_obj._id instanceof ObjectId &&
         typeof p_obj.name === "string" &&
-        p_obj.owner_id instanceof Object &&
+        p_obj.owner_id instanceof ObjectId &&
         p_obj.members instanceof Array &&
         (p_obj.members as Array<unknown>).reduce<boolean>((prev, curr) => prev && curr instanceof ObjectId, true)
 }
