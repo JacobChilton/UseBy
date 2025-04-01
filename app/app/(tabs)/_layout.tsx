@@ -35,21 +35,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
                     }
                 };
 
-                // ANIMATIONS!!!
-                const scale = useSharedValue(1); // Initail scale value of each nav btn
-                const animatedStyle = useAnimatedStyle(() => ({
-                    transform: [{ scale: scale.value }],
-                }));
 
-                const handlePressIn = () =>
-                {
-                    scale.value = withSpring(1.3); // changes the scale of the btn when user is pressing it 
-                };
-
-                const handlePressOut = () =>
-                {
-                    scale.value = withSpring(1); // adds this springing annimation when you stop holding the btn down
-                };
 
                 const icons: Record<string, string> = { // the icons
                     index: 'home',
@@ -61,13 +47,10 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
                     <TouchableOpacity
                         key={route.key} //gives each tab a unique key
                         onPress={onPress} // handling tab press events
-                        onPressIn={handlePressIn}
-                        onPressOut={handlePressOut}
                         style={styles.tabItem}
                         accessibilityRole="button"
                         accessibilityState={isFocused ? { selected: true } : {}}
                     >
-                        <Animated.View style={[styles.iconContainer, animatedStyle]}>
                             <TabBarIcon
                                 name={(icons[route.name] || 'code') as any} // choosing the icon
                                 color={isFocused ? '#6F4AAB' : '#666666'} // colour for when focused
@@ -75,7 +58,6 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
                             <Text style={[styles.label, { color: isFocused ? '#6F4AAB' : '#666666' }]}>
                                 {label}
                             </Text>
-                        </Animated.View>
                     </TouchableOpacity>
                 );
             })}
