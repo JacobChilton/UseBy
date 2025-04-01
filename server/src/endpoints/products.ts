@@ -14,7 +14,7 @@ import { ObjectId } from "mongodb";
 export const ep_products_post = auth(async (req: Request, res: Response, user: User) =>
 {
     // Ensure that required body params exist
-    if (!exists(req.body, "upc", "name", "use_by", "quantity", "availability", "frozen"))
+    if (!exists(req.body, "name", "use_by", "quantity", "availability", "frozen"))
     {
         std_response(res, HTTP.BAD_REQUEST, { message: "missing params" });
         return;

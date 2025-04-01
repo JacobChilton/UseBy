@@ -31,6 +31,17 @@ export default function MyFood()
 
     const api = useAPI();
 
+    useEffect(() => {
+
+        setTimeout(() => {
+            const test = api.house_product_get_all("67ebf33bc50778b4c4b6c531")
+            console.log(test);
+        }, 5000)
+
+        
+
+    }, [])
+
     const handleAddItem = () =>
     {
         if (itemName.trim())

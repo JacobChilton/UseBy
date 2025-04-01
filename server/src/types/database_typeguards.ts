@@ -19,7 +19,7 @@ export const tg_is_product = (p_obj: any): p_obj is Product =>
 {
     return p_obj &&
         p_obj._id instanceof ObjectId &&
-        typeof p_obj.upc === "string" &&
+        (typeof p_obj.upc === "string" || p_obj.upc === null) &&
         p_obj.owner_id instanceof ObjectId &&
         p_obj.house_id instanceof ObjectId &&
         typeof p_obj.name === "string" &&
