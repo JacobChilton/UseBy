@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
 import BarcodeScanner from '~/components/BarcodeScanner';
+import ItemList from '~/components/ItemList';
 
 
 export default function MyFood()
@@ -59,29 +60,9 @@ export default function MyFood()
             <View className="flex-1 p-10 pt-28">
                 <Text>myFood</Text>
 
-                <View className="mt-4">
-                    {items.map((item, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={{
-                                backgroundColor: '#6F4AAA',
-                                padding: 10,
-                                marginVertical: 5,
-                                borderRadius: 20,
-                            }}
-                            onPress={() => console.log(`Touched ${item}`)}
-                        >
-                            <Text
-                                style={{
-                                    color: 'white',
-                                    paddingLeft: 5
-                                }}
-                            >
-                                {item}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
+                
+
+                <ItemList items={items}/>
 
                 <Portal>
                     <Modal
