@@ -1,8 +1,8 @@
 import { APIError } from "./APIError";
 import { House, HouseID, Product, ProductID, User, UserID } from "./APITypes";
 
-//const API_URL_BASE = "https://useby-server-mgdvu.ondigitalocean.app";
-const API_URL_BASE = "http://localhost:3076";
+const API_URL_BASE = "https://useby-server-mgdvu.ondigitalocean.app";
+//const API_URL_BASE = "http://localhost:3076";
 
 const call = async (p_path: string, p_method: "DELETE" | "POST" | "GET" | "PATCH", p_body?: Record<string, any>): Promise<{ status: number; ok: boolean; json: Record<string, any>; }> =>
 {
