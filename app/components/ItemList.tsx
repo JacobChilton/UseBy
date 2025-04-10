@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import { Product, UserID } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 
@@ -148,7 +148,19 @@ const ItemList:React.FC<Props> = ({products}) => {
                             >
                                 Frozen: {item.frozen}
                             </Text>
-                        )} 
+                        )}
+                        {visibleProducts[index] && (
+                        <Button
+                            mode="contained"
+                            textColor="black"
+                            onPress={() => console.log("Edit button clicked")}
+                            style={{ flex: 1, marginTop: 10, backgroundColor: "white"}}
+                        >
+                            Edit Product Info
+                        </Button>
+                        )}
+
+                        
 
 
                     </TouchableOpacity>
