@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
-
-import { Product } from '~/app/lib/api/APITypes';
+import { Product, UserID } from '~/app/lib/api/APITypes';
+import { useAPI } from '~/app/components/APIProvider';
 
 interface Props {
 
@@ -13,11 +13,30 @@ const ItemList:React.FC<Props> = ({products}) => {
 
     const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
 
+    const api = useAPI();
+    
+
     useEffect(() => {
 
-        setVisibleProducts(new Array(products.length).fill(false));
+        function ownersLookup() {
 
-    }, []);
+            for (const productIndex in products) {
+    
+
+                (api.user_get(products[productIndex].owner_id)).then((userData) => {
+    
+                    if (userData) {
+
+                        products[productIndex].owner_id = userData.name;
+                    }
+                });
+            }
+        }
+
+        setVisibleProducts(new Array(products.length).fill(false));
+        ownersLookup();
+
+    }, [products]);
     
 
     return (
@@ -44,7 +63,7 @@ const ItemList:React.FC<Props> = ({products}) => {
                                 const newVisibility = [...prev];
                                 newVisibility[index] = !newVisibility[index];
                                 return newVisibility;
-                              });
+                            });
                           }}
                     >
 
