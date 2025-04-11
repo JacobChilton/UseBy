@@ -72,6 +72,18 @@ export default function MyFood()
         }
     };
 
+    function clearForm() {
+
+        setItemName('');
+        setBarcode("");
+        setItems([]);
+        setUseByDate("");
+        setQuantity("1");
+        setAvailability(Availability.PRIVATE);
+        setFreeze(false);
+        setCameraActive(false);
+    }
+
     // Looks up the barcode and sets the product name to the generated name
     function barcodeLookup()
     {
@@ -135,7 +147,7 @@ export default function MyFood()
                                     mode="contained"
                                     onPress={() =>
                                     {
-                                        setItemName(''); // Clear input on cancel
+                                        clearForm(); // Clear input on cancel
                                         setAddItemModalVisible(false);
                                     }}
                                     style={{ }}
