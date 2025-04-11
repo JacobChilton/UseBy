@@ -265,13 +265,13 @@ export const house_product_add = async (p_token: string, p_house: HouseID, p_pro
 }
 
 // Add get all products in house
-export const house_product_get_all = async (p_token: string, p_house: HouseID): Promise<Array<Product>> =>
+export const house_product_get_all = async (p_token: string, p_house: HouseID): Promise<Array<Product & { house_name: string }>> =>
 {
     try
     {
         const { json } = await call_auth(p_token, "/houses/" + p_house + "/products", "GET");
 
-        if (Array.isArray(json)) return json as Array<Product>;
+        if (Array.isArray(json)) return json as Array<Product & { house_name: string }>;
         else throw new APIError(json.message || json.error || "Unknown error")
     }
     catch (e)

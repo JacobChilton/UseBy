@@ -34,7 +34,7 @@ interface APIProviderInterface
     // Add product to a house
     house_product_add: (p_house: HouseID, p_product: Omit<Product, "_id" | "owner_id" | "house_id">) => Promise<ProductID>;
     // Add get all products in house
-    house_product_get_all: (p_house: HouseID) => Promise<Array<Product>>;
+    house_product_get_all: (p_house: HouseID) => Promise<Array<Product & { house_name: string }>>;
     // Delete a product in house
     house_product_delete: (p_house: HouseID, p_product: ProductID) => Promise<void>;
     // Update a product in house

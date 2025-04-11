@@ -78,8 +78,10 @@ export const ep_products_get = auth(async (req: Request, res: Response, user: Us
 {
     try
     {
+        const house = await db_house_get_by_id(new ObjectId(req.params.house_id));
+
         // Ensure that the house_id is valid
-        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
+        if (!ObjectId.isValid(req.params.house_id) || !house)
         {
             std_response(res, HTTP.NOT_FOUND, { error: "house not found" });
             return;
@@ -87,8 +89,11 @@ export const ep_products_get = auth(async (req: Request, res: Response, user: Us
 
         const products = await db_product_get_by_house(new ObjectId(req.params.house_id));
 
+        // Adding house name
+        const mapped_to_name = products.map(p => ({ ...p, house_name: house.name }))
+
         // Send, may want to set which values to send to be secure
-        std_response(res, HTTP.OK, products);
+        std_response(res, HTTP.OK, mapped_to_name);
     }
     catch (e)
     {
