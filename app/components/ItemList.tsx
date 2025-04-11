@@ -12,27 +12,40 @@ interface Props {
 const ItemList:React.FC<Props> = ({products}) => {
 
     const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
-
-    const api = useAPI();
+    const [productList, setProductList] = useState<Product[]>([]);
     
+    const api = useAPI();
 
     useEffect(() => {
 
         function ownersLookup() {
 
             for (const productIndex in products) {
-    
 
                 (api.user_get(products[productIndex].owner_id)).then((userData) => {
     
                     if (userData) {
 
-                        products[productIndex].owner_id = userData.name;
+                        const newProductList = products.map(product => {
+
+                            if ((product.owner_id === products[productIndex].owner_id)) {
+                                
+                                return {
+
+                                    ...product,
+                                    owner_id: userData.name
+                                };
+                            }
+                            else {
+                                
+                                return product;
+                            }
+                        });
+                        setProductList(newProductList);
                     }
                 });
             }
         }
-
         setVisibleProducts(new Array(products.length).fill(false));
         ownersLookup();
 
@@ -48,7 +61,7 @@ const ItemList:React.FC<Props> = ({products}) => {
                 contentContainerStyle={{ paddingBottom: 20 }}
             >
 
-                {products.map((item, index) => (
+                {productList.map((item, index) => (
                     <TouchableOpacity
                         key={index}
                         style={{
@@ -95,7 +108,7 @@ const ItemList:React.FC<Props> = ({products}) => {
                                 paddingLeft: 5
                             }}
                             >
-                                House: {item.house_id}
+                                House: {item.house_name}
                             </Text>
                         )}
                         {visibleProducts[index] && (
@@ -146,7 +159,7 @@ const ItemList:React.FC<Props> = ({products}) => {
                                 paddingLeft: 5
                             }}
                             >
-                                Frozen: {item.frozen}
+                                Frozen: {item.frozen ? "Yes" : "No"}
                             </Text>
                         )}
                         {visibleProducts[index] && (
