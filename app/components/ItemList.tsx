@@ -3,6 +3,7 @@ import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, Button, Portal, Modal } from 'react-native-paper';
 import { Product, UserID } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
+import PopupFormContents from './PopupFormContents';
 
 interface Props {
 
@@ -164,49 +165,10 @@ const ItemList:React.FC<Props> = ({products}) => {
                             </Text>
                         )}
                         {visibleProducts[index] && (
-                        <Button
-                            mode="contained"
-                            textColor="black"
-                            onPress={() => setEditItemModalVisible(true)}
-                            style={{ flex: 1, marginTop: 10, backgroundColor: "white"}}
-                        >
-                            Edit Product Info
-                        </Button>
+                            <PopupFormContents formType="Edit Item" currentItem={item}/>
                         )}
 
-                        <Portal>
-                            <Modal
-                                visible={editItemModalVisible}
-                                onDismiss={() => setEditItemModalVisible(false)}
-                                contentContainerStyle={{
-                                    backgroundColor: 'white',
-                                    padding: 20,
-                                    margin: 20,
-                                    borderRadius: 8,
-                                    maxHeight: '80%'
-                                }}
-                            >
-                            <View style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    marginBottom: 20
-                                }}>
-                                    <Text style={{ fontSize: 36}}>Edit Item</Text>
-                                    <Button
-                                            mode="contained"
-                                            onPress={() =>
-                                            {
-                                                setEditItemModalVisible(false);
-                                            }}
-                                            style={{ }}
-                                        >
-                                            Close
-                                    </Button>
-                                </View>
-                            
-
-                            </Modal>
-                        </Portal>
+                        
 
                     </TouchableOpacity>
                 ))}

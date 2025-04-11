@@ -1,11 +1,9 @@
-import { Stack } from 'expo-router';
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
+import { DefaultTheme, PaperProvider, Text } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
-import BarcodeScanner from '~/components/BarcodeScanner';
 import ItemList from '~/components/ItemList';
-import { Availability, Product } from '../lib/api/APITypes';
+import { Product } from '../lib/api/APITypes';
 import PopupFormContents from '~/components/PopupFormContents';
 
 export default function MyFood()
@@ -39,7 +37,7 @@ export default function MyFood()
             <View className="flex-1 p-10 pt-28">
                 <Text>myFood</Text>
                 <ItemList products={items}/>
-                <PopupFormContents />
+                <PopupFormContents formType="Add Item"/>
             </View>
         </PaperProvider>
     );

@@ -8,7 +8,7 @@ import { Availability, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 
 
-export default function PopupFormContents()
+export default function PopupFormContents(props)
 {
     const customTheme = {
         ...DefaultTheme,
@@ -18,6 +18,8 @@ export default function PopupFormContents()
             primary: '#6F4AAA',
         },
     };
+
+    const api = useAPI();
 
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState('');
@@ -29,7 +31,35 @@ export default function PopupFormContents()
     const [freeze, setFreeze] = useState(false);
     const [cameraActive, setCameraActive] = useState(false);
 
-    const api = useAPI();
+    if ((props.formType === "Edit Item") && (itemName != props.currentItem.name)) {
+
+        console.log(props.currentItem);
+
+        if (itemName != props.currentItem.name) {
+
+            setItemName(props.currentItem.name);
+        }
+        if (barcode != props.currentItem.upc) {
+
+            setBarcode(props.currentItem.upc);
+        }
+        if (useByDate != props.currentItem.use_by) {
+
+            setUseByDate(props.currentItem.use_by);
+        }
+        if (quantity != props.currentItem.quantity) {
+
+            setQuantity(props.currentItem.use_by);
+        }
+        if (availability != props.currentItem.availability) {
+
+            setAvailability(props.currentItem.availability);
+        }
+        if (freeze != props.currentItem.frozen) {
+
+            setFreeze(props.currentItem.frozen);
+        }
+    }
 
     const refreshProductList = () => {
 
@@ -135,7 +165,7 @@ export default function PopupFormContents()
                         justifyContent: 'space-between',
                         marginBottom: 20
                     }}>
-                        <Text style={{ fontSize: 36}}>Add Item</Text>
+                        <Text style={{ fontSize: 36}}>{props.formType}</Text>
                         <Button
                                 mode="contained"
                                 onPress={() =>
@@ -303,7 +333,7 @@ export default function PopupFormContents()
                                 onPress={handleAddItem} // Call handler to add item
                                 style={{ flex: 1, marginRight: 10 }}
                             >
-                                Add Item
+                                {props.formType}
                             </Button>
                         </View>
 
@@ -313,12 +343,11 @@ export default function PopupFormContents()
             <View className="mt-4 flex-row justify-center">
                 <Button
                     mode="contained"
-                    icon="plus"
                     className="h-12 w-40 rounded-3xl"
                     labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
                     onPress={() => setAddItemModalVisible(true)}
                 >
-                    Add Item
+                    {props.formType}
                 </Button>
             </View>
         </>
