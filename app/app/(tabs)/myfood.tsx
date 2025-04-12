@@ -20,14 +20,14 @@ export default function MyFood()
 
     const api = useAPI();
 
-    
+    const [products, setProducts] = useState<Array<Product>>([]);
 
     return (
         <PaperProvider theme={customTheme}>
             <View className="flex-1 p-10 pt-28">
                 <Text>myFood</Text>
-                <ItemList/>
-                <PopupFormContents formType="Add Item"/>
+                <ItemList passProducts={products} passSetProducts={setProducts}/>
+                <PopupFormContents formType="Add Item" passProducts={products} passSetProducts={setProducts}/>
             </View>
         </PaperProvider>
     );

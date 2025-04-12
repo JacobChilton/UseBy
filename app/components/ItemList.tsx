@@ -6,14 +6,13 @@ import { useAPI } from '~/app/components/APIProvider';
 import PopupFormContents from './PopupFormContents';
 
 
-export default function ItemList() {
+export default function ItemList(props) {
+
+    const products = props.passProducts;
+    const setProducts = props.passSetProducts;
 
     const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
-
-    const [products, setProducts] = useState<Array<Product>>([]);
-
-
 
     const api = useAPI();
 
@@ -59,6 +58,7 @@ export default function ItemList() {
         ownersLookup();
 
         console.log("setting products");
+        console.log(products);
 
     }, [products]);
     
@@ -171,7 +171,7 @@ export default function ItemList() {
                             </Text>
                         )}
                         {visibleProducts[index] && (
-                            <PopupFormContents formType="Edit Item" currentItem={item} passSetProducts={setProducts}/>
+                            <PopupFormContents formType="Edit Item" currentItem={item} passProducts={products} passSetProducts={setProducts}/>
                         )}
                     </TouchableOpacity>
                 ))}

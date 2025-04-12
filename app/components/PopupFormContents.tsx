@@ -95,8 +95,6 @@ export default function PopupFormContents(props)
                 frozen: freeze
             }
 
-            console.log(props.currentItem._id);
-
             if (props.formType === "Add Item") {
 
                 api.house_product_add("67ebf33bc50778b4c4b6c531", product).then(refreshProductList);
