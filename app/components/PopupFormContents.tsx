@@ -49,7 +49,7 @@ export default function PopupFormContents(props)
         }
         if (quantity != props.currentItem.quantity) {
 
-            setQuantity(props.currentItem.use_by);
+            setQuantity(props.currentItem.quantity);
         }
         if (availability != props.currentItem.availability) {
 
@@ -63,16 +63,24 @@ export default function PopupFormContents(props)
 
     const refreshProductList = () => {
 
-        api.house_product_get_all("67ebf33bc50778b4c4b6c531").then(setItems)
-        .catch(console.error);
-    }
+       // if (props.formType == "Edit Item") {
 
-    useEffect(() => {
+            console.log("REFRESHING");
 
-        refreshProductList();
+            api.house_product_get_all("67ebf33bc50778b4c4b6c531").then((newItems) => {
+
+                console.log(newItems);
+        
+                props.passSetProducts(newItems);
+            })
+            .catch(console.error);
+    
+            
+       // }
 
         
-    }, [])
+    }
+
 
     const handleAddItem = () =>
     {
@@ -86,8 +94,19 @@ export default function PopupFormContents(props)
                 availability: availability,
                 frozen: freeze
             }
-            
-            api.house_product_add("67ebf33bc50778b4c4b6c531", product).then(refreshProductList);
+
+            console.log(props.currentItem._id);
+
+            if (props.formType === "Add Item") {
+
+                api.house_product_add("67ebf33bc50778b4c4b6c531", product).then(refreshProductList);
+            }
+            else if (props.formType === "Edit Item") {
+
+                api.house_product_update("67ebf33bc50778b4c4b6c531", props.currentItem._id, product).then(refreshProductList);
+                
+                
+            } 
 
             setAddItemModalVisible(false);
 

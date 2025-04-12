@@ -5,18 +5,24 @@ import { Product, UserID } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 import PopupFormContents from './PopupFormContents';
 
-interface Props {
 
-    products: Array<Product>
-}
-
-const ItemList:React.FC<Props> = ({products}) => {
+export default function ItemList() {
 
     const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
-    const [editItemModalVisible, setEditItemModalVisible] = useState(false);
-    
+
+    const [products, setProducts] = useState<Array<Product>>([]);
+
+
+
     const api = useAPI();
+
+    useEffect(() => {
+
+        // Refresh product list
+        api.house_product_get_all("67ebf33bc50778b4c4b6c531").then(setProducts)
+        .catch(console.error);
+    }, []);
 
     useEffect(() => {
 
@@ -48,8 +54,11 @@ const ItemList:React.FC<Props> = ({products}) => {
                 });
             }
         }
+
         setVisibleProducts(new Array(products.length).fill(false));
         ownersLookup();
+
+        console.log("setting products");
 
     }, [products]);
     
@@ -81,9 +90,6 @@ const ItemList:React.FC<Props> = ({products}) => {
                             });
                           }}
                     >
-
-                        
-
                         <Text
                             style={{
                                 color: 'white',
@@ -165,16 +171,11 @@ const ItemList:React.FC<Props> = ({products}) => {
                             </Text>
                         )}
                         {visibleProducts[index] && (
-                            <PopupFormContents formType="Edit Item" currentItem={item}/>
+                            <PopupFormContents formType="Edit Item" currentItem={item} passSetProducts={setProducts}/>
                         )}
-
-                        
-
                     </TouchableOpacity>
                 ))}
             </ScrollView>
         </View>
   );
 }
-
-export default ItemList;
