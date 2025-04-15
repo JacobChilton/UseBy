@@ -76,12 +76,18 @@ export default function ItemList(props) {
                     <TouchableOpacity
                         key={index}
                         style={{
-                            backgroundColor: '#6F4AAA',
+                            backgroundColor: 'white',
                             padding: 10,
                             marginVertical: 5,
-                            borderRadius: 20,
-                            maxHeight: '80%'
-                        }}
+                            borderRadius: 10,
+                            borderWidth: 1,
+                            borderColor: 'grey', 
+                            maxHeight: '80%',
+                            shadowColor: '#000',
+                            shadowOffset: { width: 0, height: 4 },
+                            shadowOpacity: 0.3,
+                            shadowRadius: 3,
+                          }}
                         onPress={() => {
                             setVisibleProducts(prev => {
                                 const newVisibility = [...prev];
@@ -92,17 +98,29 @@ export default function ItemList(props) {
                     >
                         <Text
                             style={{
-                                color: 'white',
-                                paddingLeft: 5
+                                color: '#4A4A4A',
+                                paddingLeft: 5,
+                                fontWeight: 600,
                             }}
                         >
                             {item.name}
                         </Text>
 
+                        <Text
+                            style={{
+                                marginTop: 8,
+                                paddingLeft: 5,
+                                color: 'grey',
+                            }}
+                        >
+                            Quantity: {item.quantity}
+                        </Text>
+
                         {visibleProducts[index] && (
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
@@ -112,7 +130,8 @@ export default function ItemList(props) {
                         {visibleProducts[index] && (
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
@@ -123,7 +142,8 @@ export default function ItemList(props) {
 
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
@@ -133,7 +153,8 @@ export default function ItemList(props) {
                         {visibleProducts[index] && (
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
@@ -143,7 +164,8 @@ export default function ItemList(props) {
                         {visibleProducts[index] && (
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
@@ -153,7 +175,8 @@ export default function ItemList(props) {
                         {visibleProducts[index] && (
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
@@ -163,7 +186,8 @@ export default function ItemList(props) {
                         {visibleProducts[index] && (
                             <Text
                             style={{
-                                color: 'white',
+                                marginTop: 5,
+                                color: 'grey',
                                 paddingLeft: 5
                             }}
                             >
