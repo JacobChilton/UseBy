@@ -5,6 +5,7 @@ import { Button, IconButton, Avatar, DefaultTheme, PaperProvider, Text, Modal, P
 import { useEffect, useState } from 'react';
 import { User } from '../lib/api/APITypes';
 import { Image } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
+import QRCode from "react-native-qrcode-svg"
 
 
 const customTheme = {
@@ -90,7 +91,15 @@ export default function Profile()
                 </Portal>
 
                 {
-                    img ? <Avatar.Image size={120} source={{ uri: img }} />
+                    img ? <QRCode
+                        ecl="H"
+                        value={user._id}
+                        logo={{ uri: img }}
+                        logoSize={40}
+                        logoBackgroundColor='transparent'
+                        logoMargin={5}
+                        logoBorderRadius={20}
+                        size={110} />
                         :
                         <Avatar.Icon size={120} icon="account" />
                 }
