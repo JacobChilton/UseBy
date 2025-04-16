@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
 import { DefaultTheme, PaperProvider, Text } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
@@ -38,17 +38,18 @@ export default function MyFood()
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      borderWidth: 1,
-      borderColor: 'grey',
-      borderRadius: 10,
-      padding: 15,
+        container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'grey',
+        borderRadius: 10,
+        padding: 15,
     },
     text: {
-      fontSize: 16,
-      fontWeight: 'bold',
+        fontSize: 16,
+        fontWeight: 'bold',
+        fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace', // Use system font
     },
   });

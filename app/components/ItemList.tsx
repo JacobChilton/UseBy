@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { Text, Button, Portal, Modal } from 'react-native-paper';
 import { Product, UserID } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
@@ -76,7 +76,7 @@ export default function ItemList(props) {
                     <TouchableOpacity
                         key={index}
                         style={{
-                            backgroundColor: 'white',
+                            backgroundColor: visibleProducts[index] ? '#6F4AAA' : 'white', 
                             padding: 10,
                             marginVertical: 5,
                             borderRadius: 10,
@@ -98,9 +98,10 @@ export default function ItemList(props) {
                     >
                         <Text
                             style={{
-                                color: '#4A4A4A',
+                                color: visibleProducts[index] ? 'white' : '#4A4A4A',
                                 paddingLeft: 5,
-                                fontWeight: 600,
+                                fontWeight: 700,
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace', // Use system font
                             }}
                         >
                             {item.name}
@@ -108,9 +109,9 @@ export default function ItemList(props) {
 
                         <Text
                             style={{
+                                color: visibleProducts[index] ? 'white' : 'grey',
                                 marginTop: 8,
                                 paddingLeft: 5,
-                                color: 'grey',
                             }}
                         >
                             Quantity: {item.quantity}
@@ -120,7 +121,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >
@@ -131,7 +132,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >
@@ -143,7 +144,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >
@@ -154,7 +155,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >
@@ -165,7 +166,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >
@@ -176,7 +177,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >
@@ -187,7 +188,7 @@ export default function ItemList(props) {
                             <Text
                             style={{
                                 marginTop: 5,
-                                color: 'grey',
+                                color: 'white',
                                 paddingLeft: 5
                             }}
                             >

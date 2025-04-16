@@ -359,9 +359,11 @@ export default function PopupFormContents(props)
             </Portal>
             <View className="mt-4 flex-row justify-center">
                 <Button
-                    mode="contained"
+                    mode="outlined"
                     className="h-12 w-40 rounded-3xl"
                     labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
+                    contentStyle={{ backgroundColor: '#6F4AAA' }} 
+                    style={{ borderColor: 'white', borderWidth: 2 }}
                     onPress={() => setAddItemModalVisible(true)}
                 >
                     {props.formType}
