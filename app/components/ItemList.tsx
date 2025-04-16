@@ -101,7 +101,7 @@ export default function ItemList(props) {
                                 color: visibleProducts[index] ? 'white' : '#4A4A4A',
                                 paddingLeft: 5,
                                 fontWeight: 700,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace', // Use system font
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace',
                             }}
                         >
                             {item.name}
@@ -112,6 +112,7 @@ export default function ItemList(props) {
                                 color: visibleProducts[index] ? 'white' : 'grey',
                                 marginTop: 8,
                                 paddingLeft: 5,
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                             }}
                         >
                             Quantity: {item.quantity}
@@ -122,7 +123,8 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
-                                paddingLeft: 5
+                                paddingLeft: 5,
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                             }}
                             >
                                 Owner: {item.owner_id}
@@ -133,6 +135,7 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                                 paddingLeft: 5
                             }}
                             >
@@ -145,6 +148,7 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                                 paddingLeft: 5
                             }}
                             >
@@ -156,6 +160,7 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                                 paddingLeft: 5
                             }}
                             >
@@ -167,6 +172,7 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                                 paddingLeft: 5
                             }}
                             >
@@ -178,6 +184,7 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                                 paddingLeft: 5
                             }}
                             >
@@ -189,6 +196,7 @@ export default function ItemList(props) {
                             style={{
                                 marginTop: 5,
                                 color: 'white',
+                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                                 paddingLeft: 5
                             }}
                             >
