@@ -115,8 +115,10 @@ export const ep_house_member_remove = auth(async (req: Request, res: Response, u
 
     try
     {
+        const house = await db_house_get_by_id(new ObjectId(req.params.house_id))
+
         // Check both exist
-        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
+        if (!ObjectId.isValid(req.params.house_id) || !house)
         {
             std_response(res, HTTP.NOT_FOUND, { error: "house not found" });
             return;
@@ -126,6 +128,13 @@ export const ep_house_member_remove = auth(async (req: Request, res: Response, u
         if (!ObjectId.isValid(req.params.user_id) || !await db_user_get_by_id(new ObjectId(req.params.user_id)))
         {
             std_response(res, HTTP.NOT_FOUND, { error: "user not found" });
+            return;
+        }
+
+        // Only owner or the user being removed can remove user
+        if (user._id !== house.owner_id && !user._id.equals(req.params.user_id))
+        {
+            std_response(res, HTTP.UNAUTHORIZED, { error: "you do not have permission to perform this action" })
             return;
         }
 
@@ -146,10 +155,19 @@ export const ep_house_delete = auth(async (req: Request, res: Response, user: Us
 {
     try
     {
+        const house = await db_house_get_by_id(new ObjectId(req.params.house_id))
+
         // Check house exists
-        if (!ObjectId.isValid(req.params.house_id) || !await db_house_get_by_id(new ObjectId(req.params.house_id)))
+        if (!ObjectId.isValid(req.params.house_id) || !house)
         {
             std_response(res, HTTP.NOT_FOUND, { error: "house not found" });
+            return;
+        }
+
+        // Only owner can delete
+        if (house.owner_id !== user._id)
+        {
+            std_response(res, HTTP.UNAUTHORIZED, { error: "you do not have permission to perform this action" })
             return;
         }
 
