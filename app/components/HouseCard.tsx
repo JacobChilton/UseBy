@@ -122,6 +122,13 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
                                 </Button>
                                 <Text className='text-white text-xl'>Owner:</Text>
                                 <UserMiniCard name={house.owner_name} id={house.owner_id} />
+                                <View
+                                    style={{
+                                        height: 1,
+                                        width: "100%",
+                                        backgroundColor: "white",
+                                    }}
+                                />
                             </>
                         )
                     }

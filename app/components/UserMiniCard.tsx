@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import { useAPI } from '~/app/components/APIProvider';
 import { User, UserID } from '~/app/lib/api/APITypes';
+import { useImageCache } from './ImageCache';
 
 interface Props
 {
@@ -14,17 +15,11 @@ const UserMiniCard: React.FC<Props> = ({ name, id }) =>
 {
     const [image, set_image] = useState("");
 
-    const api = useAPI();
+    const cache = useImageCache();
 
     useEffect(() =>
     {
-        api.picture_get(id)
-            .then(pic =>
-            {
-                if (pic) set_image(pic)
-            })
-            // No img
-            .catch(() => { })
+        cache.get_image(id).then(set_image)
     }, [])
 
     return (
