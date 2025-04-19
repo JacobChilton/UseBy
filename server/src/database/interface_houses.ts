@@ -6,6 +6,7 @@ import { db_user_get_by_id } from "./interface_users";
 import { tg_is_house, tg_is_user } from "../types/database_typeguards";
 import { db_product_delete_by_house_id } from "./interface_products";
 import { std_response } from "../util/standard_response";
+import { AggHouse } from "../types/aggregated";
 
 // For now this just directly returns the promise
 export const db_house_insert = async (p_house: Omit<House, "_id">): Promise<HouseID> =>
@@ -135,31 +136,140 @@ export const db_house_get_by_name_and_owner_id = async (p_name: string, p_owner_
 }
 
 // Gets any houses the owner is a member of, or owns
-export const db_house_get_user_houses = async (p_user: UserID): Promise<Array<House>> =>
+export const db_house_get_user_houses = async (p_user: UserID): Promise<Array<AggHouse>> =>
 {
     try
     {
-        // Fetch
-        const raw = await db_con.collection(DB_COLLECTION_HOUSES).find(
-            {
-                // If any of these conditions are satisfied
-                $or:
-                    [
-                        // If owns
-                        { owner_id: p_user },
-                        // If member
-                        { members: p_user }
-                    ]
-            }).toArray();
 
-        // Check each house is valid
-        if (!raw.every(tg_is_house))
+        const b =
         {
-            console.error("invalid house object encountered")
-            throw new Error("failed to retrieve houses")
+            $addFields: {
+                owner_name: {
+                    $arrayElemAt: ["$info.name", 0]
+                }
+            }
         }
 
-        return raw;
+        // I wish for death
+        const agg =
+            [
+                // Only want the houses owned or inside
+                {
+                    $match:
+                    {
+                        $or:
+                            [
+                                // If owns
+                                { owner_id: p_user },
+                                // If member
+                                { members: p_user }
+                            ]
+
+                    }
+                },
+
+                // Now getting extra info for each user
+                {
+                    $lookup:
+                    {
+                        // Basically just a join table in sql
+
+                        // Im getting the user data from the users table
+                        from: "users",
+
+                        // I need this to access the current documents members array from inside the pipeline
+                        let:
+                        {
+                            members: "$members"
+                        },
+
+                        // This is a nested pipeline. Same as nested sql query
+                        pipeline:
+                            [
+                                // This just grabs every user whos id is inside the members array
+                                {
+
+                                    $match:
+                                    {
+
+                                        $expr:
+                                        {
+                                            // The $$ are required to access vars not in this document
+                                            $in: ["$_id", "$$members"]
+                                        }
+                                    }
+                                },
+
+                                // Project just means which fields to emit
+                                {
+                                    $project:
+                                    {
+                                        _id: 1,
+                                        name: 1
+                                    }
+                                }
+                            ],
+
+                        // This overwrites the original members array witht he the new one
+                        as: "members"
+                    },
+                },
+                {
+                    // Doing another stupid thing to add owner name
+                    $lookup:
+                    {
+                        // Same as before
+                        from: "users",
+                        let: { id: "$owner_id" },
+
+                        pipeline:
+                            [
+                                {
+                                    $match:
+                                    {
+                                        // Only matching id to id this time
+                                        $expr: { _id: "$$id" }
+                                    }
+                                },
+                                {
+                                    // Only want users name
+                                    $project:
+                                    {
+                                        name: 1
+                                    }
+                                }
+                            ],
+
+                        // This adds the info array to the output
+                        as: "info"
+                    },
+
+
+                },
+                {
+                    // Extract the name from the info array and append it to the output as owner_name, bc im
+                    // gonna remove the original array
+                    $addFields:
+                    {
+                        owner_name:
+                        {
+                            $arrayElemAt: ["$info.name", 0]
+                        }
+                    }
+                },
+                {
+                    // Omit the info array that was added earlier bc it looks dumb and is useless and stupid
+                    $project:
+                    {
+                        info: 0
+                    }
+                }
+            ]
+
+        // Fetch
+        const raw = await db_con.collection(DB_COLLECTION_HOUSES).aggregate(agg).toArray();
+
+        return raw as Array<AggHouse>;
     }
     catch (e)
     {

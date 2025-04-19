@@ -21,7 +21,7 @@ export const ep_users_get = (req: Request, res: Response) =>
             if (user)
             {
 
-                std_response(res, HTTP.OK, { id: user._id, name: user.name, picture: user.picture });
+                std_response(res, HTTP.OK, { id: user._id, name: user.name });
             }
             else
             {

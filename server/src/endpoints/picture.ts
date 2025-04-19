@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { HTTP } from "../util/http";
 import { std_response } from "../util/standard_response";
-import { db_picture_get_by_id, db_picture_insert } from "../database/interface_pictures";
+import { db_picture_delete_by_user, db_picture_get_by_user_id, db_picture_insert } from "../database/interface_pictures";
 import { User } from "../types/database";
 import { auth } from "../auth/endpoints";
-import { db_user_patch_picture } from "../database/interface_users";
 import { exists } from "../util/requests";
 import { ObjectId } from "mongodb";
 
@@ -51,11 +50,11 @@ export const ep_picture_post = auth(async (req: Request, res: Response, user: Us
 
     try
     {
-        // Save to pics
-        const pic = await db_picture_insert(b64);
+        // Delete old
+        await db_picture_delete_by_user(user._id);
 
-        // Update in user
-        await db_user_patch_picture(user, pic);
+        // Save new
+        await db_picture_insert(b64, user._id);
 
         // Yay
         std_response(res, HTTP.OK, { message: "success" });
@@ -69,7 +68,7 @@ export const ep_picture_post = auth(async (req: Request, res: Response, user: Us
 
 export const ep_picture_get = async (req: Request, res: Response) =>
 {
-    if (!exists(req.params, "picture_id"))
+    if (!exists(req.params, "user_id"))
     {
         std_response(res, HTTP.BAD_REQUEST, { error: "missing params" });
         return;
@@ -78,7 +77,7 @@ export const ep_picture_get = async (req: Request, res: Response) =>
     // Get img data
     try
     {
-        const data = await db_picture_get_by_id(new ObjectId(req.params.picture_id));
+        const data = await db_picture_get_by_user_id(new ObjectId(req.params.user_id));
         if (!data)
         {
             std_response(res, HTTP.NOT_FOUND, { error: "image not found" });

@@ -16,7 +16,6 @@ const ProfileScanner: React.FC<Props> = ({ visible, close, user_scanned }) =>
 {
     const [scanned_id, set_scanned_id] = useState<UserID>("");
     const [user, set_user] = useState<Omit<User, "password" | "email">>();
-    const [loading_user, set_loading_user] = useState(false);
     const [picture, set_picture] = useState("");
     const api = useAPI();
     const [permission, requestPermission] = useCameraPermissions();

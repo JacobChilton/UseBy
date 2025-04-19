@@ -17,8 +17,7 @@ export interface User
     _id: UserID,
     email: string,
     password: string,
-    name: string,
-    picture?: PictureID
+    name: string
 }
 
 export interface Product
@@ -45,5 +44,6 @@ export interface House
 export interface Picture
 {
     _id: PictureID,
+    owner_id: UserID,
     b64: string
 }

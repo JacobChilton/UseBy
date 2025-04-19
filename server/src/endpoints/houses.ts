@@ -78,6 +78,13 @@ export const ep_house_member_add = auth(async (req: Request, res: Response, user
         return;
     }
 
+    // Cannot invite themself
+    if (user._id.equals(req.body.user_id))
+    {
+        std_response(res, HTTP.BAD_REQUEST, { error: "invited user is the owner of this house" });
+        return;
+    }
+
     try
     {
         // Check both exist
@@ -132,7 +139,7 @@ export const ep_house_member_remove = auth(async (req: Request, res: Response, u
         }
 
         // Only owner or the user being removed can remove user
-        if (user._id !== house.owner_id && !user._id.equals(req.params.user_id))
+        if (!user._id.equals(house.owner_id) && !user._id.equals(req.params.user_id))
         {
             std_response(res, HTTP.UNAUTHORIZED, { error: "you do not have permission to perform this action" })
             return;
@@ -165,8 +172,9 @@ export const ep_house_delete = auth(async (req: Request, res: Response, user: Us
         }
 
         // Only owner can delete
-        if (house.owner_id !== user._id)
+        if (!house.owner_id.equals(user._id))
         {
+            console.log(house.owner_id, user._id)
             std_response(res, HTTP.UNAUTHORIZED, { error: "you do not have permission to perform this action" })
             return;
         }

@@ -5,11 +5,12 @@ import { DB_COLLECTION_PICTURES } from "./info";
 
 
 // Returns the created id
-export const db_picture_insert = async (p_base64: string): Promise<PictureID> =>
+export const db_picture_insert = async (p_base64: string, p_user: UserID): Promise<PictureID> =>
 {
     const insert: Partial<Picture> =
     {
-        b64: p_base64
+        b64: p_base64,
+        owner_id: p_user
     }
 
     try
@@ -23,12 +24,31 @@ export const db_picture_insert = async (p_base64: string): Promise<PictureID> =>
     }
 }
 
-export const db_picture_get_by_id = async (p_id: PictureID): Promise<Picture | undefined> =>
+export const db_picture_delete_by_user = async (p_user: UserID): Promise<void> =>
+{
+    const deleter: Partial<Picture> =
+    {
+        owner_id: p_user
+    }
+
+    try
+    {
+        await db_con.collection(DB_COLLECTION_PICTURES).deleteMany(deleter);
+    }
+    catch (e)
+    {
+        console.error(e);
+        throw new Error("failed to delete image data");
+    }
+}
+
+
+export const db_picture_get_by_user_id = async (p_id: UserID): Promise<Picture | undefined> =>
 {
     try
     {
         // Fetch
-        const raw = await db_con.collection(DB_COLLECTION_PICTURES).findOne({ _id: p_id });
+        const raw = await db_con.collection(DB_COLLECTION_PICTURES).findOne({ owner_id: p_id });
 
         // No product found
         if (!tg_is_picture(raw)) return undefined;

@@ -1,19 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
-import { View, TouchableOpacity, ScrollView } from 'react-native';
-import { Text, Button, Portal, Modal } from 'react-native-paper';
-import { House, Product, UserID } from '~/app/lib/api/APITypes';
-import { useAPI } from '~/app/components/APIProvider';
-import PopupFormContents from './PopupFormContents';
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 import HouseCard from './HouseCard';
-import { reload } from 'expo-router/build/global-state/routing';
+import { AggHouse } from '~/app/lib/api/aggregated';
 
 interface Props
 {
-    houses: Array<House>,
+    houses: Array<AggHouse>,
     reload?: () => void,
     user: string,
     title?: string,
-    invite: () => Promise<string>
+    invite: (p_house: string) => void
 }
 
 const HouseList: React.FC<Props> = ({ houses, reload, user, title, invite }) =>
@@ -26,13 +22,14 @@ const HouseList: React.FC<Props> = ({ houses, reload, user, title, invite }) =>
         <View>
             <Text className='text-xl'>{title}</Text>
             <View className="mt-4 gap-4">
-                {houses.map((h) => <HouseCard
-                    invite={invite}
-                    house={h}
-                    user={user}
-                    key={h._id}
-                    removed={() => { if (reload) reload() }}
-                />)}
+                {houses.map((h) =>
+                    <HouseCard
+                        invite={invite}
+                        house={h}
+                        user={user}
+                        key={h._id}
+                        removed={() => { if (reload) reload() }}
+                    />)}
                 {houses.length === 0 && <Text>No houses here!</Text>}
             </View>
         </View>)

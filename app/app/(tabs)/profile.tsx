@@ -33,19 +33,17 @@ export default function Profile()
         {
             console.log(u)
             set_user(u);
-            if (u.picture)
-            {
-                api.picture_get(u.picture)
-                    .then((i) =>
-                    {
-                        console.log(i)
-                        if (i) set_img(i)
-                    })
-                    .catch(console.error)
-            }
+            api.picture_get(u._id)
+                .then((i) =>
+                {
+                    console.log(i)
+                    if (i) set_img(i)
+                })
+                .catch(console.error)
         }).catch(console.error);
 
     }, [])
+
 
     if (!user) return <Text>Loading</Text>;
 
@@ -91,11 +89,11 @@ export default function Profile()
                 </Portal>
 
                 {
-                    img ? <QRCode
+                    user ? <QRCode
                         ecl="H"
                         value={user._id}
-                        logo={{ uri: img }}
-                        logoSize={40}
+                        logo={img && { uri: img }}
+                        logoSize={img ? 40 : undefined}
                         logoBackgroundColor='transparent'
                         logoMargin={5}
                         logoBorderRadius={20}

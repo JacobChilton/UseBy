@@ -46,5 +46,6 @@ export const tg_is_picture = (p_obj: any): p_obj is Picture =>
 {
     return p_obj &&
         p_obj._id instanceof ObjectId &&
-        typeof p_obj.b64 === "string"
+        typeof p_obj.b64 === "string" &&
+        p_obj.owner_id instanceof ObjectId;
 }

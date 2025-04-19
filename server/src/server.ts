@@ -71,7 +71,7 @@ server.get("/barcode", ep_barcode);
 // PICTURE //
 /////////////
 server.post("/images", file_uploader.single("image"), ep_picture_post);
-server.get("/images/:picture_id", ep_picture_get);
+server.get("/images/:user_id", ep_picture_get);
 
 // Launch server
 server.listen(3076, () =>

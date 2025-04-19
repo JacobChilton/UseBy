@@ -1,3 +1,4 @@
+import { AggHouse } from "./aggregated";
 import { APIError } from "./APIError";
 import { House, HouseID, Product, ProductID, User, UserID } from "./APITypes";
 
@@ -143,13 +144,13 @@ export const house_create = async (p_token: string, p_name: string): Promise<Hou
 }
 
 // Returns houses the logged in user either owns or is a member of
-export const house_get_all = async (p_token: string): Promise<Array<House>> =>
+export const house_get_all = async (p_token: string): Promise<Array<AggHouse>> =>
 {
     try
     {
         const { json } = await call_auth(p_token, "/houses", "GET");
 
-        if (Array.isArray(json)) return json as Array<House>;
+        if (Array.isArray(json)) return json as Array<AggHouse>;
         else throw new APIError(json.message || json.error || "Unknown error")
     }
     catch (e)
@@ -348,12 +349,12 @@ export const barcode_fetch = async (p_token: string, p_barcode: string): Promise
     }
 }
 
-// Get b64 img from id
-export const picture_get = async (p_id: string): Promise<string | undefined> =>
+// Get b64 img from user id
+export const picture_get = async (p_user_id: string): Promise<string | undefined> =>
 {
     try
     {
-        const res = await fetch(API_URL_BASE + "/images/" + p_id, { method: "GET" });
+        const res = await fetch(API_URL_BASE + "/images/" + p_user_id, { method: "GET" });
 
         if (!res.ok) throw new APIError("Unknown error");
 
