@@ -1,6 +1,6 @@
 import { ScrollView, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Button, DefaultTheme, PaperProvider, Text } from 'react-native-paper';
+import { Button, DefaultTheme, Text } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
 import { House, } from '../lib/api/APITypes';
 import HouseList from '~/components/HouseList';
@@ -12,15 +12,6 @@ import { AggHouse } from '../lib/api/aggregated';
 
 export const Houses = () =>
 {
-    const customTheme = {
-        ...DefaultTheme,
-        colors: {
-            ...DefaultTheme.colors,
-            text: 'black',
-            primary: '#6F4AAA',
-        },
-    };
-
     const api = useAPI();
     const [houses, set_houses] = useState<Array<AggHouse>>([]);
     const [loading, set_loading] = useState(false);
@@ -57,12 +48,11 @@ export const Houses = () =>
             .finally(() => set_selected_house(""))
     }
 
-    if (loading) return <PaperProvider theme={customTheme}>
-        <Text>Loading</Text>
-    </PaperProvider>
+    if (loading) return <Text>Loading</Text>
+
 
     return (
-        <PaperProvider theme={customTheme}>
+        <>
             <CreateHouseModal
                 created={load_houses}
                 open={show_create_house_modal}
@@ -141,7 +131,7 @@ export const Houses = () =>
                         </View>
                 }
             </View>
-        </PaperProvider>
+        </>
     );
 }
 

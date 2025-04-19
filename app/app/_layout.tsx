@@ -3,12 +3,24 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import APIProvider, { useAPI } from './components/APIProvider'; // Adjust path as necessary
 import * as React from 'react';
+import { DefaultTheme, PaperProvider } from 'react-native-paper';
+
+const customTheme = {
+    ...DefaultTheme,
+    colors: {
+        ...DefaultTheme.colors,
+        text: 'black',
+        primary: '#6F4AAA',
+    },
+};
 
 function RootLayoutNav()
 {
     const router = useRouter();
     const segments = useSegments();
     const { logged_in } = useAPI();
+
+
 
     useEffect(() =>
     {
@@ -41,7 +53,9 @@ export default function RootLayout()
 {
     return (
         <APIProvider> {/* <-- Must wrap your layout here */}
-            <RootLayoutNav />
+            <PaperProvider theme={customTheme}>
+                <RootLayoutNav />
+            </PaperProvider>
         </APIProvider>
     );
 }
