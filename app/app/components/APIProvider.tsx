@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useRef, useState } from 'react'
 import { APIError } from '../lib/api/APIError';
 import { barcode_fetch, house_create, house_delete, house_get_all, house_member_add, house_member_remove, house_product_add, house_product_delete, house_product_get_all, house_product_update, house_update_name, login, picture_get, profile_get, user_create, user_get } from '../lib/api/interface';
 import { House, HouseID, Product, ProductID, User, UserID } from '../lib/api/APITypes';
@@ -43,7 +43,7 @@ interface APIProviderInterface
     // Get name and image from barcode
     barcode_fetch: (p_barcode: string) => Promise<{ name: string, image: string } | undefined>
     // Get image by user id
-    picture_get: (p_user_id: string) => Promise<string | undefined>;
+    picture_get: (p_user_id: string) => Promise<string>;
 }
 
 const context = createContext<APIProviderInterface | null>(null)
@@ -62,7 +62,8 @@ interface APIProviderProps
 
 const APIProvider: React.FC<APIProviderProps> = ({ children }) =>
 {
-    const [token, set_token] = useState<string>("")
+    const [token, set_token] = useState<string>("");
+    const image_cache = useRef(new Map<UserID, string>());
 
     const exported: APIProviderInterface =
     {
@@ -70,28 +71,52 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) =>
         logged_in: !!token,
 
         // Login user
-        login: useCallback(async (p_email: string, p_password: string) =>
+        login: async (p_email: string, p_password: string) =>
         {
             // Not handling error on purpose
             const response = await login(p_email, p_password);
             set_token(response);
-        }, []),
-        logout: useCallback(() => set_token(""), []),
-        user_create: useCallback((p_email: string, p_password: string, p_name: string) => user_create(p_email, p_password, p_name), []),
-        user_get: useCallback((p_id: UserID) => user_get(token, p_id), [token]),
-        profile_get: useCallback(() => profile_get(token), [token]),
-        house_create: useCallback((p_name: string) => house_create(token, p_name), [token]),
-        house_get_all: useCallback(() => house_get_all(token), [token]),
-        house_delete: useCallback((p_house: HouseID) => house_delete(token, p_house), [token]),
-        house_update_name: useCallback((p_house: HouseID, p_new_name: string) => house_update_name(token, p_house, p_new_name), [token]),
-        house_member_add: useCallback((p_house: HouseID, p_member: UserID) => house_member_add(token, p_house, p_member), [token]),
-        house_member_remove: useCallback((p_house: HouseID, p_member: UserID) => house_member_remove(token, p_house, p_member), [token]),
-        house_product_add: useCallback((p_house: HouseID, p_product: Omit<Product, "_id" | "owner_id" | "house_id">) => house_product_add(token, p_house, p_product), [token]),
-        house_product_get_all: useCallback((p_house: HouseID) => house_product_get_all(token, p_house), [token]),
-        house_product_delete: useCallback((p_house: HouseID, p_product: ProductID) => house_product_delete(token, p_house, p_product), [token]),
-        house_product_update: useCallback((p_house: HouseID, p_product: ProductID, p_updates: Partial<Omit<Product, "_id" | "owner_id" | "house_id">>) => house_product_update(token, p_house, p_product, p_updates), [token]),
-        barcode_fetch: useCallback((p_barcode: string) => barcode_fetch(token, p_barcode), [token]),
-        picture_get: useCallback((p_user_id: string) => picture_get(p_user_id), []),
+        },
+        logout: () => set_token(""),
+        user_create: (p_email: string, p_password: string, p_name: string) => user_create(p_email, p_password, p_name),
+        user_get: (p_id: UserID) => user_get(token, p_id),
+        profile_get: () => profile_get(token),
+        house_create: (p_name: string) => house_create(token, p_name),
+        house_get_all: () => house_get_all(token),
+        house_delete: (p_house: HouseID) => house_delete(token, p_house),
+        house_update_name: (p_house: HouseID, p_new_name: string) => house_update_name(token, p_house, p_new_name),
+        house_member_add: (p_house: HouseID, p_member: UserID) => house_member_add(token, p_house, p_member),
+        house_member_remove: (p_house: HouseID, p_member: UserID) => house_member_remove(token, p_house, p_member),
+        house_product_add: (p_house: HouseID, p_product: Omit<Product, "_id" | "owner_id" | "house_id">) => house_product_add(token, p_house, p_product),
+        house_product_get_all: (p_house: HouseID) => house_product_get_all(token, p_house),
+        house_product_delete: (p_house: HouseID, p_product: ProductID) => house_product_delete(token, p_house, p_product),
+        house_product_update: (p_house: HouseID, p_product: ProductID, p_updates: Partial<Omit<Product, "_id" | "owner_id" | "house_id">>) => house_product_update(token, p_house, p_product, p_updates),
+        barcode_fetch: (p_barcode: string) => barcode_fetch(token, p_barcode),
+        picture_get: async (p_user_id: string) => 
+        {
+            if (image_cache.current.has(p_user_id))
+            {
+                console.log("Cache hit");
+                return image_cache.current.get(p_user_id) || ""
+            }
+
+            try
+            {
+                console.log("Cache miss");
+                const pic = await picture_get(p_user_id);
+
+                // Set even if invalid, as dont want to check if i know no image exists
+                image_cache.current.set(p_user_id, pic || "");
+
+                return pic || "";
+            }
+            catch (e)
+            {
+                // Probably 404, so I wont check.
+                image_cache.current.set(p_user_id, "");
+                return "";
+            }
+        },
     }
 
     return (

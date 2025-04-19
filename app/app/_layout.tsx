@@ -3,9 +3,6 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import APIProvider, { useAPI } from './components/APIProvider'; // Adjust path as necessary
 import * as React from 'react';
-import ImageCache from '~/components/ImageCache';
-
-
 
 function RootLayoutNav()
 {
@@ -44,9 +41,7 @@ export default function RootLayout()
 {
     return (
         <APIProvider> {/* <-- Must wrap your layout here */}
-            <ImageCache>
-                <RootLayoutNav />
-            </ImageCache>
+            <RootLayoutNav />
         </APIProvider>
     );
 }
