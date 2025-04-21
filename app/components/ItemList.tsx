@@ -11,6 +11,7 @@ export default function ItemList(props) {
     const setProducts = props.passSetProducts;
 
     const [expired, setExpired] = useState<Product[]>([]);
+    const [expiringThisWeek, setExpiringThisWeek] = useState<Product[]>([]);
     const [expiringThisMonth, setExpiringThisMonth] = useState<Product[]>([]);
     const [expiringLater, setExpiringLater] = useState<Product[]>([]);
 
@@ -69,6 +70,7 @@ export default function ItemList(props) {
         function checkDates() {
 
             let newExpiring: Product[] = [];
+            let newExpiringThisWeek: Product[] = [];
             let newExpiringThisMonth: Product[] = [];
             let newExpiringLater: Product[] = [];
 
@@ -80,6 +82,14 @@ export default function ItemList(props) {
                 let mm = String(todayDate.getMonth() + 1).padStart(2, '0');
                 let yyyy = todayDate.getFullYear();
                 let today = yyyy + '-' + mm + '-' + dd;
+
+                // Get date a week from today
+                let nextWeekDate = new Date();
+                nextWeekDate.setDate(new Date().getDate() + 7);
+                dd = String(nextWeekDate.getDate()).padStart(2, '0');
+                mm = String(nextWeekDate.getMonth() + 1).padStart(2, '0');
+                yyyy = nextWeekDate.getFullYear();
+                let nextWeek = yyyy + '-' + mm + '-' + dd;
 
                 // Get date a month from today
                 mm = String(todayDate.getMonth() + 2).padStart(2, '0');
@@ -94,6 +104,10 @@ export default function ItemList(props) {
 
                     newExpiring.push(product);
                 }
+                else if (productExpiry < nextWeek) { // If product expiring this week
+
+                    newExpiringThisWeek.push(product);
+                }
                 else if (productExpiry < nextMonth) { // If product expiring this month
 
                     newExpiringThisMonth.push(product);
@@ -106,6 +120,7 @@ export default function ItemList(props) {
 
             // Set expiration groups
             setExpired(newExpiring);
+            setExpiringThisWeek(newExpiringThisWeek);
             setExpiringThisMonth(newExpiringThisMonth);
             setExpiringLater(newExpiringLater);
         }
@@ -136,6 +151,16 @@ export default function ItemList(props) {
                     }}>
                     <h1>Expired</h1>
                     <ItemListGroup passProducts={expired}/>
+                </div>
+
+                <div style={{ borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: 'grey',
+                    padding: 10,
+                    marginTop: 10
+                    }}>
+                    <h1>Expiring This Week</h1>
+                    <ItemListGroup passProducts={expiringThisWeek}/>
                 </div>
                 
                 <div style={{ borderRadius: 10,
