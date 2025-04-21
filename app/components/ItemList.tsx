@@ -23,7 +23,7 @@ export default function ItemList(props) {
     useEffect(() => {
 
         // Refresh product list
-        api.house_product_get_all("6803011913572dd35b206ef9").then((products) => {
+        api.house_product_get_all("6806b5858798a785965c01f1").then((products) => {
 
             // Sort the product list by order of expiration
             products.sort(function(a, b) {
