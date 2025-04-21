@@ -25,7 +25,7 @@ export default function PopupFormContents(props)
     const [itemName, setItemName] = useState('');
     const [barcode, setBarcode] = useState("");
     const [items, setItems] = useState<Array<Product>>([]);
-    const [useByDate, setUseByDate] = useState("");
+    const [useByDate, setUseByDate] = useState<Date>();
     const [quantity, setQuantity] = useState("1");
     const [availability, setAvailability] = useState(Availability.PRIVATE);
     const [freeze, setFreeze] = useState(false);
@@ -73,12 +73,14 @@ export default function PopupFormContents(props)
 
     const handleAddItem = () =>
     {
+        console.log("USEBYDATE: " + useByDate);
+
         if (itemName.trim())
         {
             const product:Omit<Product, "_id" | "owner_id" | "house_id"> = {
                 name: itemName,
                 upc: barcode,
-                use_by: new Date(2025, 4, 7), // still hardcoded
+                use_by: useByDate, // still hardcoded
                 quantity: +quantity,
                 availability: availability,
                 frozen: freeze
@@ -234,14 +236,14 @@ export default function PopupFormContents(props)
                             onChangeText={setItemName} // Update itemName state as user types
                         />
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
-                        <TextInput
-                            placeholder='Enter use by date dd/mm/yyyy'
-                            mode="outlined"
-                            style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={useByDate}
-                            onChangeText={setUseByDate} // Update use by date
-                        />
+                        <Text style={{ fontSize: 18, marginBottom: 20}}>Use By Date</Text>
+                        <input
+                            type="date"
+                            id="useByDate"
+                            style={{maxWidth: 130, marginBottom: 20, borderWidth: 1}}
+                            onChange={(e) => setUseByDate(e.target.value)}
+                            >
+                        </input>
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
                         <TextInput
