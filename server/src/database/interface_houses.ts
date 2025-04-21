@@ -141,15 +141,6 @@ export const db_house_get_user_houses = async (p_user: UserID): Promise<Array<Ag
     try
     {
 
-        const b =
-        {
-            $addFields: {
-                owner_name: {
-                    $arrayElemAt: ["$info.name", 0]
-                }
-            }
-        }
-
         // I wish for death
         const agg =
             [
@@ -228,7 +219,7 @@ export const db_house_get_user_houses = async (p_user: UserID): Promise<Array<Ag
                                     $match:
                                     {
                                         // Only matching id to id this time
-                                        $expr: { _id: "$$id" }
+                                        $expr: { $eq: ["$_id", "$$id"] }
                                     }
                                 },
                                 {
