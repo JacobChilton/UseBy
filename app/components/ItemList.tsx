@@ -67,6 +67,17 @@ export default function ItemList(props) {
             }
         }
 
+        // Returns date of the format yyyy-mm-dd
+        function formatDate(dateToFormat: Date) {
+
+            let dd = String(dateToFormat.getDate()).padStart(2, '0');
+            let mm = String(dateToFormat.getMonth() + 1).padStart(2, '0');
+            let yyyy = dateToFormat.getFullYear();
+            let date = yyyy + '-' + mm + '-' + dd;
+
+            return date;
+        }
+
         function checkDates() {
 
             let newExpiring: Product[] = [];
@@ -74,28 +85,18 @@ export default function ItemList(props) {
             let newExpiringThisMonth: Product[] = [];
             let newExpiringLater: Product[] = [];
 
+            let todayDate = new Date;
+            let today = formatDate(todayDate);
+
+            let nextWeekDate = new Date;
+            nextWeekDate.setDate(new Date().getDate() + 7);
+            let nextWeek = formatDate(nextWeekDate);
+
+            let nextMonthDate = new Date;
+            nextMonthDate.setDate(new Date().getDate() + 28);
+            let nextMonth = formatDate(nextMonthDate);
+
             for (let product of products) { // Check when each product is expiring
-
-                // Get today's date
-                let todayDate = new Date();
-                let dd = String(todayDate.getDate()).padStart(2, '0');
-                let mm = String(todayDate.getMonth() + 1).padStart(2, '0');
-                let yyyy = todayDate.getFullYear();
-                let today = yyyy + '-' + mm + '-' + dd;
-
-                // Get date a week from today
-                let nextWeekDate = new Date();
-                nextWeekDate.setDate(new Date().getDate() + 7);
-                dd = String(nextWeekDate.getDate()).padStart(2, '0');
-                mm = String(nextWeekDate.getMonth() + 1).padStart(2, '0');
-                yyyy = nextWeekDate.getFullYear();
-                let nextWeek = yyyy + '-' + mm + '-' + dd;
-
-                // Get date a month from today
-                mm = String(todayDate.getMonth() + 2).padStart(2, '0');
-                let nextMonth = yyyy + '-' + mm + '-' + dd;
-
-                console.log("next month " + nextMonth);
 
                 // Put product's expiry date in same form
                 const productExpiry = product.use_by.split("T")[0];
