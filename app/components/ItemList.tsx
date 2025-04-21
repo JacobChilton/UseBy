@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { View, TouchableOpacity, ScrollView, Platform } from 'react-native';
-import { Text, Button, Portal, Modal } from 'react-native-paper';
-import { Product, UserID } from '~/app/lib/api/APITypes';
+import { View, ScrollView } from 'react-native';
+import { Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
-import PopupFormContents from './PopupFormContents';
+import ItemListGroup from './ItemListGroup';
 
 
 export default function ItemList(props) {
@@ -123,427 +122,42 @@ export default function ItemList(props) {
 
     return (
         <View className="mt-4"
-            style={{ maxHeight: '90%'}}>
+            style={{ maxHeight: '80%'}}>
 
             <ScrollView
                 style={{ maxHeight: '100%' }}
                 contentContainerStyle={{ paddingBottom: 20 }}
             >
+                <div style={{ borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: 'red',
+                    backgroundColor: "rgba(255, 0, 0, 0.6)",
+                    padding: 10
+                    }}>
+                    <h1>Expired</h1>
+                    <ItemListGroup passProducts={expired}/>
+                </div>
+                
+                <div style={{ borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: 'grey',
+                    padding: 10,
+                    marginTop: 10
+                    }}>
+                    <h1>Expiring This Month</h1>
+                    <ItemListGroup passProducts={expiringThisMonth}/>
+                </div>
 
-                <h1>Expired</h1>
-                {expired.map((item, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={{
-                            backgroundColor: visibleProducts[index] ? '#6F4AAA' : 'white', 
-                            padding: 10,
-                            marginVertical: 5,
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            borderColor: 'grey', 
-                            maxHeight: '80%',
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 4 },
-                            shadowOpacity: 0.3,
-                            shadowRadius: 3,
-                          }}
-                        onPress={() => {
-                            setVisibleProducts(prev => {
-                                const newVisibility = [...prev];
-                                newVisibility[index] = !newVisibility[index];
-                                return newVisibility;
-                            });
-                          }}
-                    >
-                        <Text
-                            style={{
-                                color: visibleProducts[index] ? 'white' : '#4A4A4A',
-                                paddingLeft: 5,
-                                fontWeight: 700,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace',
-                            }}
-                        >
-                            {item.name}
-                        </Text>
-
-                        <Text
-                            style={{
-                                color: visibleProducts[index] ? 'white' : 'grey',
-                                marginTop: 8,
-                                paddingLeft: 5,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                            }}
-                        >
-                            Quantity: {item.quantity}
-                        </Text>
-
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                paddingLeft: 5,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                            }}
-                            >
-                                Owner: {item.owner_id}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                House: {item.house_name}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Use By: {item.use_by}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Barcode: {item.upc}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Quantity: {item.quantity}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Availability: {item.availability}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Frozen: {item.frozen ? "Yes" : "No"}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <PopupFormContents formType="Edit Item" currentItem={item} passProducts={products} passSetProducts={setProducts}/>
-                        )}
-                    </TouchableOpacity>
-                ))}
-
-                <h1>Expiring This Month</h1>
-                {expiringThisMonth.map((item, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={{
-                            backgroundColor: visibleProducts[index] ? '#6F4AAA' : 'white', 
-                            padding: 10,
-                            marginVertical: 5,
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            borderColor: 'grey', 
-                            maxHeight: '80%',
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 4 },
-                            shadowOpacity: 0.3,
-                            shadowRadius: 3,
-                          }}
-                        onPress={() => {
-                            setVisibleProducts(prev => {
-                                const newVisibility = [...prev];
-                                newVisibility[index] = !newVisibility[index];
-                                return newVisibility;
-                            });
-                          }}
-                    >
-                        <Text
-                            style={{
-                                color: visibleProducts[index] ? 'white' : '#4A4A4A',
-                                paddingLeft: 5,
-                                fontWeight: 700,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace',
-                            }}
-                        >
-                            {item.name}
-                        </Text>
-
-                        <Text
-                            style={{
-                                color: visibleProducts[index] ? 'white' : 'grey',
-                                marginTop: 8,
-                                paddingLeft: 5,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                            }}
-                        >
-                            Quantity: {item.quantity}
-                        </Text>
-
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                paddingLeft: 5,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                            }}
-                            >
-                                Owner: {item.owner_id}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                House: {item.house_name}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Use By: {item.use_by}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Barcode: {item.upc}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Quantity: {item.quantity}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Availability: {item.availability}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Frozen: {item.frozen ? "Yes" : "No"}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <PopupFormContents formType="Edit Item" currentItem={item} passProducts={products} passSetProducts={setProducts}/>
-                        )}
-                    </TouchableOpacity>
-                ))}
-
-                <h1>Expiring Later</h1>
-
-                {expiringLater.map((item, index) => (
-                    <TouchableOpacity
-                        key={index}
-                        style={{
-                            backgroundColor: visibleProducts[index] ? '#6F4AAA' : 'white', 
-                            padding: 10,
-                            marginVertical: 5,
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            borderColor: 'grey', 
-                            maxHeight: '80%',
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 4 },
-                            shadowOpacity: 0.3,
-                            shadowRadius: 3,
-                          }}
-                        onPress={() => {
-                            setVisibleProducts(prev => {
-                                const newVisibility = [...prev];
-                                newVisibility[index] = !newVisibility[index];
-                                return newVisibility;
-                            });
-                          }}
-                    >
-                        <Text
-                            style={{
-                                color: visibleProducts[index] ? 'white' : '#4A4A4A',
-                                paddingLeft: 5,
-                                fontWeight: 700,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace',
-                            }}
-                        >
-                            {item.name}
-                        </Text>
-
-                        <Text
-                            style={{
-                                color: visibleProducts[index] ? 'white' : 'grey',
-                                marginTop: 8,
-                                paddingLeft: 5,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                            }}
-                        >
-                            Quantity: {item.quantity}
-                        </Text>
-
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                paddingLeft: 5,
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                            }}
-                            >
-                                Owner: {item.owner_id}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                House: {item.house_name}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Use By: {item.use_by}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Barcode: {item.upc}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Quantity: {item.quantity}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Availability: {item.availability}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <Text
-                            style={{
-                                marginTop: 5,
-                                color: 'white',
-                                fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
-                                paddingLeft: 5
-                            }}
-                            >
-                                Frozen: {item.frozen ? "Yes" : "No"}
-                            </Text>
-                        )}
-                        {visibleProducts[index] && (
-                            <PopupFormContents formType="Edit Item" currentItem={item} passProducts={products} passSetProducts={setProducts}/>
-                        )}
-                    </TouchableOpacity>
-                ))}
+                <div style={{ borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: 'grey',
+                    padding: 10,
+                    marginTop: 10
+                    }}>
+                    <h1>Expiring Later</h1>
+                    <ItemListGroup passProducts={expiringLater}/>
+                </div>
+                
             </ScrollView>
         </View>
   );

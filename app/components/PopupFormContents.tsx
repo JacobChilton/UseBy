@@ -63,22 +63,11 @@ export default function PopupFormContents(props)
 
     const refreshProductList = () => {
 
-       // if (props.formType == "Edit Item") {
+        api.house_product_get_all("6803011913572dd35b206ef9").then((newItems) => {
 
-            console.log("REFRESHING");
-
-            api.house_product_get_all("6803011913572dd35b206ef9").then((newItems) => {
-
-                console.log(newItems);
-        
-                props.passSetProducts(newItems);
-            })
-            .catch(console.error);
-    
-            
-       // }
-
-        
+            props.passSetProducts(newItems);
+        })
+        .catch(console.error);
     }
 
 
