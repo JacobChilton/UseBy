@@ -143,45 +143,53 @@ export default function ItemList(props) {
                 style={{ maxHeight: '100%' }}
                 contentContainerStyle={{ paddingBottom: 20 }}
             >
-                <div style={{ borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: 'red',
-                    backgroundColor: "rgba(255, 0, 0, 0.6)",
-                    padding: 10
-                    }}>
-                    <h1>Expired</h1>
-                    <ItemListGroup passProducts={expired}/>
-                </div>
-
-                <div style={{ borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: 'grey',
-                    padding: 10,
-                    marginTop: 10
-                    }}>
-                    <h1>Expiring This Week</h1>
-                    <ItemListGroup passProducts={expiringThisWeek}/>
-                </div>
+                {expired.length != 0 &&
+                    <div style={{ borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: 'red',
+                        backgroundColor: "rgba(255, 0, 0, 0.6)",
+                        padding: 10
+                        }}>
+                        <h1>Expired</h1>
+                        <ItemListGroup passProducts={expired}/>
+                    </div>
+                }
                 
-                <div style={{ borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: 'grey',
-                    padding: 10,
-                    marginTop: 10
-                    }}>
-                    <h1>Expiring This Month</h1>
-                    <ItemListGroup passProducts={expiringThisMonth}/>
-                </div>
-
-                <div style={{ borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: 'grey',
-                    padding: 10,
-                    marginTop: 10
-                    }}>
-                    <h1>Expiring Later</h1>
-                    <ItemListGroup passProducts={expiringLater}/>
-                </div>
+                {expiringThisWeek.length != 0 &&
+                    <div style={{ borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: 'grey',
+                        padding: 10,
+                        marginTop: 10
+                        }}>
+                        <h1>Expiring This Week</h1>
+                        <ItemListGroup passProducts={expiringThisWeek}/>
+                    </div>
+                }
+                
+                {expiringThisMonth.length != 0 &&
+                    <div style={{ borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: 'grey',
+                        padding: 10,
+                        marginTop: 10
+                        }}>
+                        <h1>Expiring This Month</h1>
+                        <ItemListGroup passProducts={expiringThisMonth}/>
+                    </div>
+                }
+                
+                {expiringLater.length != 0 &&
+                    <div style={{ borderRadius: 10,
+                        borderWidth: 1,
+                        borderColor: 'grey',
+                        padding: 10,
+                        marginTop: 10
+                        }}>
+                        <h1>Expiring Later</h1>
+                        <ItemListGroup passProducts={expiringLater}/>
+                    </div>
+                }
                 
             </ScrollView>
         </View>
