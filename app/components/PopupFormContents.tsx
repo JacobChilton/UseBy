@@ -67,7 +67,7 @@ export default function PopupFormContents(props)
 
             console.log("REFRESHING");
 
-            api.house_product_get_all("67ebf33bc50778b4c4b6c531").then((newItems) => {
+            api.house_product_get_all("6803011913572dd35b206ef9").then((newItems) => {
 
                 console.log(newItems);
         
@@ -97,11 +97,11 @@ export default function PopupFormContents(props)
 
             if (props.formType === "Add Item") {
 
-                api.house_product_add("67ebf33bc50778b4c4b6c531", product).then(refreshProductList);
+                api.house_product_add("6803011913572dd35b206ef9", product).then(refreshProductList);
             }
             else if (props.formType === "Edit Item") {
 
-                api.house_product_update("67ebf33bc50778b4c4b6c531", props.currentItem._id, product).then(refreshProductList);
+                api.house_product_update("6803011913572dd35b206ef9", props.currentItem._id, product).then(refreshProductList);
                 
                 
             } 

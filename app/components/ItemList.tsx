@@ -19,7 +19,15 @@ export default function ItemList(props) {
     useEffect(() => {
 
         // Refresh product list
-        api.house_product_get_all("67ebf33bc50778b4c4b6c531").then(setProducts)
+        api.house_product_get_all("6803011913572dd35b206ef9").then((products) => {
+
+            // Sort the product list by order of expiration
+            products.sort(function(a, b) {
+                return (a.use_by < b.use_by) ? -1 : ((a.use_by > b.use_by) ? 1 : 0);
+            });
+
+            setProducts(products);
+        })
         .catch(console.error);
     }, []);
 
