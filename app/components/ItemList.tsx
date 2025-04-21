@@ -93,7 +93,7 @@ export default function ItemList(props) {
             let nextWeek = formatDate(nextWeekDate);
 
             let nextMonthDate = new Date;
-            nextMonthDate.setDate(new Date().getDate() + 28);
+            nextMonthDate.setDate(new Date().getDate() + 30);
             let nextMonth = formatDate(nextMonthDate);
 
             for (let product of products) { // Check when each product is expiring
@@ -118,7 +118,6 @@ export default function ItemList(props) {
                     newExpiringLater.push(product);
                 }
             }
-
             // Set expiration groups
             setExpired(newExpiring);
             setExpiringThisWeek(newExpiringThisWeek);
