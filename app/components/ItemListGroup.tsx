@@ -8,8 +8,12 @@ import PopupFormContents from './PopupFormContents';
 
 export default function ItemListGroup(props) {
 
+    const groupProducts = props.groupProducts;
+
     const products = props.passProducts;
     const setProducts = props.passSetProducts;
+    const refresh = props.passRefresh;
+    const setRefresh = props.passSetRefresh;
 
     const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
@@ -51,7 +55,7 @@ export default function ItemListGroup(props) {
         async function updateProductList() {
 
             const newProductList = await Promise.all(
-                products.map(async product => {
+                groupProducts.map(async product => {
 
                     const ownerName = await ownerLookup(product.owner_id);
                     const useByDate = await formatDisplayedDate(product.use_by);
@@ -66,7 +70,7 @@ export default function ItemListGroup(props) {
             setProductList(newProductList);
         }
 
-        setVisibleProducts(new Array(products.length).fill(false));
+        setVisibleProducts(new Array(groupProducts.length).fill(false));
         updateProductList();
 
     }, [products]);
@@ -75,7 +79,7 @@ export default function ItemListGroup(props) {
     return (
     
         <>
-            {productList.map((item, index) => (
+            {groupProducts.map((item, index) => (
                 <TouchableOpacity
                     key={index}
                     style={{
@@ -207,7 +211,7 @@ export default function ItemListGroup(props) {
                         </Text>
                     )}
                     {visibleProducts[index] && (
-                        <PopupFormContents formType="Edit Item" currentItem={item} passProducts={products} passSetProducts={setProducts}/>
+                        <PopupFormContents formType="Edit Item" currentItem={item} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     )}
                 </TouchableOpacity>
             ))}

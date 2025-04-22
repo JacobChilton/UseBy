@@ -21,6 +21,10 @@ export default function PopupFormContents(props)
 
     const api = useAPI();
 
+    const refresh = props.passRefresh;
+    const setRefresh = props.passSetRefresh;
+    
+
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState('');
     const [barcode, setBarcode] = useState("");
@@ -61,16 +65,6 @@ export default function PopupFormContents(props)
         }
     }
 
-    const refreshProductList = () => {
-
-        api.house_product_get_all("6806b5858798a785965c01f1").then((newItems) => {
-
-            props.passSetProducts(newItems);
-        })
-        .catch(console.error);
-    }
-
-
     const handleAddItem = () =>
     {
         console.log("USEBYDATE: " + useByDate);
@@ -88,11 +82,11 @@ export default function PopupFormContents(props)
 
             if (props.formType === "Add Item") {
 
-                api.house_product_add("6806b5858798a785965c01f1", product).then(refreshProductList);
+                api.house_product_add("6806b5858798a785965c01f1", product).then(setRefresh(!refresh));
             }
             else if (props.formType === "Edit Item") {
 
-                api.house_product_update("6806b5858798a785965c01f1", props.currentItem._id, product).then(refreshProductList);
+                api.house_product_update("6806b5858798a785965c01f1", props.currentItem._id, product).then(setRefresh(!refresh));
                 
                 
             } 

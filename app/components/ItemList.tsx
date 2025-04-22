@@ -10,33 +10,43 @@ export default function ItemList(props) {
     const products = props.passProducts;
     const setProducts = props.passSetProducts;
 
-    const [expired, setExpired] = useState<Product[]>([]);
-    const [expiringThisWeek, setExpiringThisWeek] = useState<Product[]>([]);
-    const [expiringThisMonth, setExpiringThisMonth] = useState<Product[]>([]);
-    const [expiringLater, setExpiringLater] = useState<Product[]>([]);
+    const [expired, setExpired] = useState<Array<Product>>([]);
+    const [expiringThisWeek, setExpiringThisWeek] = useState<Array<Product>>([]);
+    const [expiringThisMonth, setExpiringThisMonth] = useState<Array<Product>>([]);
+    const [expiringLater, setExpiringLater] = useState<Array<Product>>([]);
 
-    const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
-    const [productList, setProductList] = useState<Product[]>([]);
+    const [refresh, setRefresh] = useState<boolean>(false);
 
     const api = useAPI();
 
     useEffect(() => {
 
-        // Refresh product list
-        api.house_product_get_all("6806b5858798a785965c01f1").then((products) => {
+        async function refresh() {
 
-            // Sort the product list by order of expiration
-            products.sort(function(a, b) {
-                return (a.use_by < b.use_by) ? -1 : ((a.use_by > b.use_by) ? 1 : 0);
-            });
+            // Refresh product list
+            try {
+                const newData = await api.house_product_get_all("6806b5858798a785965c01f1");
 
-            setProducts(products);
-        })
-        .catch(console.error);
+                // Sort the product list by order of expiration
+                newData.sort(function(a, b) {
+                    return (a.use_by < b.use_by) ? -1 : ((a.use_by > b.use_by) ? 1 : 0);
+                });
 
-    }, []);
+                setProducts(newData);
+            }
+            catch {
+                console.error;
+            }
+            
+        }
+        
+        refresh();
+        console.log("refresh triggered");
+
+    }, [refresh]);
 
     useEffect(() => {
+        
 
         // Returns date of the format yyyy-mm-dd
         function formatDate(dateToFormat: Date) {
@@ -51,7 +61,7 @@ export default function ItemList(props) {
 
         function checkDates() {
 
-            let newExpiring: Product[] = [];
+            let newExpired: Product[] = [];
             let newExpiringThisWeek: Product[] = [];
             let newExpiringThisMonth: Product[] = [];
             let newExpiringLater: Product[] = [];
@@ -69,12 +79,17 @@ export default function ItemList(props) {
 
             for (let product of products) { // Check when each product is expiring
 
+                console.log(product);
+
                 // Put product's expiry date in same form
                 const productExpiry = product.use_by.split("T")[0];
     
                 if (productExpiry < today) { // If product expired
 
-                    newExpiring.push(product);
+                    newExpired.push(product);
+
+                    console.log("new expiring");
+                    console.log(newExpired);
                 }
                 else if (productExpiry < nextWeek) { // If product expiring this week
 
@@ -89,18 +104,33 @@ export default function ItemList(props) {
                     newExpiringLater.push(product);
                 }
             }
+
+
             // Set expiration groups
-            setExpired(newExpiring);
+            setExpired(newExpired);
             setExpiringThisWeek(newExpiringThisWeek);
             setExpiringThisMonth(newExpiringThisMonth);
             setExpiringLater(newExpiringLater);
+            console.log("NEW EXPIRED: ")
+            console.log(newExpired);
+            console.log("EXPIRED: ")
+            console.log(expired);
         }
+        
+
+        
         checkDates();
 
         console.log("setting products");
         console.log(products);
 
+
     }, [products]);
+
+    useEffect(() => {
+        console.log("hello expired");
+        console.log(expired);
+    }, [expired]);
     
 
     return (
@@ -119,7 +149,7 @@ export default function ItemList(props) {
                         padding: 10
                         }}>
                         <h1>Expired</h1>
-                        <ItemListGroup passProducts={expired}/>
+                        <ItemListGroup groupProducts={expired} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -131,7 +161,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring This Week</h1>
-                        <ItemListGroup passProducts={expiringThisWeek}/>
+                        <ItemListGroup groupProducts={expiringThisWeek} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -143,7 +173,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring This Month</h1>
-                        <ItemListGroup passProducts={expiringThisMonth}/>
+                        <ItemListGroup groupProducts={expiringThisMonth} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -155,7 +185,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring Later</h1>
-                        <ItemListGroup passProducts={expiringLater}/>
+                        <ItemListGroup groupProducts={expiringLater} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
