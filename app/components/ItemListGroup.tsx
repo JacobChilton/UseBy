@@ -69,17 +69,14 @@ export default function ItemListGroup(props) {
             );
             setProductList(newProductList);
         }
-
         setVisibleProducts(new Array(groupProducts.length).fill(false));
         updateProductList();
 
-    }, [products]);
-    
+    }, [products, groupProducts]);
 
     return (
-    
         <>
-            {groupProducts.map((item, index) => (
+            {productList.map((item, index) => (
                 <TouchableOpacity
                     key={index}
                     style={{
