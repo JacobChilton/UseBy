@@ -7,104 +7,123 @@ import ItemList from '~/components/ItemList';
 import { Availability, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 
-export default function PopupFormContents(props)
+interface Props
 {
-    const customTheme = {
-        ...DefaultTheme,
-        colors: {
-            ...DefaultTheme.colors,
-            text: 'black',
-            primary: '#6F4AAA',
-        },
-    };
+    passRefresh?: boolean,
+    passSetRefresh?: (bool: boolean) => void,
+    formType: string,
+    currentItem?: Product
+}
 
+const PopupFormContents: React.FC<Props> = (props: Props) =>
+{
     const api = useAPI();
 
     const refresh = props.passRefresh;
     const setRefresh = props.passSetRefresh;
-    
+
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState('');
     const [barcode, setBarcode] = useState("");
     const [items, setItems] = useState<Array<Product>>([]);
     const [useByDate, setUseByDate] = useState<Date>();
-    const [quantity, setQuantity] = useState("1");
+    const [quantity, setQuantity] = useState(1);
     const [availability, setAvailability] = useState(Availability.PRIVATE);
     const [freeze, setFreeze] = useState(false);
     const [cameraActive, setCameraActive] = useState(false);
 
-    if ((props.formType === "Edit Item") && (itemName != props.currentItem.name)) {
+    useEffect(() =>
+    {
+        if ((props.formType === "Edit Item") && (itemName != props.currentItem?.name))
+        {
 
-        console.log(props.currentItem);
+            console.log(props.currentItem);
 
-        if (itemName != props.currentItem.name) {
+            if (itemName != props.currentItem?.name)
+            {
 
-            setItemName(props.currentItem.name);
+                setItemName(props.currentItem?.name || "");
+            }
+            if (barcode != props.currentItem?.upc)
+            {
+
+                setBarcode(props.currentItem?.upc || "");
+            }
+            if (useByDate != props.currentItem?.use_by)
+            {
+
+                setUseByDate(props.currentItem?.use_by);
+            }
+            if (quantity != props.currentItem?.quantity)
+            {
+
+                setQuantity(props.currentItem?.quantity || 0);
+            }
+            if (availability != props.currentItem?.availability)
+            {
+
+                setAvailability(props.currentItem?.availability || Availability.COMMUNAL);
+            }
+            if (freeze != props.currentItem?.frozen)
+            {
+
+                setFreeze(props.currentItem?.frozen || false);
+            }
         }
-        if (barcode != props.currentItem.upc) {
+    }, [])
 
-            setBarcode(props.currentItem.upc);
-        }
-        if (useByDate != props.currentItem.use_by) {
 
-            setUseByDate(props.currentItem.use_by);
-        }
-        if (quantity != props.currentItem.quantity) {
-
-            setQuantity(props.currentItem.quantity);
-        }
-        if (availability != props.currentItem.availability) {
-
-            setAvailability(props.currentItem.availability);
-        }
-        if (freeze != props.currentItem.frozen) {
-
-            setFreeze(props.currentItem.frozen);
-        }
-    }
-
-    const handleAddItem = () => {
+    const handleAddItem = () =>
+    {
 
         if (itemName.trim())
         {
-            const product:Omit<Product, "_id" | "owner_id" | "house_id"> = {
+            const product: Omit<Product, "_id" | "owner_id" | "house_id"> = {
                 name: itemName,
                 upc: barcode,
-                use_by: useByDate, // still hardcoded
-                quantity: +quantity,
+                use_by: useByDate || new Date(0), // still hardcoded
+                quantity: quantity,
                 availability: availability,
                 frozen: freeze
             }
 
-            if (props.formType === "Add Item") {
-
-                api.house_product_add("6806b5858798a785965c01f1", product).then(setRefresh(!refresh));
+            if (props.formType === "Add Item")
+            {
+                api.house_product_add("6806b5858798a785965c01f1", product).then(() => 
+                {
+                    if (setRefresh) setRefresh(!refresh)
+                })
             }
-            else if (props.formType === "Edit Item") {
+            else if (props.formType === "Edit Item")
+            {
 
-                api.house_product_update("6806b5858798a785965c01f1", props.currentItem._id, product).then(setRefresh(!refresh));
-            } 
+                api.house_product_update("6806b5858798a785965c01f1", props.currentItem?._id || "", product).then(() => 
+                {
+                    if (setRefresh) setRefresh(!refresh)
+                })
+            }
 
             setAddItemModalVisible(false);
 
             setItemName('');
             setBarcode("");
             setItems([]);
-            setUseByDate("");
-            setQuantity("1");
+            setUseByDate(new Date(0));
+            setQuantity(1);
             setAvailability(Availability.PRIVATE);
             setFreeze(false);
             setCameraActive(false);
         }
     };
 
-    function clearForm() {
+    function clearForm()
+    {
 
         setItemName('');
         setBarcode("");
         setItems([]);
-        setUseByDate("");
-        setQuantity("1");
+        setUseByDate(new Date(0));
+        setQuantity(1);
         setAvailability(Availability.PRIVATE);
         setFreeze(false);
         setCameraActive(false);
@@ -128,18 +147,21 @@ export default function PopupFormContents(props)
         setCameraActive(!cameraActive);
     }
 
-    function incrementQuantity() {
+    function incrementQuantity()
+    {
 
-        setQuantity(String(Number(quantity) + 1));
+        setQuantity(quantity + 1);
     }
 
-    function decrementQuantity() {
+    function decrementQuantity()
+    {
 
-        if (Number(quantity) === 1) {
+        if (quantity === 1)
+        {
             return;
         }
 
-        setQuantity(String(Number(quantity) - 1));
+        setQuantity(quantity - 1);
     }
 
     return (
@@ -161,17 +183,17 @@ export default function PopupFormContents(props)
                         justifyContent: 'space-between',
                         marginBottom: 20
                     }}>
-                        <Text style={{ fontSize: 36}}>{props.formType}</Text>
+                        <Text style={{ fontSize: 36 }}>{props.formType}</Text>
                         <Button
-                                mode="contained"
-                                onPress={() =>
-                                {
-                                    clearForm(); // Clear input on cancel
-                                    setAddItemModalVisible(false);
-                                }}
-                                style={{ }}
-                            >
-                                Close
+                            mode="contained"
+                            onPress={() =>
+                            {
+                                clearForm(); // Clear input on cancel
+                                setAddItemModalVisible(false);
+                            }}
+                            style={{}}
+                        >
+                            Close
                         </Button>
                     </View>
 
@@ -224,13 +246,13 @@ export default function PopupFormContents(props)
                             onChangeText={setItemName} // Update itemName state as user types
                         />
 
-                        <Text style={{ fontSize: 18, marginBottom: 20}}>Use By Date</Text>
+                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
                         <input
                             type="date"
                             id="useByDate"
-                            style={{maxWidth: 130, marginBottom: 20, borderWidth: 1}}
-                            onChange={(e) => setUseByDate(e.target.value)}
-                            >
+                            style={{ maxWidth: 130, marginBottom: 20, borderWidth: 1 }}
+                            onChange={(e) => setUseByDate(new Date(e.target.value))}
+                        >
                         </input>
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
@@ -238,8 +260,8 @@ export default function PopupFormContents(props)
                             placeholder='1'
                             mode="outlined"
                             style={{ backgroundColor: 'transparent', width: '100%', marginBottom: 20 }}
-                            value={quantity}
-                            onChangeText={setQuantity} // Update quantity
+                            value={quantity + ""}
+                            onChangeText={(t) => setQuantity(Number(t))} // Update quantity
                         />
 
                         <View style={{
@@ -272,7 +294,8 @@ export default function PopupFormContents(props)
                         }}>
                             <Button
                                 mode="contained"
-                                onPress={() => {
+                                onPress={() =>
+                                {
                                     setAvailability(Availability.PRIVATE);
                                 }} // Call handler to set availability to private
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
@@ -282,7 +305,8 @@ export default function PopupFormContents(props)
 
                             <Button
                                 mode="contained"
-                                onPress={() => {
+                                onPress={() =>
+                                {
                                     setAvailability(Availability.COMMUNAL);
                                 }} // Call handler to set availability to communal
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
@@ -292,7 +316,8 @@ export default function PopupFormContents(props)
 
                             <Button
                                 mode="contained"
-                                onPress={() => {
+                                onPress={() =>
+                                {
                                     setAvailability(Availability.UP_FOR_GRABS);
                                 }} // Call handler to set availability to up for grabs
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
@@ -310,7 +335,8 @@ export default function PopupFormContents(props)
 
                             <Button
                                 mode="contained"
-                                onPress={() => {
+                                onPress={() =>
+                                {
                                     setFreeze(!freeze);
                                 }} // Call handler to set frozen status
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
@@ -341,7 +367,7 @@ export default function PopupFormContents(props)
                     mode="outlined"
                     className="h-12 w-40 rounded-3xl"
                     labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
-                    contentStyle={{ backgroundColor: '#6F4AAA' }} 
+                    contentStyle={{ backgroundColor: '#6F4AAA' }}
                     style={{ borderColor: 'white', borderWidth: 2 }}
                     onPress={() => setAddItemModalVisible(true)}
                 >
@@ -351,3 +377,5 @@ export default function PopupFormContents(props)
         </>
     )
 }
+
+export default PopupFormContents;

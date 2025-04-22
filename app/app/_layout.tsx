@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import APIProvider, { useAPI } from './components/APIProvider'; // Adjust path as necessary
 import * as React from 'react';
 import { DefaultTheme, PaperProvider } from 'react-native-paper';
+import NotificationProvider from './components/NotificationProvider';
 
 const customTheme = {
     ...DefaultTheme,
@@ -54,7 +55,9 @@ export default function RootLayout()
     return (
         <APIProvider> {/* <-- Must wrap your layout here */}
             <PaperProvider theme={customTheme}>
-                <RootLayoutNav />
+                <NotificationProvider>
+                    <RootLayoutNav />
+                </NotificationProvider>
             </PaperProvider>
         </APIProvider>
     );

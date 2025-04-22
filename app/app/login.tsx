@@ -12,7 +12,7 @@ const Login: React.FC = () =>
     const [error, set_error] = useState("");
 
     // Get logged_in and login from the context
-    const { logged_in, login } = useAPI();
+    const { login } = useAPI();
 
     // Basic login form, calling login(user,pass) sends a request to the server.
     // If login is successful, the context will have a state change, causing all children to reload

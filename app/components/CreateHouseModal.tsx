@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text } from 'react-native';
 import { Button, Modal, Portal, TextInput } from 'react-native-paper';
 import { useAPI } from '~/app/components/APIProvider';
+import { useNotifiction, } from '~/app/components/NotificationProvider';
 import { APIError } from '~/app/lib/api/APIError';
 
 interface Props
@@ -15,6 +16,7 @@ const CreateHouseModal: React.FC<Props> = ({ created, hide, open }) =>
 {
     const [error, set_error] = useState("");
     const [name, set_name] = useState("");
+    const { notify } = useNotifiction();
     const api = useAPI();
 
     const create_house = () =>
@@ -29,7 +31,7 @@ const CreateHouseModal: React.FC<Props> = ({ created, hide, open }) =>
             })
             .catch(e =>
             {
-                if (e instanceof APIError) set_error(e.message);
+                if (e instanceof APIError) notify("error", e.message);
                 else console.error(e);
             })
     }
