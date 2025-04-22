@@ -18,36 +18,56 @@ export default function ItemListGroup(props) {
 
     useEffect(() => {
 
-        function ownersLookup() {
+        async function ownerLookup(owner_id) {
 
-            for (const productIndex in products) {
+            try {
 
-                (api.user_get(products[productIndex].owner_id)).then((userData) => {
-    
-                    if (userData) {
+                const userData = await api.user_get(owner_id);
 
-                        const newProductList = products.map(product => {
+                if (userData) {
 
-                            if ((product.owner_id === products[productIndex].owner_id)) {
+                    return userData.name;
+                }
+            }
+            catch (error) {
 
-                                return {
-
-                                    ...product,
-                                    owner_id: userData.name
-                                };
-                            }
-                            else {
-                                
-                                return product;
-                            }
-                        });
-                        setProductList(newProductList);
-                    }
-                });
+                console.error("Error looking up owner");
+                return "Error";
             }
         }
+        async function formatDisplayedDate(dateToFormat: Date) {
+            
+            let date = new Date(dateToFormat);
+
+            let dd = String(date.getDate()).padStart(2, '0');
+            let mm = String(date.getMonth() + 1).padStart(2, '0');
+            let yyyy = date.getFullYear();
+
+            let formattedDate = dd + '/' + mm + '/' + yyyy;
+
+            return formattedDate;
+        }
+
+        async function updateProductList() {
+
+            const newProductList = await Promise.all(
+                products.map(async product => {
+
+                    const ownerName = await ownerLookup(product.owner_id);
+                    const useByDate = await formatDisplayedDate(product.use_by);
+                
+                    return {
+                        ...product,
+                        use_by: useByDate,
+                        owner_name: ownerName,
+                    };
+                })
+            );
+            setProductList(newProductList);
+        }
+
         setVisibleProducts(new Array(products.length).fill(false));
-        ownersLookup();
+        updateProductList();
 
     }, [products]);
     
@@ -110,7 +130,7 @@ export default function ItemListGroup(props) {
                             fontFamily: Platform.OS === 'ios' ? 'Verdana' : 'monospace',
                         }}
                         >
-                            Owner: {item.owner_id}
+                            Owner: {item.owner_name}
                         </Text>
                     )}
                     {visibleProducts[index] && (
