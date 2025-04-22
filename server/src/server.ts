@@ -70,7 +70,7 @@ server.get("/barcode", ep_barcode);
 /////////////
 // PICTURE //
 /////////////
-server.post("/images", file_uploader.single("image"), ep_picture_post);
+server.post("/images", ep_picture_post);
 server.get("/images/:user_id", ep_picture_get);
 
 // Launch server

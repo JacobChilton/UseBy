@@ -1,11 +1,12 @@
 import { Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
-import APIProvider, { useAPI } from '../components/APIProvider';
+import { useAPI } from '../components/APIProvider';
 import { Button, IconButton, Avatar, Text, Modal, Portal } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import { User } from '../lib/api/APITypes';
-import { Image } from 'react-native-paper/lib/typescript/components/Avatar/Avatar';
 import QRCode from "react-native-qrcode-svg"
+import ImagePickerExample from '~/components/PictureInterface';
+import ImageInterface from '~/components/PictureInterface';
 
 export default function Profile()
 {
@@ -19,21 +20,22 @@ export default function Profile()
 
     useEffect(() =>
     {
+        load_user();
+    }, [])
+
+    const load_user = () =>
+    {
         api.profile_get().then((u) =>
         {
-            console.log(u)
             set_user(u);
             api.picture_get(u._id)
                 .then((i) =>
                 {
-                    console.log(i)
                     if (i) set_img(i)
                 })
                 .catch(console.error)
         }).catch(console.error);
-
-    }, [])
-
+    }
 
     if (!user) return <Text>Loading</Text>;
 
@@ -90,6 +92,10 @@ export default function Profile()
                     <Avatar.Icon size={120} icon="account" />
             }
 
+            <ImageInterface on_chosen={(pic) =>
+            {
+                api.picture_upload(pic).then(load_user).catch(console.error)
+            }} />
 
             <View className="h-12 w-80 flex-row items-center mt-16 border-2 border-gray-400 rounded-3xl">
                 <IconButton

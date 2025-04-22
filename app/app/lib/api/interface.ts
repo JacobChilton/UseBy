@@ -356,9 +356,29 @@ export const picture_get = async (p_user_id: string): Promise<string | undefined
     {
         const res = await fetch(API_URL_BASE + "/images/" + p_user_id, { method: "GET" });
 
-        if (!res.ok) throw new APIError("Unknown error");
+        if (!res.ok) throw new APIError(await res.text() || "Unknown error");
 
         else return res.text();
+    }
+    catch (e)
+    {
+        if (e instanceof APIError) throw e;
+        else
+        {
+            console.error(e);
+            throw new APIError("Failed to fetch barcode data")
+        }
+    }
+}
+
+// Upload b64 img for user id
+export const picture_upload = async (p_token: string, p_b64: string): Promise<void> =>
+{
+    try
+    {
+        const { ok, json } = await call_auth(p_token, "/images", "POST", { b64: p_b64 });
+
+        if (!ok) throw new APIError(json.message || json.error || "Unknown error");
     }
     catch (e)
     {

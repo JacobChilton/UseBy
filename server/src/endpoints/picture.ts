@@ -17,34 +17,18 @@ import { ObjectId } from "mongodb";
 // Accounting for extra size from converting to b64
 const MAX_FILE_SIZE_BYTES = 10485760;
 
-// B64 will be larger, if its larger than this its a no no
-const MAX_B64_SIZE_BYTES = 15728640;
-
 export const ep_picture_post = auth(async (req: Request, res: Response, user: User) =>
 {
     // Checks
-    if (!req.file)
+    if (!exists(req.body, "b64"))
     {
-        std_response(res, HTTP.BAD_REQUEST, { error: "no file received" });
+        std_response(res, HTTP.BAD_REQUEST, { error: "missing params" });
         return;
     }
 
-    if (req.file.size > MAX_FILE_SIZE_BYTES)
+    if (req.body.b64 > MAX_FILE_SIZE_BYTES)
     {
         std_response(res, HTTP.BAD_REQUEST, { error: "file is too large, limit is 10MB" });
-        return;
-    }
-
-    // Convert the file to base64
-    const raw_b64 = req.file.buffer.toString("base64");
-
-    // Build the string
-    const b64 = `data:${req.file.mimetype};base64,${raw_b64}`;
-
-    // If the b64 is too big
-    if (b64.length > MAX_B64_SIZE_BYTES)
-    {
-        std_response(res, HTTP.INTERNAL_SERVER_ERROR, { error: "idk buddy, got pretty big when i made it b64" });
         return;
     }
 
@@ -54,7 +38,7 @@ export const ep_picture_post = auth(async (req: Request, res: Response, user: Us
         await db_picture_delete_by_user(user._id);
 
         // Save new
-        await db_picture_insert(b64, user._id);
+        await db_picture_insert(req.body.b64, user._id);
 
         // Yay
         std_response(res, HTTP.OK, { message: "success" });
