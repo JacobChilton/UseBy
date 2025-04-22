@@ -7,7 +7,6 @@ import ItemList from '~/components/ItemList';
 import { Availability, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 
-
 export default function PopupFormContents(props)
 {
     const customTheme = {
@@ -24,7 +23,6 @@ export default function PopupFormContents(props)
     const refresh = props.passRefresh;
     const setRefresh = props.passSetRefresh;
     
-
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState('');
     const [barcode, setBarcode] = useState("");
@@ -65,9 +63,7 @@ export default function PopupFormContents(props)
         }
     }
 
-    const handleAddItem = () =>
-    {
-        console.log("USEBYDATE: " + useByDate);
+    const handleAddItem = () => {
 
         if (itemName.trim())
         {
@@ -87,8 +83,6 @@ export default function PopupFormContents(props)
             else if (props.formType === "Edit Item") {
 
                 api.house_product_update("6806b5858798a785965c01f1", props.currentItem._id, product).then(setRefresh(!refresh));
-                
-                
             } 
 
             setAddItemModalVisible(false);

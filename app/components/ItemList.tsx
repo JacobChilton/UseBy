@@ -39,9 +39,7 @@ export default function ItemList(props) {
             }
             
         }
-        
         refresh();
-        console.log("refresh triggered");
 
     }, [refresh]);
 
@@ -79,17 +77,12 @@ export default function ItemList(props) {
 
             for (let product of products) { // Check when each product is expiring
 
-                console.log(product);
-
                 // Put product's expiry date in same form
                 const productExpiry = product.use_by.split("T")[0];
     
                 if (productExpiry < today) { // If product expired
 
                     newExpired.push(product);
-
-                    console.log("new expiring");
-                    console.log(newExpired);
                 }
                 else if (productExpiry < nextWeek) { // If product expiring this week
 
@@ -105,33 +98,16 @@ export default function ItemList(props) {
                 }
             }
 
-
             // Set expiration groups
             setExpired(newExpired);
             setExpiringThisWeek(newExpiringThisWeek);
             setExpiringThisMonth(newExpiringThisMonth);
             setExpiringLater(newExpiringLater);
-            console.log("NEW EXPIRED: ")
-            console.log(newExpired);
-            console.log("EXPIRED: ")
-            console.log(expired);
         }
-        
-
         
         checkDates();
 
-        console.log("setting products");
-        console.log(products);
-
-
     }, [products]);
-
-    useEffect(() => {
-        console.log("hello expired");
-        console.log(expired);
-    }, [expired]);
-    
 
     return (
         <View className="mt-4"
