@@ -29,7 +29,7 @@ export default function ItemListGroup(props) {
                         const newProductList = products.map(product => {
 
                             if ((product.owner_id === products[productIndex].owner_id)) {
-                                
+
                                 return {
 
                                     ...product,
@@ -49,16 +49,13 @@ export default function ItemListGroup(props) {
         setVisibleProducts(new Array(products.length).fill(false));
         ownersLookup();
 
-        console.log("setting products");
-        console.log(products);
-
     }, [products]);
     
 
     return (
     
         <>
-            {products.map((item, index) => (
+            {productList.map((item, index) => (
                 <TouchableOpacity
                     key={index}
                     style={{

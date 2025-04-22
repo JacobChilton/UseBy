@@ -38,35 +38,6 @@ export default function ItemList(props) {
 
     useEffect(() => {
 
-        function ownersLookup() {
-
-            for (const productIndex in products) {
-
-                (api.user_get(products[productIndex].owner_id)).then((userData) => {
-    
-                    if (userData) {
-
-                        const newProductList = products.map(product => {
-
-                            if ((product.owner_id === products[productIndex].owner_id)) {
-                                
-                                return {
-
-                                    ...product,
-                                    owner_id: userData.name
-                                };
-                            }
-                            else {
-                                
-                                return product;
-                            }
-                        });
-                        setProductList(newProductList);
-                    }
-                });
-            }
-        }
-
         // Returns date of the format yyyy-mm-dd
         function formatDate(dateToFormat: Date) {
 
@@ -124,9 +95,6 @@ export default function ItemList(props) {
             setExpiringThisMonth(newExpiringThisMonth);
             setExpiringLater(newExpiringLater);
         }
-
-        setVisibleProducts(new Array(products.length).fill(false));
-        ownersLookup();
         checkDates();
 
         console.log("setting products");
