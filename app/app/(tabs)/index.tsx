@@ -13,6 +13,32 @@ export default function MyFood()
 
     const [products, setProducts] = useState<Array<Product>>([]);
 
+    const [refresh, setRefresh] = useState<boolean>(false);
+
+    useEffect(() => {
+
+        async function refresh() {
+
+            // Refresh product list
+            try {
+                const newData = await api.house_product_get_all("6806b5858798a785965c01f1");
+
+                // Sort the product list by order of expiration
+                newData.sort(function(a, b) {
+                    return (a.use_by < b.use_by) ? -1 : ((a.use_by > b.use_by) ? 1 : 0);
+                });
+
+                setProducts(newData);
+            }
+            catch {
+                console.error;
+            }
+            
+        }
+        refresh();
+
+    }, [refresh]);
+
     return (
         <View className="flex-1 p-10 pt-28">
             <View style={styles.container}>
@@ -20,7 +46,7 @@ export default function MyFood()
                 <Ionicons name="list" size={24} color="grey" />
             </View>
             <ItemList passProducts={products} passSetProducts={setProducts} />
-            <PopupFormContents formType="Add Item" />
+            <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh}/>
         </View>
     );
 };

@@ -15,7 +15,8 @@ export default function ItemList(props) {
     const [expiringThisMonth, setExpiringThisMonth] = useState<Array<Product>>([]);
     const [expiringLater, setExpiringLater] = useState<Array<Product>>([]);
 
-    const [refresh, setRefresh] = useState<boolean>(false);
+    const refresh = props.passRefresh;
+    const setRefresh = props.passSetRefresh;
 
     const api = useAPI();
 
