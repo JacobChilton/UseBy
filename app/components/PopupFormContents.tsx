@@ -91,6 +91,8 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
             {
                 api.house_product_add("6806b5858798a785965c01f1", product).then(() => 
                 {
+                    console.log("refresh value in add");
+                    console.log(refresh);
                     if (setRefresh) setRefresh(!refresh)
                 })
             }
@@ -362,7 +364,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                     </ScrollView>
                 </Modal>
             </Portal>
-            <View className="mt-4 flex-row justify-center">
+            <View className="mt-4 flex-row justify-evenly">
                 <Button
                     mode="outlined"
                     className="h-12 w-40 rounded-3xl"
@@ -373,6 +375,19 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                 >
                     {props.formType}
                 </Button>
+                {(props.formType === "Edit Item") && (
+                    <Button
+                        mode="outlined"
+                        className="h-12 w-40 rounded-3xl"
+                        labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
+                        contentStyle={{ backgroundColor: '#6F4AAA' }}
+                        style={{ borderColor: 'white', borderWidth: 2 }}
+                        onPress={deleteItem}
+                    >
+                        Delete Item
+                    </Button>
+                )}
+                
             </View>
         </>
     )

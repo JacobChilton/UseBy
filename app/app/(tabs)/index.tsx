@@ -14,6 +14,21 @@ export default function MyFood()
     const [products, setProducts] = useState<Array<Product>>([]);
 
     const [refresh, setRefresh] = useState<boolean>(false);
+    
+    const deleteItem = (item: Product) => {
+
+        console.log("deleting item: ");
+        console.log(item);
+        console.log("refresh value in delete:");
+        console.log(refresh);
+            console.log("setRefresh function:", setRefresh);
+
+            api.house_product_delete("6806b5858798a785965c01f1", item?._id).then(() => 
+            {
+                if (setRefresh) setRefresh(!refresh)
+            })
+
+    };
 
     useEffect(() => {
 
