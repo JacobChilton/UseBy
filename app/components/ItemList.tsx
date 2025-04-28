@@ -10,6 +10,8 @@ export default function ItemList(props) {
     const products = props.passProducts;
     const setProducts = props.passSetProducts;
 
+    const deleteItem = props.passDeleteItem;
+
     const [expired, setExpired] = useState<Array<Product>>([]);
     const [expiringThisWeek, setExpiringThisWeek] = useState<Array<Product>>([]);
     const [expiringThisMonth, setExpiringThisMonth] = useState<Array<Product>>([]);
@@ -126,7 +128,7 @@ export default function ItemList(props) {
                         padding: 10
                         }}>
                         <h1>Expired</h1>
-                        <ItemListGroup groupProducts={expired} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup groupProducts={expired} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -138,7 +140,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring This Week</h1>
-                        <ItemListGroup groupProducts={expiringThisWeek} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup groupProducts={expiringThisWeek} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -150,7 +152,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring This Month</h1>
-                        <ItemListGroup groupProducts={expiringThisMonth} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup groupProducts={expiringThisMonth} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -162,7 +164,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring Later</h1>
-                        <ItemListGroup groupProducts={expiringLater} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup groupProducts={expiringLater} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 

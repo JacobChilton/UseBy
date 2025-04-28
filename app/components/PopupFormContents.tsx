@@ -12,7 +12,8 @@ interface Props
     passRefresh?: boolean,
     passSetRefresh?: (bool: boolean) => void,
     formType: string,
-    currentItem?: Product
+    currentItem?: Product,
+    passDeleteItem: (product: Product) => void
 }
 
 const PopupFormContents: React.FC<Props> = (props: Props) =>
@@ -21,6 +22,18 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
     const refresh = props.passRefresh;
     const setRefresh = props.passSetRefresh;
+
+    const deleteItem = props.passDeleteItem;
+
+    let currentItemID;
+    if (props.currentItem) {
+
+        currentItemID = props.currentItem?._id;
+    }
+    else {
+        currentItemID = "";
+    }
+    
 
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState('');
@@ -382,7 +395,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                         labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
                         contentStyle={{ backgroundColor: '#6F4AAA' }}
                         style={{ borderColor: 'white', borderWidth: 2 }}
-                        onPress={deleteItem}
+                        onPress={() => deleteItem(currentItemID)}
                     >
                         Delete Item
                     </Button>

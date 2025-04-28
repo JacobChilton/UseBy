@@ -15,15 +15,15 @@ export default function MyFood()
 
     const [refresh, setRefresh] = useState<boolean>(false);
     
-    const deleteItem = (item: Product) => {
+    const deleteItem = (itemID: string) => {
 
         console.log("deleting item: ");
-        console.log(item);
+        console.log(itemID);
         console.log("refresh value in delete:");
         console.log(refresh);
             console.log("setRefresh function:", setRefresh);
 
-            api.house_product_delete("6806b5858798a785965c01f1", item?._id).then(() => 
+            api.house_product_delete("6806b5858798a785965c01f1", itemID).then(() => 
             {
                 if (setRefresh) setRefresh(!refresh)
             })
@@ -60,8 +60,8 @@ export default function MyFood()
                 <Text style={styles.text}>My Food</Text>
                 <Ionicons name="list" size={24} color="grey" />
             </View>
-            <ItemList passProducts={products} passSetProducts={setProducts} />
-            <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh}/>
+            <ItemList passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem}/>
+            <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem}/>
         </View>
     );
 };

@@ -16,6 +16,8 @@ export default function ItemListGroup(props)
     const refresh = props.passRefresh;
     const setRefresh = props.passSetRefresh;
 
+    const deleteItem = props.passDeleteItem;
+
     const [visibleProducts, setVisibleProducts] = useState<boolean[]>([]);
     const [productList, setProductList] = useState<Product[]>([]);
 
@@ -219,7 +221,7 @@ export default function ItemListGroup(props)
                         </Text>
                     )}
                     {visibleProducts[index] && (
-                        <PopupFormContents formType="Edit Item" currentItem={item} passRefresh={refresh} passSetRefresh={setRefresh} />
+                        <PopupFormContents formType="Edit Item" passDeleteItem={deleteItem} currentItem={item} passRefresh={refresh} passSetRefresh={setRefresh} />
                     )}
                 </TouchableOpacity>
             ))}
