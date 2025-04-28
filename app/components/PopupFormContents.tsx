@@ -13,7 +13,7 @@ interface Props
     passSetRefresh?: (bool: boolean) => void,
     formType: string,
     currentItem?: Product,
-    passDeleteItem: (product: Product) => void
+    passDeleteItem: (product: string) => void
 }
 
 const PopupFormContents: React.FC<Props> = (props: Props) =>
@@ -26,64 +26,25 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const deleteItem = props.passDeleteItem;
 
     let currentItemID;
-    if (props.currentItem) {
+    if (props.currentItem)
+    {
 
         currentItemID = props.currentItem?._id;
     }
-    else {
+    else
+    {
         currentItemID = "";
     }
-    
 
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
-    const [itemName, setItemName] = useState('');
-    const [barcode, setBarcode] = useState("");
+    const [itemName, setItemName] = useState<string>(props.currentItem?.name || "");
+    const [barcode, setBarcode] = useState<string>(props.currentItem?.upc || "");
     const [items, setItems] = useState<Array<Product>>([]);
-    const [useByDate, setUseByDate] = useState<Date>();
-    const [quantity, setQuantity] = useState(1);
-    const [availability, setAvailability] = useState(Availability.PRIVATE);
-    const [freeze, setFreeze] = useState(false);
+    const [useByDate, setUseByDate] = useState<Date>(props.currentItem?.use_by || new Date());
+    const [quantity, setQuantity] = useState(props.currentItem?.quantity || 1);
+    const [availability, setAvailability] = useState(props.currentItem?.availability || Availability.PRIVATE);
+    const [freeze, setFreeze] = useState(!!props.currentItem?.frozen);
     const [cameraActive, setCameraActive] = useState(false);
-
-    useEffect(() =>
-    {
-        if ((props.formType === "Edit Item") && (itemName != props.currentItem?.name))
-        {
-
-            console.log(props.currentItem);
-
-            if (itemName != props.currentItem?.name)
-            {
-
-                setItemName(props.currentItem?.name || "");
-            }
-            if (barcode != props.currentItem?.upc)
-            {
-
-                setBarcode(props.currentItem?.upc || "");
-            }
-            if (useByDate != props.currentItem?.use_by)
-            {
-
-                setUseByDate(props.currentItem?.use_by);
-            }
-            if (quantity != props.currentItem?.quantity)
-            {
-
-                setQuantity(props.currentItem?.quantity || 0);
-            }
-            if (availability != props.currentItem?.availability)
-            {
-
-                setAvailability(props.currentItem?.availability || Availability.COMMUNAL);
-            }
-            if (freeze != props.currentItem?.frozen)
-            {
-
-                setFreeze(props.currentItem?.frozen || false);
-            }
-        }
-    }, [])
 
 
     const handleAddItem = () =>
@@ -114,35 +75,18 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
                 api.house_product_update("6806b5858798a785965c01f1", props.currentItem?._id || "", product).then(() => 
                 {
-                    if (setRefresh) setRefresh(!refresh)
+                    console.log("binglellwedfle")
+                    if (setRefresh)
+                    {
+                        setRefresh(!refresh)
+                        console.log("binglellle")
+                    }
                 })
             }
 
             setAddItemModalVisible(false);
-
-            setItemName('');
-            setBarcode("");
-            setItems([]);
-            setUseByDate(new Date(0));
-            setQuantity(1);
-            setAvailability(Availability.PRIVATE);
-            setFreeze(false);
-            setCameraActive(false);
         }
     };
-
-    function clearForm()
-    {
-
-        setItemName('');
-        setBarcode("");
-        setItems([]);
-        setUseByDate(new Date(0));
-        setQuantity(1);
-        setAvailability(Availability.PRIVATE);
-        setFreeze(false);
-        setCameraActive(false);
-    }
 
     // Looks up the barcode and sets the product name to the generated name
     function barcodeLookup()
@@ -203,7 +147,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                             mode="contained"
                             onPress={() =>
                             {
-                                clearForm(); // Clear input on cancel
+                                //clearForm(); // Clear input on cancel
                                 setAddItemModalVisible(false);
                             }}
                             style={{}}
@@ -386,7 +330,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                     style={{ borderColor: 'white', borderWidth: 2 }}
                     onPress={() => setAddItemModalVisible(true)}
                 >
-                    {props.formType}
+                    {props.formType} butttt
                 </Button>
                 {(props.formType === "Edit Item") && (
                     <Button
@@ -400,7 +344,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                         Delete Item
                     </Button>
                 )}
-                
+
             </View>
         </>
     )

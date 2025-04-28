@@ -221,7 +221,7 @@ export default function ItemListGroup(props)
                         </Text>
                     )}
                     {visibleProducts[index] && (
-                        <PopupFormContents formType="Edit Item" passDeleteItem={deleteItem} currentItem={item} passRefresh={refresh} passSetRefresh={setRefresh} />
+                        <PopupFormContents key={item._id} formType="Edit Item" passDeleteItem={deleteItem} currentItem={item} passRefresh={refresh} passSetRefresh={setRefresh} />
                     )}
                 </TouchableOpacity>
             ))}

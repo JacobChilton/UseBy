@@ -14,41 +14,47 @@ export default function MyFood()
     const [products, setProducts] = useState<Array<Product>>([]);
 
     const [refresh, setRefresh] = useState<boolean>(false);
-    
-    const deleteItem = (itemID: string) => {
+
+    const deleteItem = (itemID: string) =>
+    {
 
         console.log("deleting item: ");
         console.log(itemID);
         console.log("refresh value in delete:");
         console.log(refresh);
-            console.log("setRefresh function:", setRefresh);
+        console.log("setRefresh function:", setRefresh);
 
-            api.house_product_delete("6806b5858798a785965c01f1", itemID).then(() => 
-            {
-                if (setRefresh) setRefresh(!refresh)
-            })
+        api.house_product_delete("6806b5858798a785965c01f1", itemID).then(() => 
+        {
+            if (setRefresh) setRefresh(!refresh)
+        })
 
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
 
-        async function refresh() {
+        async function refresh()
+        {
 
             // Refresh product list
-            try {
+            try
+            {
                 const newData = await api.house_product_get_all("6806b5858798a785965c01f1");
 
                 // Sort the product list by order of expiration
-                newData.sort(function(a, b) {
+                newData.sort(function (a, b)
+                {
                     return (a.use_by < b.use_by) ? -1 : ((a.use_by > b.use_by) ? 1 : 0);
                 });
 
                 setProducts(newData);
             }
-            catch {
+            catch
+            {
                 console.error;
             }
-            
+
         }
         refresh();
 
@@ -60,8 +66,8 @@ export default function MyFood()
                 <Text style={styles.text}>My Food</Text>
                 <Ionicons name="list" size={24} color="grey" />
             </View>
-            <ItemList passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem}/>
-            <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem}/>
+            <ItemList passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem} passSetRefresh={setRefresh} passRefresh={refresh} />
+            <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem} />
         </View>
     );
 };
