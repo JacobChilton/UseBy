@@ -75,15 +75,12 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
                 api.house_product_update("6806b5858798a785965c01f1", props.currentItem?._id || "", product).then(() => 
                 {
-                    console.log("binglellwedfle")
                     if (setRefresh)
                     {
                         setRefresh(!refresh)
-                        console.log("binglellle")
                     }
                 })
             }
-
             setAddItemModalVisible(false);
         }
     };
@@ -330,7 +327,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                     style={{ borderColor: 'white', borderWidth: 2 }}
                     onPress={() => setAddItemModalVisible(true)}
                 >
-                    {props.formType} butttt
+                    {props.formType}
                 </Button>
                 {(props.formType === "Edit Item") && (
                     <Button
