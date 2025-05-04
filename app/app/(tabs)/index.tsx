@@ -18,12 +18,6 @@ export default function MyFood()
     const deleteItem = (itemID: string) =>
     {
 
-        console.log("deleting item: ");
-        console.log(itemID);
-        console.log("refresh value in delete:");
-        console.log(refresh);
-        console.log("setRefresh function:", setRefresh);
-
         api.house_product_delete("6806b5858798a785965c01f1", itemID).then(() => 
         {
             if (setRefresh) setRefresh(!refresh)

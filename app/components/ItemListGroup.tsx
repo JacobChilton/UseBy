@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TouchableOpacity, Platform } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 import PopupFormContents from './PopupFormContents';
@@ -23,15 +23,24 @@ export default function ItemListGroup(props)
 
     const api = useAPI();
 
+    async function deleteItems() {
+
+        console.log("deleting items: ");
+        console.log(productList);
+
+        for (let product of productList) {
+
+            deleteItem(product._id);
+        }
+    }
+
     useEffect(() =>
     {
 
         async function ownerLookup(owner_id)
         {
-
             try
             {
-
                 const userData = await api.user_get(owner_id);
 
                 if (userData)
@@ -225,6 +234,18 @@ export default function ItemListGroup(props)
                     )}
                 </TouchableOpacity>
             ))}
+            {(props.group === "expired") && (
+                        <Button
+                        mode="outlined"
+                        className="h-12 w-40 rounded-3xl"
+                        labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
+                        contentStyle={{ backgroundColor: '#6F4AAA' }}
+                        style={{ borderColor: 'white', borderWidth: 2 }}
+                        onPress={() => deleteItems()}
+                    >
+                        Delete Expired Items
+                    </Button>
+                    )}
         </>
     );
 }
