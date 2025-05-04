@@ -36,11 +36,9 @@ export default function MyFood()
             setHouses(houseData)
 
             if (!selectedHouse) {
-                
+
                 setSelectedHouse(houseData[0]);
             }
-            
-            console.log("this just triggered");
         });
         
     }, [])
@@ -53,8 +51,6 @@ export default function MyFood()
 
             if (house._id === dropdown.options[dropdown.selectedIndex].value) {
 
-                console.log("found the house");
-                console.log(house);
                 setSelectedHouse(house);
             }
         }

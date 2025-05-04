@@ -25,9 +25,6 @@ export default function ItemListGroup(props)
 
     async function deleteItems() {
 
-        console.log("deleting items: ");
-        console.log(productList);
-
         for (let product of productList) {
 
             deleteItem(product._id);

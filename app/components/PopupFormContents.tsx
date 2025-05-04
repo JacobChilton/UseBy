@@ -48,8 +48,6 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [freeze, setFreeze] = useState(!!props.currentItem?.frozen);
     const [cameraActive, setCameraActive] = useState(false);
 
-    console.log(props);
-
     const handleAddItem = () =>
     {
 
@@ -69,8 +67,6 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
                 api.house_product_add(props.selectedHouse._id, product).then(() => 
                 {
-                    console.log("refresh value in add");
-                    console.log(refresh);
                     if (setRefresh) setRefresh(!refresh)
                 })
             }
