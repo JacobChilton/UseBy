@@ -28,7 +28,7 @@ export default function ItemList(props) {
 
             // Refresh product list
             try {
-                const newData = await api.house_product_get_all("6806b5858798a785965c01f1");
+                const newData = await api.house_product_get_all(props.selectedHouse);
 
                 // Sort the product list by order of expiration
                 newData.sort(function(a, b) {
@@ -128,7 +128,7 @@ export default function ItemList(props) {
                         padding: 10
                         }}>
                         <h1>Expired</h1>
-                        <ItemListGroup  group="expired"groupProducts={expired} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup  group="expired" selectedHouse={props.selectedHouse} groupProducts={expired} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -140,7 +140,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring This Week</h1>
-                        <ItemListGroup group="expiringThisWeek" groupProducts={expiringThisWeek} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup group="expiringThisWeek" selectedHouse={props.selectedHouse} groupProducts={expiringThisWeek} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -152,7 +152,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring This Month</h1>
-                        <ItemListGroup group="expiringThisMonth" groupProducts={expiringThisMonth} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup group="expiringThisMonth" selectedHouse={props.selectedHouse} groupProducts={expiringThisMonth} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 
@@ -164,7 +164,7 @@ export default function ItemList(props) {
                         marginTop: 10
                         }}>
                         <h1>Expiring Later</h1>
-                        <ItemListGroup group="expiringLater" groupProducts={expiringLater} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
+                        <ItemListGroup group="expiringLater" selectedHouse={props.selectedHouse} groupProducts={expiringLater} passDeleteItem={deleteItem} passRefresh={refresh} passSetRefresh={setRefresh} passProducts={products} passSetProducts={setProducts}/>
                     </div>
                 }
                 

@@ -67,9 +67,6 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
             if (props.formType === "Add Item")
             {
 
-                console.log("adding with ");
-                console.log(props.selectedHouse);
-
                 api.house_product_add(props.selectedHouse._id, product).then(() => 
                 {
                     console.log("refresh value in add");
@@ -80,7 +77,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
             else if (props.formType === "Edit Item")
             {
 
-                api.house_product_update("6806b5858798a785965c01f1", props.currentItem?._id || "", product).then(() => 
+                api.house_product_update(props.selectedHouse._id, props.currentItem?._id || "", product).then(() => 
                 {
                     if (setRefresh)
                     {

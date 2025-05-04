@@ -34,7 +34,12 @@ export default function MyFood()
         api.house_get_all().then((houseData) => {
 
             setHouses(houseData)
-            setSelectedHouse(houseData[0]);
+
+            if (!selectedHouse) {
+                
+                setSelectedHouse(houseData[0]);
+            }
+            
             console.log("this just triggered");
         });
         
@@ -97,7 +102,7 @@ export default function MyFood()
                     <option key={item.name}value={item._id}>{item.name}</option>
                 ))}
             </select>
-            <ItemList passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem} passSetRefresh={setRefresh} passRefresh={refresh} />
+            <ItemList selectedHouse={selectedHouse} passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem} passSetRefresh={setRefresh} passRefresh={refresh} />
             <PopupFormContents formType="Add Item" selectedHouse={selectedHouse} passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem} />
         </View>
     );
