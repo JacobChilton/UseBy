@@ -1,11 +1,12 @@
 import { StyleSheet, View, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Text } from 'react-native-paper';
+import { Button, Text } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
 import ItemList from '~/components/ItemList';
 import { Product } from '../lib/api/APITypes';
 import PopupFormContents from '~/components/PopupFormContents';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { AggHouse } from '../lib/api/aggregated';
 
 export default function MyFood()
 {
@@ -14,6 +15,8 @@ export default function MyFood()
     const [products, setProducts] = useState<Array<Product>>([]);
 
     const [refresh, setRefresh] = useState<boolean>(false);
+
+    const [houses, setHouses] = useState<Array<AggHouse>>([]);
 
     const deleteItem = (itemID: string) =>
     {
@@ -24,6 +27,12 @@ export default function MyFood()
         })
 
     };
+
+    useEffect(() => {
+
+        api.house_get_all().then((houseData) => {setHouses(houseData)})
+
+    }, [])
 
     useEffect(() =>
     {
@@ -60,6 +69,14 @@ export default function MyFood()
                 <Text style={styles.text}>My Food</Text>
                 <Ionicons name="list" size={24} color="grey" />
             </View>
+            <label for="houses">
+                House
+            </label>
+            <select id="houses" name="houses">
+                {houses.map((item, index) => (
+                    <option key={item.name}value={item.name}>{item.name}</option>
+                ))}
+            </select>
             <ItemList passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem} passSetRefresh={setRefresh} passRefresh={refresh} />
             <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem} />
         </View>
