@@ -22,7 +22,7 @@ export default function MyFood()
     const deleteItem = (itemID: string) =>
     {
 
-        api.house_product_delete(selectedHouse, itemID).then(() => 
+        api.house_product_delete(selectedHouse?._id, itemID).then(() => 
         {
             if (setRefresh) setRefresh(!refresh)
         })
