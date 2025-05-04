@@ -17,11 +17,12 @@ export default function MyFood()
     const [refresh, setRefresh] = useState<boolean>(false);
 
     const [houses, setHouses] = useState<Array<AggHouse>>([]);
+    const [selectedHouse, setSelectedHouse] = useState<AggHouse>();
 
     const deleteItem = (itemID: string) =>
     {
 
-        api.house_product_delete("6806b5858798a785965c01f1", itemID).then(() => 
+        api.house_product_delete(selectedHouse, itemID).then(() => 
         {
             if (setRefresh) setRefresh(!refresh)
         })
@@ -30,9 +31,29 @@ export default function MyFood()
 
     useEffect(() => {
 
-        api.house_get_all().then((houseData) => {setHouses(houseData)})
+        api.house_get_all().then((houseData) => {
 
+            setHouses(houseData)
+            setSelectedHouse(houseData[0]);
+            console.log("this just triggered");
+        });
+        
     }, [])
+
+    function selectHouse() {
+        
+        let dropdown = document.getElementById("houses");
+
+        for (let house of houses) {
+
+            if (house._id === dropdown.options[dropdown.selectedIndex].value) {
+
+                console.log("found the house");
+                console.log(house);
+                setSelectedHouse(house);
+            }
+        }
+    }
 
     useEffect(() =>
     {
@@ -43,7 +64,7 @@ export default function MyFood()
             // Refresh product list
             try
             {
-                const newData = await api.house_product_get_all("6806b5858798a785965c01f1");
+                const newData = await api.house_product_get_all(selectedHouse._id);
 
                 // Sort the product list by order of expiration
                 newData.sort(function (a, b)
@@ -57,11 +78,10 @@ export default function MyFood()
             {
                 console.error;
             }
-
         }
         refresh();
 
-    }, [refresh]);
+    }, [refresh, selectedHouse]);
 
     return (
         <View className="flex-1 p-10 pt-28">
@@ -72,13 +92,13 @@ export default function MyFood()
             <label for="houses">
                 House
             </label>
-            <select id="houses" name="houses">
+            <select id="houses" name="houses" onChange={selectHouse}>
                 {houses.map((item, index) => (
-                    <option key={item.name}value={item.name}>{item.name}</option>
+                    <option key={item.name}value={item._id}>{item.name}</option>
                 ))}
             </select>
             <ItemList passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem} passSetRefresh={setRefresh} passRefresh={refresh} />
-            <PopupFormContents formType="Add Item" passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem} />
+            <PopupFormContents formType="Add Item" selectedHouse={selectedHouse} passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem} />
         </View>
     );
 };

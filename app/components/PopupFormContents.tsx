@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import BarcodeScanner from '~/components/BarcodeScanner';
 import ItemList from '~/components/ItemList';
-import { Availability, Product } from '~/app/lib/api/APITypes';
+import { Availability, House, HouseID, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
+import { AggHouse } from '~/app/lib/api/aggregated';
 
 interface Props
 {
@@ -13,7 +14,8 @@ interface Props
     passSetRefresh?: (bool: boolean) => void,
     formType: string,
     currentItem?: Product,
-    passDeleteItem: (product: string) => void
+    passDeleteItem: (product: string) => void,
+    selectedHouse?: AggHouse
 }
 
 const PopupFormContents: React.FC<Props> = (props: Props) =>
@@ -46,6 +48,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [freeze, setFreeze] = useState(!!props.currentItem?.frozen);
     const [cameraActive, setCameraActive] = useState(false);
 
+    console.log(props);
 
     const handleAddItem = () =>
     {
@@ -63,7 +66,11 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
             if (props.formType === "Add Item")
             {
-                api.house_product_add("6806b5858798a785965c01f1", product).then(() => 
+
+                console.log("adding with ");
+                console.log(props.selectedHouse);
+
+                api.house_product_add(props.selectedHouse._id, product).then(() => 
                 {
                     console.log("refresh value in add");
                     console.log(refresh);

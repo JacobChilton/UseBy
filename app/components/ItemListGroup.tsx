@@ -243,7 +243,7 @@ export default function ItemListGroup(props)
                         style={{ borderColor: 'white', borderWidth: 2 }}
                         onPress={() => deleteItems()}
                     >
-                        Delete Expired Items
+                        Delete All
                     </Button>
                     )}
         </>
