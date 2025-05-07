@@ -4,10 +4,9 @@ import { TabBarIcon } from '../../components/TabBarIcon';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Route } from '@react-navigation/native';
 
-
 // component that renders the tab bar with animations
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
-{
+{ console.log("state = ", state);
     return (
         <View style={styles.tabBar}>
             {state.routes.map((route: Route<string>, index: number) =>
@@ -33,6 +32,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
                     index: 'list',
                     houses: 'home',
                     profile: 'user',
+                    recipes: 'cutlery',
                 };
 
                 return (
