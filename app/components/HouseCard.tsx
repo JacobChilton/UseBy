@@ -81,7 +81,7 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
 
     return (
         <TouchableOpacity
-            className='bg-purple-600 p-4 rounded-lg gap-4'
+            className='bg-[#6f4aaa] p-4 rounded-lg gap-4'
             onPress={() => set_open(!open)}>
             <View className='flex-row justify-between'>
                 <View>

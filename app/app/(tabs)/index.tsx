@@ -86,7 +86,13 @@ export default function MyFood()
 
     return (
     <View className="flex-1 pr-10 pl-10 pb-0 pt-10">
-        <label htmlFor="houses" className="text-lg font-medium text-gray-700">
+        <label 
+            htmlFor="houses" 
+            className="text-lg font-medium text-gray-700" 
+            style={{
+                color: 'black',
+            }}
+            >
             Choose house list
         </label>
         <select
@@ -94,6 +100,9 @@ export default function MyFood()
             name="houses"
             onChange={selectHouse}
             className="mt-2 block w-full rounded-md items-center p-5 py-2 px-3 shadow-sm focus:ring-[#6f4aaa] focus:ring-opacity-50"
+            style={{
+                color: 'black',
+            }}
         >
             {houses.map((item, index) => (
                 <option key={item.name} value={item._id}>
@@ -129,6 +138,5 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace', // Use system font
     },
 });
