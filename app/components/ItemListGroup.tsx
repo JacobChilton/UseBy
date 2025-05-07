@@ -103,7 +103,7 @@ export default function ItemListGroup(props)
                         borderRadius: 10,
                         borderWidth: 1,
                         borderColor: 'grey',
-                        maxHeight: '80%',
+                        maxHeight: '100%',
                         shadowColor: '#000',
                         shadowOffset: { width: 0, height: 4 },
                         shadowOpacity: 0.3,
@@ -227,7 +227,16 @@ export default function ItemListGroup(props)
                         </Text>
                     )}
                     {visibleProducts[index] && (
-                        <PopupFormContents key={item._id} formType="Edit Item" selectedHouse={props.selectedHouse} passDeleteItem={deleteItem} currentItem={item} passRefresh={refresh} passSetRefresh={setRefresh} />
+                        <PopupFormContents 
+                            key={item._id} 
+                            formType="Edit Item" 
+                            selectedHouse={props.selectedHouse} 
+                            passDeleteItem={deleteItem} 
+                            currentItem={item} 
+                            passRefresh={refresh} 
+                            passSetRefresh={setRefresh} 
+                            
+                        />
                     )}
                 </TouchableOpacity>
             ))}

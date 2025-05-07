@@ -30,8 +30,8 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) =>
                 };
 
                 const icons: Record<string, string> = { // the icons
-                    index: 'home',
-                    houses: 'list',
+                    index: 'list',
+                    houses: 'home',
                     profile: 'user',
                 };
 

@@ -114,17 +114,17 @@ export default function ItemList(props) {
 
     return (
         <View className="mt-4"
-            style={{ maxHeight: '75%'}}>
+            style={{ maxHeight: '80%'}}>
 
             <ScrollView
                 style={{ maxHeight: '100%' }}
-                contentContainerStyle={{ paddingBottom: 20 }}
+                contentContainerStyle={{ paddingBottom: 10 }}
             >
                 {expired.length != 0 &&
                     <div style={{ borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: 'red',
-                        backgroundColor: "rgba(255, 0, 0, 0.6)",
+                        borderWidth: 5,
+                        borderColor: '#e07b7b',
+                        backgroundColor: 'white',
                         padding: 10
                         }}>
                         <h1>Expired</h1>
@@ -134,8 +134,8 @@ export default function ItemList(props) {
                 
                 {expiringThisWeek.length != 0 &&
                     <div style={{ borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: 'grey',
+                        borderWidth: 5,
+                        borderColor: '#e09f7b',
                         padding: 10,
                         marginTop: 10
                         }}>
@@ -146,8 +146,8 @@ export default function ItemList(props) {
                 
                 {expiringThisMonth.length != 0 &&
                     <div style={{ borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: 'grey',
+                        borderWidth: 5,
+                        borderColor: '#e0c97b',
                         padding: 10,
                         marginTop: 10
                         }}>
@@ -158,8 +158,8 @@ export default function ItemList(props) {
                 
                 {expiringLater.length != 0 &&
                     <div style={{ borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: 'grey',
+                        borderWidth: 5,
+                        borderColor: '#95e07b',
                         padding: 10,
                         marginTop: 10
                         }}>

@@ -90,7 +90,7 @@ export const Houses = () =>
                                     style={{
                                         height: 1,
                                         width: "100%",
-                                        backgroundColor: "#9333ea",
+                                        backgroundColor: "#6f4aaa",
                                         marginVertical: 20
                                     }}
                                 />
@@ -107,7 +107,7 @@ export const Houses = () =>
                             </ScrollView>
                             <Button
                                 textColor='white'
-                                buttonColor='#9333ea'
+                                buttonColor='#6f4aaa'
                                 onPress={() =>
                                 {
                                     set_show_create_house_modal(true);
@@ -119,7 +119,7 @@ export const Houses = () =>
                         :
                         <View className='justify-center items-center flex-1'>
                             <Button
-                                buttonColor='#9333ea'
+                                buttonColor='#6f4aaa'
                                 textColor='white'
                                 onPress={() =>
                                 {

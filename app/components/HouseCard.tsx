@@ -96,7 +96,7 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
                         <Button
                             onPress={() => { invite(house._id) }}
                             buttonColor='#fff'
-                            textColor='#9333ea'>
+                            textColor='#6f4aaa'>
                             Invite
                         </Button>
                     </View>
@@ -109,7 +109,7 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
                             <Button
                                 onPress={delete_house}
                                 buttonColor='#fff'
-                                textColor='#9333ea'>
+                                textColor='#6f4aaa'>
                                 Delete
                             </Button>
                             :
@@ -117,7 +117,7 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
                                 <Button
                                     onPress={leave_house}
                                     buttonColor='#fff'
-                                    textColor='#9333ea'>
+                                    textColor='#6f4aaa'>
                                     Leave
                                 </Button>
                                 <Text className='text-white text-xl'>Owner:</Text>
@@ -145,7 +145,7 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
                                             user_owned &&
                                             <Button
                                                 buttonColor='white'
-                                                textColor='#9333ea'
+                                                textColor='#6f4aaa'
                                                 onPress={() => kick_member(m._id)}
                                             >Kick</Button>
                                         }

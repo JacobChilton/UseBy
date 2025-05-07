@@ -101,7 +101,7 @@ export default function Profile()
                 <IconButton
                     icon="account"
                     size={24}
-                    className="ml-4 m-0 p-0"
+                    className="ml-4 mt-2 m-0 p-0"
                 />
                 <Text className="ml-2 text-lg">{user.name}</Text>
             </View>
@@ -110,7 +110,7 @@ export default function Profile()
                 <IconButton
                     icon="email"
                     size={24}
-                    className="ml-4 m-0 p-0"
+                    className="ml-4 mt-2 m-0 p-0"
                 />
                 <Text className="ml-2 text-lg">{user.email}</Text>
             </View>
@@ -119,7 +119,7 @@ export default function Profile()
                 <IconButton
                     icon="home"
                     size={24}
-                    className="ml-4 m-0 p-0"
+                    className="ml-4 mt-2 m-0 p-0"
                 />
                 <Text className="ml-2 text-lg">Hello world</Text>
             </View>

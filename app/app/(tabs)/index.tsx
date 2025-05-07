@@ -85,22 +85,38 @@ export default function MyFood()
     }, [refresh, selectedHouse]);
 
     return (
-        <View className="flex-1 p-10 pt-28">
-            <View style={styles.container}>
-                <Text style={styles.text}>My Food</Text>
-                <Ionicons name="list" size={24} color="grey" />
-            </View>
-            <label for="houses">
-                House
-            </label>
-            <select id="houses" name="houses" onChange={selectHouse}>
-                {houses.map((item, index) => (
-                    <option key={item.name}value={item._id}>{item.name}</option>
-                ))}
-            </select>
-            <ItemList selectedHouse={selectedHouse} passProducts={products} passSetProducts={setProducts} passDeleteItem={deleteItem} passSetRefresh={setRefresh} passRefresh={refresh} />
-            <PopupFormContents formType="Add Item" selectedHouse={selectedHouse} passRefresh={refresh} passSetRefresh={setRefresh} passDeleteItem={deleteItem} />
-        </View>
+    <View className="flex-1 pr-10 pl-10 pb-0 pt-10">
+        <label htmlFor="houses" className="text-lg font-medium text-gray-700">
+            Choose house list
+        </label>
+        <select
+            id="houses"
+            name="houses"
+            onChange={selectHouse}
+            className="mt-2 block w-full rounded-md items-center p-5 py-2 px-3 shadow-sm focus:ring-[#6f4aaa] focus:ring-opacity-50"
+        >
+            {houses.map((item, index) => (
+                <option key={item.name} value={item._id}>
+                    {item.name}
+                </option>
+            ))}
+        </select>
+        <ItemList
+            selectedHouse={selectedHouse}
+            passProducts={products}
+            passSetProducts={setProducts}
+            passDeleteItem={deleteItem}
+            passSetRefresh={setRefresh}
+            passRefresh={refresh}
+        />
+        <PopupFormContents
+            formType="Add Item"
+            selectedHouse={selectedHouse}
+            passRefresh={refresh}
+            passSetRefresh={setRefresh}
+            passDeleteItem={deleteItem}
+        />
+    </View>
     );
 };
 
@@ -109,10 +125,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'grey',
-        borderRadius: 10,
-        padding: 15,
     },
     text: {
         fontSize: 16,
