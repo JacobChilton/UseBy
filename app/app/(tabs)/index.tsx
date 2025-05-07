@@ -135,6 +135,5 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: Platform.OS === 'ios' ? 'Verdana-Bold' : 'monospace', // Use system font
     },
 });
