@@ -7,6 +7,7 @@ import ItemList from '~/components/ItemList';
 import { Availability, House, HouseID, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 import { AggHouse } from '~/app/lib/api/aggregated';
+import { useNotifiction } from '~/app/components/NotificationProvider';
 
 interface Props
 {
@@ -47,6 +48,8 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [availability, setAvailability] = useState(props.currentItem?.availability || Availability.PRIVATE);
     const [freeze, setFreeze] = useState(!!props.currentItem?.frozen);
     const [cameraActive, setCameraActive] = useState(false);
+    const { notify } = useNotifiction();
+
 
     const handleAddItem = () =>
     {
@@ -65,21 +68,31 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
             if (props.formType === "Add Item")
             {
 
-                api.house_product_add(props.selectedHouse._id, product).then(() => 
-                {
-                    if (setRefresh) setRefresh(!refresh)
-                })
+                api.house_product_add(props.selectedHouse._id, product)
+                    .then(() => 
+                    {
+                        if (setRefresh) setRefresh(!refresh)
+                    })
+                    .catch(e =>
+                    {
+                        notify("error", e.toString());
+                    })
             }
             else if (props.formType === "Edit Item")
             {
 
-                api.house_product_update(props.selectedHouse._id, props.currentItem?._id || "", product).then(() => 
-                {
-                    if (setRefresh)
+                api.house_product_update(props.selectedHouse._id, props.currentItem?._id || "", product)
+                    .then(() => 
                     {
-                        setRefresh(!refresh)
-                    }
-                })
+                        if (setRefresh)
+                        {
+                            setRefresh(!refresh)
+                        }
+                    })
+                    .catch(e =>
+                    {
+                        notify("error", e.toString());
+                    })
             }
             setAddItemModalVisible(false);
         }

@@ -126,7 +126,7 @@ export const Houses = () =>
                                     set_show_create_house_modal(true);
                                 }}
                             >
-                                <Text className='!text-white text-xl'>Fuck you. Create a house</Text>
+                                <Text className='!text-white text-xl'>Create a house</Text>
                             </Button>
                         </View>
                 }

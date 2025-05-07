@@ -1,4 +1,4 @@
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, Text } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
@@ -29,27 +29,33 @@ export default function MyFood()
 
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
 
-        api.house_get_all().then((houseData) => {
+        api.house_get_all().then((houseData) =>
+        {
 
             setHouses(houseData)
 
-            if (!selectedHouse) {
+            if (!selectedHouse)
+            {
 
                 setSelectedHouse(houseData[0]);
             }
         });
-        
+
     }, [])
 
-    function selectHouse() {
-        
+    function selectHouse()
+    {
+
         let dropdown = document.getElementById("houses");
 
-        for (let house of houses) {
+        for (let house of houses)
+        {
 
-            if (house._id === dropdown.options[dropdown.selectedIndex].value) {
+            if (house._id === dropdown.options[dropdown.selectedIndex].value)
+            {
 
                 setSelectedHouse(house);
             }
@@ -85,38 +91,38 @@ export default function MyFood()
     }, [refresh, selectedHouse]);
 
     return (
-    <View className="flex-1 pr-10 pl-10 pb-0 pt-10">
-        <label htmlFor="houses" className="text-lg font-medium text-gray-700">
-            Choose house list
-        </label>
-        <select
-            id="houses"
-            name="houses"
-            onChange={selectHouse}
-            className="mt-2 block w-full rounded-md items-center p-5 py-2 px-3 shadow-sm focus:ring-[#6f4aaa] focus:ring-opacity-50"
-        >
-            {houses.map((item, index) => (
-                <option key={item.name} value={item._id}>
-                    {item.name}
-                </option>
-            ))}
-        </select>
-        <ItemList
-            selectedHouse={selectedHouse}
-            passProducts={products}
-            passSetProducts={setProducts}
-            passDeleteItem={deleteItem}
-            passSetRefresh={setRefresh}
-            passRefresh={refresh}
-        />
-        <PopupFormContents
-            formType="Add Item"
-            selectedHouse={selectedHouse}
-            passRefresh={refresh}
-            passSetRefresh={setRefresh}
-            passDeleteItem={deleteItem}
-        />
-    </View>
+        <View className="flex-1 pr-10 pl-10 pb-0 pt-10">
+            <label htmlFor="houses" className="text-lg font-medium text-gray-700">
+                Choose house list
+            </label>
+            <select
+                id="houses"
+                name="houses"
+                onChange={selectHouse}
+                className="mt-2 block w-full rounded-md items-center p-5 py-2 px-3 shadow-sm focus:ring-[#6f4aaa] focus:ring-opacity-50"
+            >
+                {houses.map((item, index) => (
+                    <option key={item.name} value={item._id}>
+                        {item.name}
+                    </option>
+                ))}
+            </select>
+            <ItemList
+                selectedHouse={selectedHouse}
+                passProducts={products}
+                passSetProducts={setProducts}
+                passDeleteItem={deleteItem}
+                passSetRefresh={setRefresh}
+                passRefresh={refresh}
+            />
+            <PopupFormContents
+                formType="Add Item"
+                selectedHouse={selectedHouse}
+                passRefresh={refresh}
+                passSetRefresh={setRefresh}
+                passDeleteItem={deleteItem}
+            />
+        </View>
     );
 };
 
