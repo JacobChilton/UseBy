@@ -47,9 +47,14 @@ export const Recipe = () =>
                             color: 'white',
                             paddingLeft: 5,
                         }}
-                    >
-                        Cheese, Pasta lol shit
-                        
+                    >   
+                    Spaghetti,
+                    Pancetta,
+                    Egg yolks,
+                    Pecorino Romano,
+                    Black pepper,
+                    Salt.
+                    
                     </Text>
                 )}
                 {visible && (
@@ -60,7 +65,7 @@ export const Recipe = () =>
                             paddingLeft: 5,
                         }}
                     >
-                        Cheese, Pasta again
+                        Uses X amount of your ingredients.
                         
                     </Text>
                 )}
