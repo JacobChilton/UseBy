@@ -2,10 +2,12 @@ import { CameraView, CameraType, useCameraPermissions, BarcodeScanningResult } f
 import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function BarcodeScanner() {
+export default function BarcodeScanner(props) {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+
+  const setBarcode = props.passBarcode;
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -25,6 +27,7 @@ export default function BarcodeScanner() {
   const handleBarcodeScanned = ({ type, data } : BarcodeScanningResult) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    setBarcode(data);
   };
 
   function toggleCameraFacing() {

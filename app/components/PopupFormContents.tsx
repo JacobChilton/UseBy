@@ -181,7 +181,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                         />
 
                         <div className={cameraActive ? "" : "hidden"}>
-                            <BarcodeScanner />
+                            <BarcodeScanner passBarcode={setBarcode}/>
                         </div>
 
                         <View style={{
