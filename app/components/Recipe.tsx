@@ -4,7 +4,14 @@ import { Button, DefaultTheme, Text } from 'react-native-paper';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 // I just realised ive been using the wrong purple. I will fix later - bitch
 
-export const Recipe = () =>
+interface Props {
+    title:string,
+    ingredients:string,
+    description:string,
+    sponsor?:string,
+}
+
+const Recipe :React.FC<Props>= ({title, description, ingredients, sponsor}) =>
 {
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -37,7 +44,7 @@ export const Recipe = () =>
                         paddingLeft: 5,
                     }}
                 >
-                    Carbonara
+                    {title}
                 </Text>
 
                 {visible && (
@@ -48,12 +55,7 @@ export const Recipe = () =>
                             paddingLeft: 5,
                         }}
                     >   
-                    Spaghetti,
-                    Pancetta,
-                    Egg yolks,
-                    Pecorino Romano,
-                    Black pepper,
-                    Salt.
+                    {ingredients}
                     
                     </Text>
                 )}
@@ -65,10 +67,22 @@ export const Recipe = () =>
                             paddingLeft: 5,
                         }}
                     >
-                        Uses X amount of your ingredients.
+                        {description}
                         
                     </Text>
                 )}
+                
+                    {sponsor && visible && <Text
+                        style={{
+                            marginTop: 5,
+                            color: 'white',
+                            paddingLeft: 5,
+                        }}
+                    >
+                        {sponsor}
+                        
+                    </Text>}
+                
             </TouchableOpacity>
         </View>
     );
