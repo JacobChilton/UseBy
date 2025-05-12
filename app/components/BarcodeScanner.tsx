@@ -3,9 +3,12 @@ import { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function BarcodeScanner(props) {
+
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+
+
 
   const setBarcode = props.passBarcode;
 
@@ -26,24 +29,16 @@ export default function BarcodeScanner(props) {
 
   const handleBarcodeScanned = ({ type, data } : BarcodeScanningResult) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     setBarcode(data);
   };
 
-  function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
-
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, paddingBottom: 20, paddingRight: 10}}>
       <CameraView style={styles.camera} facing={facing} onBarcodeScanned={handleBarcodeScanned}
         barcodeScannerSettings={{
           barcodeTypes: ['aztec', 'ean13', 'ean8', 'qr', 'pdf417', 'upc_e', 'datamatrix', 'code39', 'code93', 'itf14', 'codabar', 'code128', 'upc_a'],
         }}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
         </View>
       </CameraView>
     </View>
