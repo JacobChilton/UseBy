@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
 import { Button, IconButton, Avatar, TextInput, DefaultTheme, PaperProvider, Text, Modal, Portal } from 'react-native-paper';
 import BarcodeScanner from '~/components/BarcodeScanner';
@@ -219,18 +219,23 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
 
 
-                        {/*
-                        <DatePicker
-                            date={useByDate}
-
-                            id="useByDate"
-                            style={{ maxWidth: 130, marginBottom: 20, borderWidth: 1 }}
-
-                            onConfirm={setUseByDate}
-                        >
-                        </DatePicker>*/
-                        }
-
+                        <View style={{ paddingBottom: 15 }}>
+                            {
+                                Platform.OS === "web" ?
+                                    <input
+                                        value={useByDate.toISOString().split('T')[0]}
+                                        onChange={e => setUseByDate(new Date(e.target.value))}
+                                        type='date'
+                                    />
+                                    :
+                                    <DatePicker
+                                        date={useByDate}
+                                        style={{ maxWidth: 130, marginBottom: 20, borderWidth: 1 }}
+                                        onConfirm={setUseByDate}
+                                    >
+                                    </DatePicker>
+                            }
+                        </View>
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
                         <TextInput
