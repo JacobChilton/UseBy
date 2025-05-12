@@ -42,7 +42,7 @@ export default function MyFood()
 
                 setSelectedHouse(houseData[0]);
             }
-        });
+        }).catch(console.error)
 
     }, [])
 
@@ -92,21 +92,17 @@ export default function MyFood()
 
     return (
         <View className="flex-1 pr-10 pl-10 pb-0 pt-10">
-            <label htmlFor="houses" className="text-lg font-medium text-gray-700">
+            <Text className="text-lg font-medium text-gray-700">
                 Choose house list
-            </label>
-            <select
-                id="houses"
-                name="houses"
-                onChange={selectHouse}
-                className="mt-2 block w-full rounded-md items-center p-5 py-2 px-3 shadow-sm focus:ring-[#6f4aaa] focus:ring-opacity-50"
-            >
-                {houses.map((item, index) => (
-                    <option key={item.name} value={item._id}>
+            </Text>
+
+            {/*houses.map((item, index) => (
+                    
+                    <Text key={item.name} value={item._id}>
                         {item.name}
                     </option>
-                ))}
-            </select>
+                ))*/}
+
             <ItemList
                 selectedHouse={selectedHouse}
                 passProducts={products}

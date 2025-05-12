@@ -32,6 +32,7 @@ const Login: React.FC = () =>
 
             {/* Input form */}
             <TextInput
+                value={email}
                 onChangeText={set_email}
                 placeholder='Enter your Email'
                 left={<TextInput.Icon icon="email" />}
@@ -39,6 +40,7 @@ const Login: React.FC = () =>
                 style={{ backgroundColor: 'transparent', width: '100%' }}
             />
             <TextInput
+                value={password}
                 onChangeText={set_password}
                 placeholder='Enter your password'
                 secureTextEntry={true}

@@ -8,6 +8,7 @@ import { Availability, House, HouseID, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 import { AggHouse } from '~/app/lib/api/aggregated';
 import { useNotifiction } from '~/app/components/NotificationProvider';
+import DatePicker from "react-native-date-picker";
 
 interface Props
 {
@@ -180,9 +181,9 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                             onChangeText={setBarcode} // Update barcode state as user types
                         />
 
-                        <div className={cameraActive ? "" : "hidden"}>
-                            <BarcodeScanner passBarcode={setBarcode}/>
-                        </div>
+                        <View className={cameraActive ? "" : "hidden"}>
+                            <BarcodeScanner passBarcode={setBarcode} />
+                        </View>
 
                         <View style={{
                             flexDirection: 'row',
@@ -216,13 +217,20 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                         />
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Use By Date</Text>
-                        <input
-                            type="date"
+
+
+                        {/*
+                        <DatePicker
+                            date={useByDate}
+
                             id="useByDate"
                             style={{ maxWidth: 130, marginBottom: 20, borderWidth: 1 }}
-                            onChange={(e) => setUseByDate(new Date(e.target.value))}
+
+                            onConfirm={setUseByDate}
                         >
-                        </input>
+                        </DatePicker>*/
+                        }
+
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
                         <TextInput
