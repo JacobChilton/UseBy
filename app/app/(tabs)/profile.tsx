@@ -53,7 +53,7 @@ export default function Profile()
                         borderRadius: 8,
                     }}
                 >
-                    <Text style={{ fontSize: 18, marginBottom: 20 }}> Settings Modal!</Text>
+                    <Text style={{ fontSize: 18, marginBottom: 20 }}> Settings page not yet implemented.</Text>
                     <Button mode="contained" onPress={() => setSettingsModalVisible(false)}>
                         Close
                     </Button>
@@ -71,7 +71,7 @@ export default function Profile()
                         borderRadius: 8,
                     }}
                 >
-                    <Text style={{ fontSize: 18, marginBottom: 20 }}> Support Modal!</Text>
+                    <Text style={{ fontSize: 18, marginBottom: 20 }}> Support page not yet implemented.</Text>
                     <Button mode="contained" onPress={() => setSupportModalVisible(false)}>
                         Close
                     </Button>
@@ -150,10 +150,10 @@ export default function Profile()
                 <Button
                     mode="contained"
                     className="h-12 w-80 flex-row items-center rounded-3xl justify-center"
-                    labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
+                    labelStyle={{ fontSize: 16, color: 'white'}}
                     onPress={() => api.logout()}
                 >
-                    LOGOUT
+                    Log Out
                 </Button>
             </View>
         </View>
