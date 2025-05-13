@@ -50,17 +50,20 @@ const HouseCard: React.FC<Props> = ({ house, user, removed, invite }) =>
         {
             console.log("success");
             if (removed) removed();
+            api.set_ugly_duckling(Date.now())
         })
         .catch((e) =>
         {
             console.error(e);
         })
+        
 
     const delete_house = () => api.house_delete(house._id)
         .then(() =>
         {
             console.log("success");
             if (removed) removed();
+            api.set_ugly_duckling(Date.now())
         })
         .catch((e) =>
         {
