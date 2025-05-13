@@ -227,7 +227,6 @@ export default function ItemListGroup(props)
                             currentItem={item}
                             passRefresh={refresh}
                             passSetRefresh={setRefresh}
-
                         />
                     )}
                 </TouchableOpacity>
