@@ -8,8 +8,8 @@ import { Availability, House, HouseID, Product } from '~/app/lib/api/APITypes';
 import { useAPI } from '~/app/components/APIProvider';
 import { AggHouse } from '~/app/lib/api/aggregated';
 import { useNotifiction } from '~/app/components/NotificationProvider';
-import DatePicker from "react-native-date-picker";
 import { APIError } from '~/app/lib/api/APIError';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 interface Props
 {
@@ -46,7 +46,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [barcode, setBarcode] = useState<string>(props.currentItem?.upc || "");
     const [scannedBarcode, setScannedBarcode] = useState<string>(props.currentItem?.upc || "");
     const [items, setItems] = useState<Array<Product>>([]);
-    const [useByDate, setUseByDate] = useState<Date>(props.currentItem?.use_by || new Date());
+    const [useByDate, setUseByDate] = useState<Date | undefined>(props.currentItem?.use_by || new Date());
     const [quantity, setQuantity] = useState(props.currentItem?.quantity || 1);
     const [availability, setAvailability] = useState(props.currentItem?.availability || Availability.PRIVATE);
     const [freeze, setFreeze] = useState(!!props.currentItem?.frozen);
@@ -114,12 +114,15 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
             {
                 setItemName(productData.name.substring(1, productData.name.length - 1));
             }
-        }).catch(e => {
+        }).catch(e =>
+        {
 
-            if (e instanceof APIError) {
+            if (e instanceof APIError)
+            {
 
                 console.log(e.message);
-                if (e.message === "unauthorized") {
+                if (e.message === "unauthorized")
+                {
                     return;
                 }
             }
@@ -239,17 +242,20 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                             {
                                 Platform.OS === "web" ?
                                     <input
-                                        value={useByDate.toISOString().split('T')[0]}
+                                        value={useByDate?.toISOString().split('T')[0]}
                                         onChange={e => setUseByDate(new Date(e.target.value))}
                                         type='date'
                                     />
                                     :
-                                    <DatePicker
-                                        date={useByDate}
-                                        style={{ maxWidth: 130, marginBottom: 20, borderWidth: 1 }}
-                                        onConfirm={setUseByDate}
-                                    >
-                                    </DatePicker>
+                                    <Calendar
+                                        current={useByDate?.toISOString().split('T')[0]}
+                                        onDayPress={day =>
+                                        {
+
+                                            setUseByDate(new Date(day.timestamp));
+                                        }}
+                                        markedDates={useByDate ? { [useByDate.toISOString().split('T')[0]]: { selected: true } } : {}}
+                                    />
                             }
                         </View>
 
@@ -293,7 +299,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                                 setAvailability(Availability.PRIVATE);
                             }} // Call handler to set availability to private
                             style={{ flex: 1, marginRight: 10, marginBottom: 10, backgroundColor: availability == Availability.PRIVATE ? "#6F4AAA" : "gray" }}
-                            
+
                         >
                             Private
                         </Button>
