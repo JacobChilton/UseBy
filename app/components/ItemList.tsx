@@ -128,7 +128,7 @@ export default function ItemList(props)
 
     return (
         <View className="mt-4"
-            style={{ maxHeight: '80%' }}>
+            style={{ maxHeight: '70%' }}>
 
             <ScrollView
                 style={{ maxHeight: '100%' }}

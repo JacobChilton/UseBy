@@ -1,5 +1,5 @@
 import { StyleSheet, View, Platform, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { Button, Text } from 'react-native-paper';
 import { useAPI } from '../components/APIProvider';
 import ItemList from '~/components/ItemList';
@@ -7,8 +7,10 @@ import { Product } from '../lib/api/APITypes';
 import PopupFormContents from '~/components/PopupFormContents';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AggHouse } from '../lib/api/aggregated';
+import { SelectList} from 'react-native-dropdown-select-list';
+import { updator } from '../lib/invalidator';
 
-export default function MyFood()
+const Updator = () =>
 {
     const api = useAPI();
 
@@ -17,7 +19,18 @@ export default function MyFood()
     const [refresh, setRefresh] = useState<boolean>(false);
 
     const [houses, setHouses] = useState<Array<AggHouse>>([]);
+    const [defaultHouse, setDefaultHouse] = useState<{key: string, value: string}>();
     const [selectedHouse, setSelectedHouse] = useState<AggHouse>();
+
+    useEffect(() => {
+
+        if (houses[0]) {
+            const house = houses[0];
+            const houseOption = {key: house._id, value: house.name};
+            setDefaultHouse(houseOption);
+        }
+        
+    }, [houses])
 
     const deleteItem = (itemID: string) =>
     {
@@ -46,28 +59,12 @@ export default function MyFood()
 
     }, [])
 
-    function selectHouse()
-    {
-
-        let dropdown = document.getElementById("houses");
-
-        for (let house of houses)
-        {
-
-            if (house._id === dropdown.options[dropdown.selectedIndex].value)
-            {
-
-                setSelectedHouse(house);
-            }
-        }
-    }
-
     useEffect(() =>
     {
 
         async function refresh()
         {
-
+            console.log("refrsehing")
             // Refresh product list
             try
             {
@@ -96,12 +93,15 @@ export default function MyFood()
                 Choose house list
             </Text>
 
-            {/*houses.map((item, index) => (
-                    
-                    <Text key={item.name} value={item._id}>
-                        {item.name}
-                    </option>
-                ))*/}
+            <SelectList
+                setSelected={(val:string) => {
+                    setSelectedHouse(houses.find(h => h.name === val))
+                }}
+                data={houses.map(h => ({key: h._id, value: h.name}))}
+                save="value"
+                defaultOption={defaultHouse}
+                >
+            </SelectList>
 
             <ItemList
                 selectedHouse={selectedHouse}
@@ -132,4 +132,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
-});
+})
+
+export default function MyFood()
+{
+    useEffect(() =>
+    {
+    }, [updator])
+
+    return <Updator key={updator}/>
+};

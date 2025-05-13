@@ -45,7 +45,7 @@ interface APIProviderInterface
     // Get image by user id
     picture_get: (p_user_id: string) => Promise<string>;
     // Upload image for user
-    picture_upload: (p_b64: string) => Promise<void>
+    picture_upload: (p_b64: string) => Promise<void>;
 }
 
 const context = createContext<APIProviderInterface | null>(null)

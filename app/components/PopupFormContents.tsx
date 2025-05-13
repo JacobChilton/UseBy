@@ -112,7 +112,6 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     {
 
         setCameraActive(false);
-        console.log("boop");
         setItemName("Loading...");
         (api.barcode_fetch(barcode)).then((productData) =>
         {
@@ -210,27 +209,21 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                             <BarcodeScanner key={new Date()} passBarcode={barcodeLookup} />
                         </View>
 
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 20
-                        }}>
-                            <Button
-                                mode="contained"
-                                onPress={barcodeLookup} // Call handler to look up barcode
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Lookup Item
-                            </Button>
+                        <Button
+                            mode="contained"
+                            onPress={barcodeLookup} // Call handler to look up barcode
+                            style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                        >
+                            Lookup Item
+                        </Button>
 
-                            <Button
-                                mode="contained"
-                                onPress={scanBarcode} // Call handler to scan barcode
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Scan Barcode
-                            </Button>
-                        </View>
+                        <Button
+                            mode="contained"
+                            onPress={scanBarcode} // Call handler to scan barcode
+                            style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
+                        >
+                            Scan Barcode
+                        </Button>
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Product Name</Text>
                         <TextInput

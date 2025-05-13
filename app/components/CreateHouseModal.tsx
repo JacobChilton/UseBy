@@ -4,6 +4,7 @@ import { Button, Modal, Portal, TextInput } from 'react-native-paper';
 import { useAPI } from '~/app/components/APIProvider';
 import { useNotifiction, } from '~/app/components/NotificationProvider';
 import { APIError } from '~/app/lib/api/APIError';
+import { set_updator, updator } from '~/app/lib/invalidator';
 
 interface Props
 {
@@ -28,6 +29,7 @@ const CreateHouseModal: React.FC<Props> = ({ created, hide, open }) =>
                 set_name("");
                 hide();
                 created();
+                setTimeout(() => set_updator(Date.now()), 500)
             })
             .catch(e =>
             {
