@@ -23,9 +23,13 @@ export default function ItemListGroup(props)
 
     const api = useAPI();
 
-    async function deleteItems() {
+    console.log(products);
 
-        for (let product of productList) {
+    async function deleteItems()
+    {
+
+        for (let product of productList)
+        {
 
             deleteItem(product._id);
         }
@@ -53,19 +57,6 @@ export default function ItemListGroup(props)
                 return "Error";
             }
         }
-        async function formatDisplayedDate(dateToFormat: Date)
-        {
-
-            let date = new Date(dateToFormat);
-
-            let dd = String(date.getDate()).padStart(2, '0');
-            let mm = String(date.getMonth() + 1).padStart(2, '0');
-            let yyyy = date.getFullYear();
-
-            let formattedDate = dd + '/' + mm + '/' + yyyy;
-
-            return formattedDate;
-        }
 
         async function updateProductList()
         {
@@ -73,13 +64,9 @@ export default function ItemListGroup(props)
             const newProductList = await Promise.all(
                 groupProducts.map(async product =>
                 {
-
                     const ownerName = await ownerLookup(product.owner_id);
-                    const useByDate = await formatDisplayedDate(product.use_by);
-
                     return {
                         ...product,
-                        use_by: useByDate,
                         owner_name: ownerName,
                     };
                 })
@@ -90,6 +77,20 @@ export default function ItemListGroup(props)
         updateProductList();
 
     }, [products, groupProducts]);
+
+    function formatDisplayedDate(dateToFormat: Date)
+    {
+
+        let date = new Date(dateToFormat);
+
+        let dd = String(date.getDate()).padStart(2, '0');
+        let mm = String(date.getMonth() + 1).padStart(2, '0');
+        let yyyy = date.getFullYear();
+
+        let formattedDate = dd + '/' + mm + '/' + yyyy;
+
+        return formattedDate;
+    }
 
     return (
         <>
@@ -170,7 +171,7 @@ export default function ItemListGroup(props)
                                 paddingLeft: 5
                             }}
                         >
-                            Use By: {item.use_by}
+                            Use By: {formatDisplayedDate(item.use_by)}
                         </Text>
                     )}
                     {visibleProducts[index] && (
@@ -218,31 +219,31 @@ export default function ItemListGroup(props)
                         </Text>
                     )}
                     {visibleProducts[index] && (
-                        <PopupFormContents 
-                            key={item._id} 
-                            formType="Edit Item" 
-                            selectedHouse={props.selectedHouse} 
-                            passDeleteItem={deleteItem} 
-                            currentItem={item} 
-                            passRefresh={refresh} 
-                            passSetRefresh={setRefresh} 
-                            
+                        <PopupFormContents
+                            key={item._id}
+                            formType="Edit Item"
+                            selectedHouse={props.selectedHouse}
+                            passDeleteItem={deleteItem}
+                            currentItem={item}
+                            passRefresh={refresh}
+                            passSetRefresh={setRefresh}
+
                         />
                     )}
                 </TouchableOpacity>
             ))}
             {(props.group === "expired") && (
-                        <Button
-                        mode="outlined"
-                        className="h-12 w-40 rounded-3xl"
-                        labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
-                        contentStyle={{ backgroundColor: '#6F4AAA' }}
-                        style={{ borderColor: 'white', borderWidth: 2 }}
-                        onPress={() => deleteItems()}
-                    >
-                        Delete All
-                    </Button>
-                    )}
+                <Button
+                    mode="outlined"
+                    className="h-12 w-40 rounded-3xl"
+                    labelStyle={{ fontSize: 16, color: 'white', fontWeight: 'bold' }}
+                    contentStyle={{ backgroundColor: '#6F4AAA' }}
+                    style={{ borderColor: 'white', borderWidth: 2 }}
+                    onPress={() => deleteItems()}
+                >
+                    Delete All
+                </Button>
+            )}
         </>
     );
 }

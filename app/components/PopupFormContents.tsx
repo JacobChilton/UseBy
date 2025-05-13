@@ -46,7 +46,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [barcode, setBarcode] = useState<string>(props.currentItem?.upc || "");
     const [scannedBarcode, setScannedBarcode] = useState<string>(props.currentItem?.upc || "");
     const [items, setItems] = useState<Array<Product>>([]);
-    const [useByDate, setUseByDate] = useState<Date | undefined>(props.currentItem?.use_by || new Date());
+    const [useByDate, setUseByDate] = useState<Date>(props.currentItem?.use_by ? new Date(props.currentItem?.use_by) : new Date());
     const [quantity, setQuantity] = useState(props.currentItem?.quantity || 1);
     const [availability, setAvailability] = useState(props.currentItem?.availability || Availability.PRIVATE);
     const [freeze, setFreeze] = useState(!!props.currentItem?.frozen);
@@ -239,24 +239,17 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
 
                         <View style={{ paddingBottom: 15 }}>
-                            {
-                                Platform.OS === "web" ?
-                                    <input
-                                        value={useByDate?.toISOString().split('T')[0]}
-                                        onChange={e => setUseByDate(new Date(e.target.value))}
-                                        type='date'
-                                    />
-                                    :
-                                    <Calendar
-                                        current={useByDate?.toISOString().split('T')[0]}
-                                        onDayPress={day =>
-                                        {
 
-                                            setUseByDate(new Date(day.timestamp));
-                                        }}
-                                        markedDates={useByDate ? { [useByDate.toISOString().split('T')[0]]: { selected: true } } : {}}
-                                    />
-                            }
+
+                            <Calendar
+                                current={useByDate.toISOString().split('T')[0]}
+                                onDayPress={day =>
+                                {
+                                    setUseByDate(new Date(day.timestamp));
+                                }}
+                                markedDates={{ [useByDate.toISOString().split('T')[0]]: { selected: true } }}
+                            />
+
                         </View>
 
                         <Text style={{ fontSize: 18, marginBottom: 20 }}>Quantity</Text>
