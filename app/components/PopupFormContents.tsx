@@ -284,47 +284,43 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                             </Button>
                         </View>
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability: {availability}</Text>
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 20
-                        }}>
-                            <Button
-                                mode="contained"
-                                onPress={() =>
-                                {
-                                    setAvailability(Availability.PRIVATE);
-                                }} // Call handler to set availability to private
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Private
-                            </Button>
+                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Availability</Text>
 
-                            <Button
-                                mode="contained"
-                                onPress={() =>
-                                {
-                                    setAvailability(Availability.COMMUNAL);
-                                }} // Call handler to set availability to communal
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Communal
-                            </Button>
+                        <Button
+                            mode="contained"
+                            onPress={() =>
+                            {
+                                setAvailability(Availability.PRIVATE);
+                            }} // Call handler to set availability to private
+                            style={{ flex: 1, marginRight: 10, marginBottom: 10, backgroundColor: availability == Availability.PRIVATE ? "#6F4AAA" : "gray" }}
+                            
+                        >
+                            Private
+                        </Button>
 
-                            <Button
-                                mode="contained"
-                                onPress={() =>
-                                {
-                                    setAvailability(Availability.UP_FOR_GRABS);
-                                }} // Call handler to set availability to up for grabs
-                                style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
-                            >
-                                Up For Grabs
-                            </Button>
-                        </View>
+                        <Button
+                            mode="contained"
+                            onPress={() =>
+                            {
+                                setAvailability(Availability.COMMUNAL);
+                            }} // Call handler to set availability to communal
+                            style={{ flex: 1, marginRight: 10, marginBottom: 10, backgroundColor: availability == Availability.COMMUNAL ? "#6F4AAA" : "gray" }}
+                        >
+                            Communal
+                        </Button>
 
-                        <Text style={{ fontSize: 18, marginBottom: 20 }}>Frozen: {freeze.toString()}</Text>
+                        <Button
+                            mode="contained"
+                            onPress={() =>
+                            {
+                                setAvailability(Availability.UP_FOR_GRABS);
+                            }} // Call handler to set availability to up for grabs
+                            style={{ flex: 1, marginRight: 10, marginBottom: 10, backgroundColor: availability == Availability.UP_FOR_GRABS ? "#6F4AAA" : "gray" }}
+                        >
+                            Up For Grabs
+                        </Button>
+
+                        <Text style={{ fontSize: 18, marginTop: 20, marginBottom: 20 }}>Frozen</Text>
                         <View style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
@@ -339,7 +335,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                                 }} // Call handler to set frozen status
                                 style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                             >
-                                Freeze
+                                {freeze ? "Frozen" : "Unfrozen"}
                             </Button>
                         </View>
 
