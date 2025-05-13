@@ -19,6 +19,8 @@ export default function MyFood()
     const [houses, setHouses] = useState<Array<AggHouse>>([]);
     const [selectedHouse, setSelectedHouse] = useState<AggHouse>();
 
+    if (!api.logged_in) return <></>
+
     const deleteItem = (itemID: string) =>
     {
 

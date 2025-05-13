@@ -23,6 +23,7 @@ const call = async (p_path: string, p_method: "DELETE" | "POST" | "GET" | "PATCH
 
 const call_auth = async (p_token: string, p_path: string, p_method: "DELETE" | "POST" | "GET" | "PATCH", p_body?: Record<string, any>): Promise<{ status: number; ok: boolean; json: Record<string, any>; }> =>
 {
+    console.log(p_path);
     const response = await fetch(API_URL_BASE + p_path,
         {
             method: p_method,
