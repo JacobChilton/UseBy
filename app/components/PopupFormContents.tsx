@@ -53,9 +53,10 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [cameraActive, setCameraActive] = useState(false);
     const { notify } = useNotifiction();
 
-    const {logged_in} = useAPI();
+    const { logged_in } = useAPI();
 
-    if (!logged_in) {
+    if (!logged_in)
+    {
 
         return <View></View>
     }
@@ -211,7 +212,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
 
                         <Button
                             mode="contained"
-                            onPress={barcodeLookup} // Call handler to look up barcode
+                            onPress={() => barcodeLookup(barcode)} // Call handler to look up barcode
                             style={{ flex: 1, marginRight: 10, marginBottom: 10 }}
                         >
                             Lookup Item
