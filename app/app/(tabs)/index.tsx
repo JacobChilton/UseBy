@@ -30,7 +30,6 @@ const Updator = () =>
             const house = houses[0];
             const houseOption = { key: house._id, value: house.name };
             setDefaultHouse(houseOption);
-          
         }
 
     }, [houses])
@@ -73,7 +72,7 @@ const Updator = () =>
             // Refresh product list
             try
             {
-                const newData = await api.house_product_get_all(selectedHouse?._id  || houses[0]._id);
+                const newData = await api.house_product_get_all(selectedHouse._id);
 
                 // Sort the product list by order of expiration
                 newData.sort(function (a, b)
@@ -119,11 +118,10 @@ const Updator = () =>
             />
             <PopupFormContents
                 formType="Add Item"
-                selectedHouse={selectedHouse || houses[0]}
+                selectedHouse={selectedHouse}
                 passRefresh={refresh}
                 passSetRefresh={setRefresh}
                 passDeleteItem={deleteItem}
-                key={Date.now()}
             />
         </View>
     );
