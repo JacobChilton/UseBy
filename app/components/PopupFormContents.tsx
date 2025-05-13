@@ -9,6 +9,7 @@ import { useAPI } from '~/app/components/APIProvider';
 import { AggHouse } from '~/app/lib/api/aggregated';
 import { useNotifiction } from '~/app/components/NotificationProvider';
 import DatePicker from "react-native-date-picker";
+import { APIError } from '~/app/lib/api/APIError';
 
 interface Props
 {
@@ -43,6 +44,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [addItemModalVisible, setAddItemModalVisible] = useState(false);
     const [itemName, setItemName] = useState<string>(props.currentItem?.name || "");
     const [barcode, setBarcode] = useState<string>(props.currentItem?.upc || "");
+    const [scannedBarcode, setScannedBarcode] = useState<string>(props.currentItem?.upc || "");
     const [items, setItems] = useState<Array<Product>>([]);
     const [useByDate, setUseByDate] = useState<Date>(props.currentItem?.use_by || new Date());
     const [quantity, setQuantity] = useState(props.currentItem?.quantity || 1);
@@ -100,8 +102,11 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     };
 
     // Looks up the barcode and sets the product name to the generated name
-    function barcodeLookup()
+    function barcodeLookup(barcode: string)
     {
+
+        setCameraActive(false);
+        console.log("boop");
         setItemName("Loading...");
         (api.barcode_fetch(barcode)).then((productData) =>
         {
@@ -109,6 +114,17 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
             {
                 setItemName(productData.name.substring(1, productData.name.length - 1));
             }
+        }).catch(e => {
+
+            if (e instanceof APIError) {
+
+                console.log(e.message);
+                if (e.message === "unauthorized") {
+                    return;
+                }
+            }
+
+            notify("error", e.toString());
         });
     }
 
@@ -182,7 +198,7 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
                         />
 
                         <View className={cameraActive ? "" : "hidden"}>
-                            <BarcodeScanner passBarcode={setBarcode} />
+                            <BarcodeScanner key={new Date()} passBarcode={barcodeLookup} />
                         </View>
 
                         <View style={{

@@ -32,6 +32,11 @@ export default function BarcodeScanner(props) {
     setBarcode(data);
   };
 
+  if (scanned) {
+
+    return <View></View>
+  }
+
   return (
     <View style={{...styles.container, paddingBottom: 20, paddingRight: 10}}>
       <CameraView style={styles.camera} facing={facing} onBarcodeScanned={handleBarcodeScanned}
