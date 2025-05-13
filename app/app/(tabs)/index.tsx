@@ -32,6 +32,8 @@ const Updator = () =>
         
     }, [houses])
 
+    if (!api.logged_in) return <></>
+
     const deleteItem = (itemID: string) =>
     {
 

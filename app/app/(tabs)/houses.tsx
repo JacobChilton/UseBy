@@ -20,6 +20,9 @@ export const Houses = () =>
     const [scan_mode, set_scan_mode] = useState(false);
     const [selected_house, set_selected_house] = useState("");
 
+    const { logged_in } = useAPI();
+    if (!logged_in) return <></>
+
     useEffect(() =>
     {
         api.profile_get().then(u => set_user(u._id))
