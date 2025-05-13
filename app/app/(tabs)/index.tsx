@@ -40,7 +40,7 @@ const Updator = () =>
     const deleteItem = (itemID: string) =>
     {
 
-        api.house_product_delete(selectedHouse?._id || houses[0]._id, itemID).then(() => 
+        api.house_product_delete(selectedHouse?._id, itemID).then(() => 
         {
             if (setRefresh) setRefresh(!refresh)
         })
