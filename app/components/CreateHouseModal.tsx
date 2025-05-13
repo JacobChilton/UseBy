@@ -29,7 +29,7 @@ const CreateHouseModal: React.FC<Props> = ({ created, hide, open }) =>
                 set_name("");
                 hide();
                 created();
-                api.set_ugly_duckling(Date.now())
+                setTimeout(() => set_updator(Date.now()), 500)
             })
             .catch(e =>
             {

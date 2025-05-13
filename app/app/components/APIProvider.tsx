@@ -46,9 +46,6 @@ interface APIProviderInterface
     picture_get: (p_user_id: string) => Promise<string>;
     // Upload image for user
     picture_upload: (p_b64: string) => Promise<void>;
-
-    ugly_duckling: number,
-    set_ugly_duckling: (val: number) => void
 }
 
 const context = createContext<APIProviderInterface | null>(null)
@@ -69,7 +66,6 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) =>
 {
     const [token, set_token] = useState<string>("");
     const image_cache = useRef(new Map<UserID, string>());
-    const [ugly, set_ugly] = useState(Date.now());
 
     const exported: APIProviderInterface =
     {
@@ -129,9 +125,7 @@ const APIProvider: React.FC<APIProviderProps> = ({ children }) =>
             image_cache.current.clear();
 
             return picture_upload(token, p_b64)
-        },
-        ugly_duckling: ugly,
-        set_ugly_duckling: set_ugly
+        }
     }
 
     return (

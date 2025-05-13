@@ -7,7 +7,7 @@ import { Product } from '../lib/api/APITypes';
 import PopupFormContents from '~/components/PopupFormContents';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AggHouse } from '../lib/api/aggregated';
-import { SelectList } from 'react-native-dropdown-select-list';
+import { SelectList} from 'react-native-dropdown-select-list';
 import { updator } from '../lib/invalidator';
 
 const Updator = () =>
@@ -19,19 +19,17 @@ const Updator = () =>
     const [refresh, setRefresh] = useState<boolean>(false);
 
     const [houses, setHouses] = useState<Array<AggHouse>>([]);
-    const [defaultHouse, setDefaultHouse] = useState<{ key: string, value: string }>();
+    const [defaultHouse, setDefaultHouse] = useState<{key: string, value: string}>();
     const [selectedHouse, setSelectedHouse] = useState<AggHouse>();
 
-    useEffect(() =>
-    {
+    useEffect(() => {
 
-        if (houses[0])
-        {
+        if (houses[0]) {
             const house = houses[0];
-            const houseOption = { key: house._id, value: house.name };
+            const houseOption = {key: house._id, value: house.name};
             setDefaultHouse(houseOption);
         }
-
+        
     }, [houses])
 
     if (!api.logged_in) return <></>
@@ -98,14 +96,13 @@ const Updator = () =>
             </Text>
 
             <SelectList
-                setSelected={(val: string) =>
-                {
+                setSelected={(val:string) => {
                     setSelectedHouse(houses.find(h => h.name === val))
                 }}
-                data={houses.map(h => ({ key: h._id, value: h.name }))}
+                data={houses.map(h => ({key: h._id, value: h.name}))}
                 save="value"
                 defaultOption={defaultHouse}
-            >
+                >
             </SelectList>
 
             <ItemList
@@ -141,7 +138,9 @@ const styles = StyleSheet.create({
 
 export default function MyFood()
 {
-    const { ugly_duckling } = useAPI();
+    useEffect(() =>
+    {
+    }, [updator])
 
-    return <Updator key={ugly_duckling} />
+    return <Updator key={updator}/>
 };
