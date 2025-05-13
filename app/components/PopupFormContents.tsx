@@ -53,6 +53,12 @@ const PopupFormContents: React.FC<Props> = (props: Props) =>
     const [cameraActive, setCameraActive] = useState(false);
     const { notify } = useNotifiction();
 
+    const {logged_in} = useAPI();
+
+    if (!logged_in) {
+
+        return <View></View>
+    }
 
     const handleAddItem = () =>
     {
